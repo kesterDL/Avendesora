@@ -11,9 +11,8 @@ public class Begin {
 
     public static void main(String[] args) {
         CharacterSheet Ralf = new CharacterSheet(Race.HUMAN, Classes.FIGHTER, Classes.NONE, Gender.MALE);
-        Ralf.selectAbilityStats();
         ArrayList<Integer> mods = Ralf.getAbilityModifiers();
-        System.out.println("STR " + Ralf.getStrength() + " Mod " + Ralf.getStrengthModifier() + "or" + mods.get(0));
+        System.out.println("STR " + Ralf.getStrength() + " Mod " + Ralf.getStrengthModifier());
         System.out.println("DEX " + Ralf.getDexterity() + " Mod " + mods.get(1));
         System.out.println("CON " + Ralf.getConstitution() + " Mod " + mods.get(2));
         System.out.println("INT " + Ralf.getIntelligence() + " Mod " + mods.get(3));

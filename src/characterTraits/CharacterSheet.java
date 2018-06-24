@@ -180,13 +180,7 @@ public class CharacterSheet {
     public CharacterSheet(Race race, Classes jobClass, Classes secondJobClass, Gender gender) {
 
         // Initial Ability Stats
-        setStrength(rollAnAbilityStat());
-        setDexterity(rollAnAbilityStat());
-        setConstitution(rollAnAbilityStat());
-        setIntelligence(rollAnAbilityStat());
-        setWisdom(rollAnAbilityStat());
-        setCharisma(rollAnAbilityStat());
-        setAllBaseAbilityModifiers();
+        selectAbilityStats();
         // Level 1
         setLevel(1);
         addToFeats(1);
@@ -261,7 +255,6 @@ public class CharacterSheet {
 
     public void selectAbilityStats(){
         this.stats = new ArrayList<>();
-        Scanner user_input = new Scanner(System.in);
         // Roll the all the scores and save them in a list
         setStatsListForCreation();
         // Ask user to choose each stat from the list
@@ -269,6 +262,7 @@ public class CharacterSheet {
             printOutStatsForCreation();
             setAbility(ability);
         }
+        setAllBaseAbilityModifiers();
         printOutCharacterAbilityStats();
     }
 
@@ -419,10 +413,11 @@ public class CharacterSheet {
         return ReflexSavingThrow;
     }
 
-    private void setReflexSavingThrow(int dexMod, Classes job, int magicMod) {
+    private void setReflexSavingThrow(Classes job, int magicMod) {
         switch(job) {
             case FIGHTER:
-                this.ReflexSavingThrow =  fighter.getReflexSave() + dexMod + magicMod;
+                fighter.setReflexSave(getLevel());
+                this.ReflexSavingThrow =  fighter.getReflexSave() + getDexterityModifier() + magicMod;
                 break;
         }
     }
@@ -431,10 +426,11 @@ public class CharacterSheet {
         return FortitudeSavingThrow;
     }
 
-    private void setFortitudeSavingThrow(int conMod, Classes job, int magicMod) {
+    private void setFortitudeSavingThrow(Classes job, int magicMod) {
         switch(job) {
             case FIGHTER:
-                this.FortitudeSavingThrow =  fighter.getFortitudeSave()+ conMod + magicMod;
+                fighter.setFortitudeSave(getLevel());
+                this.FortitudeSavingThrow =  fighter.getFortitudeSave()+ getConstitutionModifier() + magicMod;
                 break;
         }
     }
@@ -443,10 +439,11 @@ public class CharacterSheet {
         return WillSavingThrow;
     }
 
-    private void setWillSavingThrow(int WisdomMod, Classes job, int magicMod) {
+    private void setWillSavingThrow( Classes job, int magicMod) {
         switch(job) {
             case FIGHTER:
-                this.WillSavingThrow =  fighter.getWillSave() + WisdomMod + magicMod;
+                fighter.setWillSave(getLevel());
+                this.WillSavingThrow =  fighter.getWillSave() + getWisdomModifier() + magicMod;
                 break;
         }
     }
@@ -487,18 +484,18 @@ public class CharacterSheet {
         switch(job) {
             case FIGHTER:
             case PALADIN:
-                this.MaximumHitPoints = 10 + modifiers.get(2);
+                this.MaximumHitPoints = 10 + getConstitutionModifier();
                 break;
             case WIZARD:
             case SORCERER:
-                this.MaximumHitPoints = 4 + modifiers.get(2);
+                this.MaximumHitPoints = 4 + getConstitutionModifier();
                 break;
             case ROUGE:
             case BARD:
-                this.MaximumHitPoints = 6 + modifiers.get(2);
+                this.MaximumHitPoints = 6 + getConstitutionModifier();
                 break;
             case BARBARIAN:
-                this.MaximumHitPoints = 12 + modifiers.get(2);
+                this.MaximumHitPoints = 12 + getConstitutionModifier();
                 break;
         }
     }
@@ -658,7 +655,7 @@ public class CharacterSheet {
 
     private void adjustForClass(Classes job){
         ArrayList<Integer> mods = getAbilityModifiers();
-        if(job != null && mods.size() > 0) {
+        if(job != null) {
             switch(job) {
                 case FIGHTER:
                     fighter = new Fighter(mods.get(3));
@@ -668,9 +665,9 @@ public class CharacterSheet {
                     setSkillPoints(fighter.getSkillPoints1stLevel());
                     break;
             }
-            setWillSavingThrow(mods.get(4), job, 0);
-            setFortitudeSavingThrow(mods.get(2), job, 0);
-            setReflexSavingThrow(mods.get(1), job, 0);
+            setReflexSavingThrow(getJobClass(), 0);
+            setWillSavingThrow(getJobClass(), 0);
+            setFortitudeSavingThrow(getJobClass(), 0);
         }
     }
 
