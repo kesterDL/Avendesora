@@ -38,7 +38,7 @@ public class Begin {
         // Feats
         System.out.println("Feats = " + Ralf.getNumberOfFeats());
         // Armor Class
-
+        System.out.println("Armor Class = " + Ralf.getArmorClass());
     }
 
 }

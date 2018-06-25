@@ -1,6 +1,6 @@
 package Equipment.Armor;
 
-public enum LightArmor {
+public enum Armor {
     PADDED,
     LEATHER,
     STUDDED_LEATHER,

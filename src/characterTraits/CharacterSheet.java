@@ -1,5 +1,9 @@
 package characterTraits;
 
+import Equipment.Armor.ArmorTypes;
+import Equipment.Armor.Armor;
+import Equipment.Armor.LeatherArmor;
+import Equipment.Armor.PaddedArmor;
 import characterTraits.Classes.Classes;
 import characterTraits.Classes.Fighter;
 import characterTraits.Race.Human;
@@ -92,7 +96,11 @@ public class CharacterSheet {
     /**
      * Charater's Armor Class.
      */
-    private int ArmorClass;
+    private Integer ArmorClass = 10;
+    /**
+     * Character's current armor.
+     */
+    private Armor Armor;
     /**
      * Character's Initiative.
      */
@@ -190,6 +198,7 @@ public class CharacterSheet {
         // General Character Info
         setMaximumHitPoints(getJobClass());
         setGrapple();
+        setArmorClass();
         setGender(gender);
         setExperiencePoints(0);
         setInitiativeModifier(0);
@@ -419,6 +428,7 @@ public class CharacterSheet {
                 fighter.setReflexSave(getLevel());
                 this.ReflexSavingThrow =  fighter.getReflexSave() + getDexterityModifier() + magicMod;
                 break;
+            // TODO:
         }
     }
 
@@ -432,6 +442,7 @@ public class CharacterSheet {
                 fighter.setFortitudeSave(getLevel());
                 this.FortitudeSavingThrow =  fighter.getFortitudeSave()+ getConstitutionModifier() + magicMod;
                 break;
+            // TODO:
         }
     }
 
@@ -445,6 +456,7 @@ public class CharacterSheet {
                 fighter.setWillSave(getLevel());
                 this.WillSavingThrow =  fighter.getWillSave() + getWisdomModifier() + magicMod;
                 break;
+            // TODO:
         }
     }
 
@@ -452,8 +464,118 @@ public class CharacterSheet {
         return ArmorClass;
     }
 
-    public void setArmorClass(int armorClass) {
-        this.ArmorClass = armorClass;
+    public void setArmorClass() {
+        this.ArmorClass += getDexterityModifier();
+        if (getRace() == Race.GNOME || getRace() == Race.HALFLING){
+            this.ArmorClass += 1;
+        }
+        selectArmor();
+    }
+
+    public void selectArmor() {
+        ArmorTypes armorClass = selectArmorClass();
+        switch(armorClass){
+            case LIGHT:
+                selectLightArmor();
+                break;
+            case MEDIUM:
+                // TODO:
+            case HEAVY:
+                // TODO:
+        }
+    }
+
+    private void selectLightArmor(){
+        Scanner user_input = new Scanner(System.in);
+        ArrayList<Armor> armorList = new ArrayList<>(Arrays.asList(Armor.PADDED, Armor.LEATHER,
+                Armor.STUDDED_LEATHER, Armor.CHAIN_SHIRT));
+        Armor armor = Armor.LEATHER;
+        String selection;
+        Integer intSelection = 0;
+        Boolean validSelection = false;
+
+        while (!validSelection) {
+            System.out.println("Select the number for the armor you would like to wear. ");
+            int item = 1;
+            for (Armor type: armorList) {
+                System.out.println(item + ": " + type.toString());
+                item++;
+            }
+            selection = user_input.next();
+            intSelection = Integer.parseInt(selection);
+            // Accept input and assign the stat
+            if (intSelection < 1 || intSelection > 4) {
+                System.out.println("Select a number from the list of available armor");
+                System.out.println();
+            } else {
+                validSelection = true;
+                switch (intSelection){
+                    case 1:
+                        this.Armor = Armor.PADDED;
+                        PaddedArmor paddedArmor = new PaddedArmor();
+                        this.ArmorClass += paddedArmor.getArmorBonus();
+                        break;
+                    case 2:
+                        this.Armor = Armor.LEATHER;
+                        LeatherArmor leatherArmor = new LeatherArmor();
+                        this.ArmorClass += leatherArmor.getArmorBonus();
+                        break;
+                    case 3:
+                        // TODO:
+                        this.Armor = Armor.STUDDED_LEATHER;
+                        break;
+                    case 4:
+                         // TODO:
+                        this.Armor = Armor.CHAIN_SHIRT;
+                        break;
+                    default:
+                        // TODO:
+                        this.Armor = Armor.LEATHER;
+                }
+            }
+        }
+
+
+    }
+
+    private ArmorTypes selectArmorClass() {
+        Scanner user_input = new Scanner(System.in);
+        ArmorTypes armorClass = null;
+        String selection;
+        Integer intSelection = 0;
+        Boolean validSelection = false;
+
+        while (!validSelection) {
+            ArrayList<ArmorTypes> armorTypes = new ArrayList<>(Arrays.asList(ArmorTypes.LIGHT, ArmorTypes.MEDIUM, ArmorTypes.HEAVY));
+            System.out.println("Select the number for the type armor you would like to wear. ");
+            int item = 1;
+            for (ArmorTypes type: armorTypes) {
+                System.out.println(item + ": " + type.toString());
+                item++;
+            }
+            selection = user_input.next();
+            intSelection = Integer.parseInt(selection);
+            // Accept input and assign the stat
+            if (intSelection < 1 || intSelection > 3) {
+                System.out.println("Select a number from the list of available armor types");
+                System.out.println();
+            } else {
+                validSelection = true;
+                switch (intSelection){
+                    case 1:
+                        armorClass = ArmorTypes.LIGHT;
+                    case 2:
+                        armorClass = ArmorTypes.MEDIUM;
+                    case 3:
+                        armorClass = ArmorTypes.HEAVY;
+                    default:
+                        armorClass = ArmorTypes.LIGHT;
+                }
+            }
+        }
+
+        return armorClass;
+
     }
 
     public int getInitiative() {
