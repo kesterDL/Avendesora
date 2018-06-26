@@ -1,9 +1,6 @@
 package characterTraits;
 
-import Equipment.Armor.ArmorTypes;
-import Equipment.Armor.Armor;
-import Equipment.Armor.LeatherArmor;
-import Equipment.Armor.PaddedArmor;
+import Equipment.Armor.*;
 import characterTraits.Classes.Classes;
 import characterTraits.Classes.Fighter;
 import characterTraits.Race.Human;
@@ -101,6 +98,10 @@ public class CharacterSheet {
      * Character's current armor.
      */
     private Armor Armor;
+    /**
+     * All the armor
+     */
+    private ArmorObjects armorObjects = new ArmorObjects();
     /**
      * Character's Initiative.
      */
@@ -517,7 +518,7 @@ public class CharacterSheet {
                         break;
                     case 2:
                         this.Armor = Armor.LEATHER;
-                        LeatherArmor leatherArmor = new LeatherArmor();
+                        LeatherArmor leatherArmor = armorObjects.getLeatherArmor();
                         this.ArmorClass += leatherArmor.getArmorBonus();
                         break;
                     case 3:
