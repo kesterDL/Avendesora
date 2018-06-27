@@ -99,9 +99,17 @@ public class CharacterSheet {
      */
     private Armor Armor;
     /**
-     * All the armor
+     * All the armor.
      */
     private ArmorObjects armorObjects = new ArmorObjects();
+    /**
+     * All the shields.
+     */
+    private ShieldObjects shieldObjects = new ShieldObjects();
+    /**
+     * Character's current shield.
+     */
+    private ShieldTypes Shield;
     /**
      * Character's Initiative.
      */
@@ -471,6 +479,7 @@ public class CharacterSheet {
             this.ArmorClass += 1;
         }
         selectArmor();
+        selectShield();
     }
 
     public void selectArmor() {
@@ -486,6 +495,52 @@ public class CharacterSheet {
         }
     }
 
+    private void selectShield(){
+        Scanner user_input = new Scanner(System.in);
+        ArrayList<ShieldTypes> shieldList = new ArrayList<>(Arrays.asList(ShieldTypes.NONE,ShieldTypes.BUCKLER,ShieldTypes.LIGHT_WOODEN,
+                ShieldTypes.LIGHT_STEEL, ShieldTypes.HEAVY_WOODEN, ShieldTypes.HEAVY_STEEL, ShieldTypes.TOWER));
+        String selection;
+        Integer intSelection = 0;
+        Boolean validSelection = false;
+
+        while (!validSelection) {
+            System.out.println("Select the number for the shield you would like to carry. ");
+            int item = 1;
+            for (ShieldTypes type: shieldList) {
+                System.out.println(item + ": " + type.toString());
+                item++;
+            }
+            selection = user_input.next();
+            intSelection = Integer.parseInt(selection);
+            // Accept input and assign the stat
+            if (intSelection < 1 || intSelection > 7) {
+                System.out.println("Select a number from the list of available shields");
+                System.out.println();
+            } else {
+                validSelection = true;
+                switch (intSelection){
+                    case 1:
+                        this.Shield= ShieldTypes.NONE;
+                        break;
+                    case 2:
+                        this.Shield = ShieldTypes.BUCKLER;
+                        ShieldBuckler buckler = shieldObjects.getBuckler();
+                        this.ArmorClass += buckler.getArmorBonus();
+                        break;
+                    case 3:
+                        // TODO:
+                        break;
+                    case 4:
+                        // TODO:
+                        break;
+                    default:
+                        // TODO:
+                }
+            }
+        }
+
+
+    }
     private void selectLightArmor(){
         Scanner user_input = new Scanner(System.in);
         ArrayList<Armor> armorList = new ArrayList<>(Arrays.asList(Armor.PADDED, Armor.LEATHER,
@@ -513,7 +568,7 @@ public class CharacterSheet {
                 switch (intSelection){
                     case 1:
                         this.Armor = Armor.PADDED;
-                        PaddedArmor paddedArmor = new PaddedArmor();
+                        PaddedArmor paddedArmor = armorObjects.getPaddedArmor();
                         this.ArmorClass += paddedArmor.getArmorBonus();
                         break;
                     case 2:
@@ -576,7 +631,6 @@ public class CharacterSheet {
         }
 
         return armorClass;
-
     }
 
     public int getInitiative() {

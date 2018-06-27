@@ -1,8 +1,8 @@
 package Equipment.Armor;
 
-public class LightWoodShield {
-    ShieldTypes shieldType = ShieldTypes.LIGHT_WOODEN;
-    Integer cost = 3;
+public class ShieldBuckler {
+    ShieldTypes shieldType = ShieldTypes.BUCKLER;
+    Integer cost = 15;
     Integer armorBonus = 1;
     Integer armorCheckPenalty = -1;
     Double arcaneSpellFailureChance = 0.05;
