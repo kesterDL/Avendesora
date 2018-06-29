@@ -91,19 +91,19 @@ public class CharacterSheet {
      */
     private int WillSavingThrow;
     /**
-     * Charater's Armor Class.
+     * Charater's ArmorList Class.
      */
     private Integer ArmorClass = 10;
     /**
      * Character's current armor.
      */
-    private Armor Armor;
+    private ArmorList ArmorList;
     /**
-     * All the armor.
+     * All the armor objects.
      */
     private ArmorObjects armorObjects = new ArmorObjects();
     /**
-     * All the shields.
+     * All the shield objects.
      */
     private ShieldObjects shieldObjects = new ShieldObjects();
     /**
@@ -543,9 +543,9 @@ public class CharacterSheet {
     }
     private void selectLightArmor(){
         Scanner user_input = new Scanner(System.in);
-        ArrayList<Armor> armorList = new ArrayList<>(Arrays.asList(Armor.PADDED, Armor.LEATHER,
-                Armor.STUDDED_LEATHER, Armor.CHAIN_SHIRT));
-        Armor armor = Armor.LEATHER;
+        ArrayList<ArmorList> armorListList = new ArrayList<>(Arrays.asList(ArmorList.PADDED, ArmorList.LEATHER,
+                ArmorList.STUDDED_LEATHER, ArmorList.CHAIN_SHIRT));
+        ArmorList armor = ArmorList.LEATHER;
         String selection;
         Integer intSelection = 0;
         Boolean validSelection = false;
@@ -553,7 +553,7 @@ public class CharacterSheet {
         while (!validSelection) {
             System.out.println("Select the number for the armor you would like to wear. ");
             int item = 1;
-            for (Armor type: armorList) {
+            for (ArmorList type: armorListList) {
                 System.out.println(item + ": " + type.toString());
                 item++;
             }
@@ -567,26 +567,26 @@ public class CharacterSheet {
                 validSelection = true;
                 switch (intSelection){
                     case 1:
-                        this.Armor = Armor.PADDED;
+                        this.ArmorList = ArmorList.PADDED;
                         PaddedArmor paddedArmor = armorObjects.getPaddedArmor();
                         this.ArmorClass += paddedArmor.getArmorBonus();
                         break;
                     case 2:
-                        this.Armor = Armor.LEATHER;
+                        this.ArmorList = ArmorList.LEATHER;
                         LeatherArmor leatherArmor = armorObjects.getLeatherArmor();
                         this.ArmorClass += leatherArmor.getArmorBonus();
                         break;
                     case 3:
                         // TODO:
-                        this.Armor = Armor.STUDDED_LEATHER;
+                        this.ArmorList = ArmorList.STUDDED_LEATHER;
                         break;
                     case 4:
                          // TODO:
-                        this.Armor = Armor.CHAIN_SHIRT;
+                        this.ArmorList = ArmorList.CHAIN_SHIRT;
                         break;
                     default:
                         // TODO:
-                        this.Armor = Armor.LEATHER;
+                        this.ArmorList = ArmorList.LEATHER;
                 }
             }
         }

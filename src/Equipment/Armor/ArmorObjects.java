@@ -2,11 +2,11 @@ package Equipment.Armor;
 
 public class ArmorObjects {
     /**
-     * Leather Armor.
+     * Leather ArmorList.
      */
     LeatherArmor leatherArmor = new LeatherArmor();
     /**
-     * Padded Armor.
+     * Padded ArmorList.
      */
     PaddedArmor paddedArmor = new PaddedArmor();
 

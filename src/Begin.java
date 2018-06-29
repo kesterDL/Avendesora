@@ -37,8 +37,8 @@ public class Begin {
         System.out.println(Ralf.getSkillandRank(Skills.INTIMIDATE));
         // Feats
         System.out.println("Feats = " + Ralf.getNumberOfFeats());
-        // Armor Class
-        System.out.println("Armor Class = " + Ralf.getArmorClass());
+        // ArmorList Class
+        System.out.println("ArmorList Class = " + Ralf.getArmorClass());
     }
 
 }
