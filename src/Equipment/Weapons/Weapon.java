@@ -9,6 +9,8 @@ public class Weapon {
     private Dice damageDice;
     private Integer weight;
     private DamageType damageType;
+    private WeaponTypes weaponClass;
+    private WeaponList weapon;
     Random dice = new Random();
 
     public Integer critical(Boolean crit){
@@ -77,5 +79,22 @@ public class Weapon {
 
     public void setDamageType(DamageType damageType) {
         this.damageType = damageType;
+    }
+
+    public WeaponTypes getWeaponClass() {
+        return weaponClass;
+    }
+
+    public void setWeaponClass(WeaponTypes weaponClass) {
+        this.weaponClass = weaponClass;
+    }
+
+
+    public WeaponList getWeapon() {
+        return weapon;
+    }
+
+    public void setWeapon(WeaponList weapon) {
+        this.weapon = weapon;
     }
 }

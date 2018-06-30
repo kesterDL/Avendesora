@@ -1,6 +1,10 @@
 package characterTraits;
 
 import Equipment.Armor.*;
+import Equipment.Weapons.LongSword;
+import Equipment.Weapons.Weapon;
+import Equipment.Weapons.WeaponList;
+import Equipment.Weapons.WeaponTypes;
 import characterTraits.Classes.Classes;
 import characterTraits.Classes.Fighter;
 import characterTraits.Race.Human;
@@ -8,7 +12,10 @@ import characterTraits.Race.Race;
 
 import java.util.*;
 
-public class CharacterSheet {
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
+
+public class Character {
     /**
      * Character's base strength score.
      */
@@ -91,13 +98,13 @@ public class CharacterSheet {
      */
     private int WillSavingThrow;
     /**
-     * Charater's ArmorList Class.
+     * Charater's EquippedArmor Class.
      */
     private Integer ArmorClass = 10;
     /**
      * Character's current armor.
      */
-    private ArmorList ArmorList;
+    private ArmorList EquippedArmor;
     /**
      * All the armor objects.
      */
@@ -110,6 +117,14 @@ public class CharacterSheet {
      * Character's current shield.
      */
     private ShieldTypes Shield;
+    /**
+     * Character's current weapon.
+     */
+    private WeaponList EquippedWeapon;
+    /**
+     * Object for equipped current weapon.
+     */
+    private Weapon EquippedWeaponObject;
     /**
      * Character's Initiative.
      */
@@ -192,9 +207,13 @@ public class CharacterSheet {
     Fighter fighter;
     // Races
     Human human;
+    // Weapons
+    LongSword longSword =  new LongSword();
+    // Armor
+    PaddedArmor paddedArmor = new PaddedArmor();
 
 
-    public CharacterSheet(Race race, Classes jobClass, Classes secondJobClass, Gender gender) {
+    public Character(Race race, Classes jobClass, Classes secondJobClass, Gender gender) {
 
         // Initial Ability Stats
         selectAbilityStats();
@@ -208,6 +227,7 @@ public class CharacterSheet {
         setMaximumHitPoints(getJobClass());
         setGrapple();
         setArmorClass();
+        chooseWeapon();
         setGender(gender);
         setExperiencePoints(0);
         setInitiativeModifier(0);
@@ -539,13 +559,13 @@ public class CharacterSheet {
             }
         }
 
-
     }
+
     private void selectLightArmor(){
         Scanner user_input = new Scanner(System.in);
-        ArrayList<ArmorList> armorListList = new ArrayList<>(Arrays.asList(ArmorList.PADDED, ArmorList.LEATHER,
-                ArmorList.STUDDED_LEATHER, ArmorList.CHAIN_SHIRT));
-        ArmorList armor = ArmorList.LEATHER;
+        ArrayList<ArmorList> armorListList = new ArrayList<>(Arrays.asList(EquippedArmor.PADDED, EquippedArmor.LEATHER,
+                EquippedArmor.STUDDED_LEATHER, EquippedArmor.CHAIN_SHIRT));
+        ArmorList armor = EquippedArmor.LEATHER;
         String selection;
         Integer intSelection = 0;
         Boolean validSelection = false;
@@ -567,26 +587,25 @@ public class CharacterSheet {
                 validSelection = true;
                 switch (intSelection){
                     case 1:
-                        this.ArmorList = ArmorList.PADDED;
-                        PaddedArmor paddedArmor = armorObjects.getPaddedArmor();
+                        this.EquippedArmor = EquippedArmor.PADDED;
                         this.ArmorClass += paddedArmor.getArmorBonus();
                         break;
                     case 2:
-                        this.ArmorList = ArmorList.LEATHER;
+                        this.EquippedArmor = EquippedArmor.LEATHER;
                         LeatherArmor leatherArmor = armorObjects.getLeatherArmor();
                         this.ArmorClass += leatherArmor.getArmorBonus();
                         break;
                     case 3:
                         // TODO:
-                        this.ArmorList = ArmorList.STUDDED_LEATHER;
+                        this.EquippedArmor = EquippedArmor.STUDDED_LEATHER;
                         break;
                     case 4:
                          // TODO:
-                        this.ArmorList = ArmorList.CHAIN_SHIRT;
+                        this.EquippedArmor = EquippedArmor.CHAIN_SHIRT;
                         break;
                     default:
                         // TODO:
-                        this.ArmorList = ArmorList.LEATHER;
+                        this.EquippedArmor = EquippedArmor.LEATHER;
                 }
             }
         }
@@ -959,5 +978,83 @@ public class CharacterSheet {
         }
         String info = "Skill: " + skill.toString() + " Rank: " + rank.toString();
         return info;
+    }
+
+    public void setEquippedWeapon(WeaponList equippedWeapon) {
+        this.EquippedWeapon = equippedWeapon;
+    }
+
+    public WeaponList getEquippedWeapon() {
+        return EquippedWeapon;
+    }
+
+    public void chooseWeapon() {
+        Scanner user_input = new Scanner(System.in);
+        String selection;
+        Integer intSelection = 0;
+        Boolean validSelection = false;
+
+        while (!validSelection) {
+            ArrayList<WeaponList> weaponChoices = new ArrayList<>(Arrays.asList(WeaponList.SWORD_LONG,WeaponList.BOW_LONG,
+                    WeaponList.WARHAMMER));
+            System.out.println("Select the number for the weapon you would like to carry. ");
+            selection = user_input.next();
+            intSelection = Integer.parseInt(selection);
+
+            // Accept input and assign the stat
+            if (intSelection < 1 || intSelection > 3) {
+                System.out.println("Select a number from the list of available weapons");
+                System.out.println();
+            } else {
+                validSelection = true;
+                switch (intSelection){
+                    case 1:
+                        if(ableToUseWeapon(longSword) == TRUE) {
+                            setEquippedWeapon(WeaponList.SWORD_LONG);
+                            EquippedWeaponObject = longSword;
+                        }
+                    case 2:
+                        // TODO: Complete this list
+                        //weaponChoice = ArmorTypes.MEDIUM;
+                    case 3:
+                        //weaponChoice = ArmorTypes.HEAVY;
+                }
+            }
+        }
+    }
+
+    private Boolean ableToUseWeapon(Weapon weapon){
+        Boolean able = FALSE;
+        switch(getJobClass()) {
+            case FIGHTER:
+                if (isMartialWeapon(weapon) || isSimpleWeapon(weapon)) {
+                    able = TRUE;
+                }
+                break;
+            // TODO: Finish this list
+            case ROUGE:
+                // if () {
+                // break;
+            case RANGER:
+            default:
+                able = FALSE;
+        }
+        return able;
+    }
+
+    private Boolean isMartialWeapon(Weapon tool){
+        if(tool.getWeaponClass() == WeaponTypes.MARTIAL){
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
+
+    private Boolean isSimpleWeapon(Weapon tool){
+        if(tool.getWeaponClass() == WeaponTypes.SIMPLE){
+            return TRUE;
+        } else {
+            return FALSE;
+        }
     }
 }

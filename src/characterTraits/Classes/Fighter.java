@@ -14,21 +14,21 @@ import java.util.List;
 import static characterTraits.Skills.*;
 
 public class Fighter {
-    Dice hitDice = Dice.d10;
-    int baseAttackBonus = 1;
-    int secondAttackBonus = 0;
-    int thirdAttackBonus = 0;
-    int FortitudeSave = 2;
-    int ReflexSave = 0;
-    int WillSave = 0;
-    Alignment preferredAlignment = Alignment.Any;
-    int skillPoints1stLevel = 0;
-    int skillPointsAtEachLevel = 0;
-    int numberOfFeats = 0;
-    ArmorTypes armorProficiencies = ArmorTypes.ALL;
-    ShieldTypes shieldProficiencies = ShieldTypes.ALL;
-    List<WeaponTypes> weaponProficiencies = new ArrayList<>(Arrays.asList(WeaponTypes.SIMPLE,WeaponTypes.MARTIAL));
-    List<Skills> classSkills = new ArrayList<>(Arrays.asList(CLIMB,CRAFT,
+    private Dice hitDice = Dice.d10;
+    private int baseAttackBonus = 1;
+    private int secondAttackBonus = 0;
+    private int thirdAttackBonus = 0;
+    private int FortitudeSave = 2;
+    private int ReflexSave = 0;
+    private int WillSave = 0;
+    private Alignment preferredAlignment = Alignment.Any;
+    private int skillPoints1stLevel = 0;
+    private int skillPointsAtEachLevel = 0;
+    private int numberOfFeats = 0;
+    private ArmorTypes armorProficiencies = ArmorTypes.ALL;
+    private ShieldTypes shieldProficiencies = ShieldTypes.ALL;
+    private List<WeaponTypes> weaponProficiencies = new ArrayList<>(Arrays.asList(WeaponTypes.SIMPLE,WeaponTypes.MARTIAL));
+    private List<Skills> classSkills = new ArrayList<>(Arrays.asList(CLIMB,CRAFT,
             HANDLE_ANIMAL, INTIMIDATE, JUMP, RIDE, SWIM));
 
     public Fighter(int IntModifier) {
@@ -39,6 +39,19 @@ public class Fighter {
         setReflexSave(1);
         setWillSave(1);
     }
+
+    public ArmorTypes getArmorProficiencies() {
+        return armorProficiencies;
+    }
+
+    public ShieldTypes getShieldProficiencies() {
+        return shieldProficiencies;
+    }
+
+    public List<WeaponTypes> getWeaponProficiencies() {
+        return weaponProficiencies;
+    }
+
 
     public void setNumberOfFeats(int level) {
         int lvl = level;

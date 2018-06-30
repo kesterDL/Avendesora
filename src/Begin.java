@@ -1,7 +1,7 @@
 import characterTraits.Classes.Classes;
 import characterTraits.Gender;
 import characterTraits.Race.Race;
-import characterTraits.CharacterSheet;
+import characterTraits.Character;
 import characterTraits.Skills;
 
 import java.util.ArrayList;
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class Begin {
 
     public static void main(String[] args) {
-        CharacterSheet Ralf = new CharacterSheet(Race.HUMAN, Classes.FIGHTER, Classes.NONE, Gender.MALE);
+        Character Ralf = new Character(Race.HUMAN, Classes.FIGHTER, Classes.NONE, Gender.MALE);
         ArrayList<Integer> mods = Ralf.getAbilityModifiers();
         System.out.println("STR " + Ralf.getStrength() + " Mod " + Ralf.getStrengthModifier());
         System.out.println("DEX " + Ralf.getDexterity() + " Mod " + mods.get(1));
