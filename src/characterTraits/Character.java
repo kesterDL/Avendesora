@@ -491,7 +491,7 @@ public class Character {
     }
 
     public void setArmorClass(Integer armorClass) {
-        ArmorClass = armorClass;
+        this.ArmorClass = armorClass;
     }
 
     public int getArmorClass() {
