@@ -38,7 +38,9 @@ public class Begin {
         // Feats
         System.out.println("Feats = " + Ralf.getNumberOfFeats());
         // ArmorList Class
-        System.out.println("ArmorList Class = " + Ralf.getArmorClass());
+        System.out.println("Armor Class = " + Ralf.getArmorClass());
+        // Equipped Weapon
+        System.out.println("Equipped Weapon: " + Ralf.getEquippedWeapon());
     }
 
 }

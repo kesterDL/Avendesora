@@ -97,6 +97,7 @@ public class Character {
      * Charater's Wisdom Saving Throw.
      */
     private int WillSavingThrow;
+
     /**
      * Charater's EquippedArmor Class.
      */
@@ -226,7 +227,7 @@ public class Character {
         // General Character Info
         setMaximumHitPoints(getJobClass());
         setGrapple();
-        setArmorClass();
+        chooseArmorClass();
         chooseWeapon();
         setGender(gender);
         setExperiencePoints(0);
@@ -489,11 +490,15 @@ public class Character {
         }
     }
 
+    public void setArmorClass(Integer armorClass) {
+        ArmorClass = armorClass;
+    }
+
     public int getArmorClass() {
         return ArmorClass;
     }
 
-    public void setArmorClass() {
+    public void chooseArmorClass() {
         this.ArmorClass += getDexterityModifier();
         if (getRace() == Race.GNOME || getRace() == Race.HALFLING){
             this.ArmorClass += 1;
@@ -998,6 +1003,11 @@ public class Character {
             ArrayList<WeaponList> weaponChoices = new ArrayList<>(Arrays.asList(WeaponList.SWORD_LONG,WeaponList.BOW_LONG,
                     WeaponList.WARHAMMER));
             System.out.println("Select the number for the weapon you would like to carry. ");
+            int item = 1;
+            for (WeaponList type: weaponChoices) {
+                System.out.println(item + ": " + type.toString());
+                item++;
+            }
             selection = user_input.next();
             intSelection = Integer.parseInt(selection);
 
@@ -1013,6 +1023,7 @@ public class Character {
                             setEquippedWeapon(WeaponList.SWORD_LONG);
                             EquippedWeaponObject = longSword;
                         }
+                        break;
                     case 2:
                         // TODO: Complete this list
                         //weaponChoice = ArmorTypes.MEDIUM;
