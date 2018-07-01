@@ -2,7 +2,7 @@ package Equipment.Armor;
 
 public class Armor {
     private ArmorTypes armorType;
-    private Integer cost;
+    private Integer gold;
     private Integer armorBonus;
     private Integer maxDexBonus;
     private Integer armorCheckPenalty;
@@ -15,7 +15,7 @@ public class Armor {
     }
 
     public Integer getCost() {
-        return cost;
+        return gold;
     }
 
     public Integer getArmorBonus() {
@@ -46,8 +46,8 @@ public class Armor {
         this.armorType = armorType;
     }
 
-    public void setCost(Integer cost) {
-        this.cost = cost;
+    public void setGoldCost(Integer cost) {
+        this.gold = cost;
     }
 
     public void setArmorBonus(Integer armorBonus) {

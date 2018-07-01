@@ -202,6 +202,10 @@ public class Character {
      * Character's Current Level.
      */
     private int Level = 0;
+    /**
+     * Amount of money character owns.
+     */
+    private int Gold = 0;
 
     // Creates all the races and classes to choose from when creating a character
     // Classes
@@ -226,6 +230,7 @@ public class Character {
         setClass(jobClass);
         // General Character Info
         setMaximumHitPoints(getJobClass());
+        setGold(100);
         setGrapple();
         chooseArmorClass();
         chooseWeapon();
@@ -248,16 +253,16 @@ public class Character {
         return d6.nextInt(6 - 1 + 1) + 1;
     }
 
-    private void setStatsListForCreation(){
+    private void setStatsListForCreation() {
         // Roll the all the scores and save them in a list
         for(int i = 0; i < 6; i++){
             this.stats.add(rollAnAbilityStat());
         }
     }
 
-    private void printOutStatsForCreation(){
+    private void printOutStatsForCreation() {
         // Print all the scores to the user
-        for(int i = 0; i < stats.size(); i++){
+        for(int i = 0; i < stats.size(); i++) {
             if ( i == stats.size()-1){
                 System.out.print(stats.get(i));
             } else {
@@ -268,7 +273,7 @@ public class Character {
     }
 
     public void printOutCharacterAbilityStats() {
-        for (BaseAbilities ability: abilities){
+        for (BaseAbilities ability: abilities) {
             switch(ability){
                 case STRENGTH:
                     System.out.println(ability.toString() + ": " + getStrength());
@@ -292,7 +297,7 @@ public class Character {
         }
     }
 
-    public void selectAbilityStats(){
+    public void selectAbilityStats() {
         this.stats = new ArrayList<>();
         // Roll the all the scores and save them in a list
         setStatsListForCreation();
@@ -311,12 +316,12 @@ public class Character {
         Integer intSelection = 0;
         Boolean validSelection = false;
 
-        while(!validSelection){
+        while(!validSelection) {
             System.out.print("Select an ability score for " + ability.toString() + ": ");
             selection = user_input.next();
             intSelection = Integer.parseInt(selection);
             // Accept input and assign the stat
-            if(!stats.contains(intSelection)){
+            if(!stats.contains(intSelection)) {
                 System.out.println("Select a score from the list of available stats");
                 printOutStatsForCreation();
             } else {
@@ -520,7 +525,7 @@ public class Character {
         }
     }
 
-    private void selectShield(){
+    private void selectShield() {
         Scanner user_input = new Scanner(System.in);
         ArrayList<ShieldTypes> shieldList = new ArrayList<>(Arrays.asList(ShieldTypes.NONE,ShieldTypes.BUCKLER,ShieldTypes.LIGHT_WOODEN,
                 ShieldTypes.LIGHT_STEEL, ShieldTypes.HEAVY_WOODEN, ShieldTypes.HEAVY_STEEL, ShieldTypes.TOWER));
@@ -550,6 +555,7 @@ public class Character {
                     case 2:
                         this.Shield = ShieldTypes.BUCKLER;
                         ShieldBuckler buckler = shieldObjects.getBuckler();
+                        subtractGold(buckler.getCost());
                         this.ArmorClass += buckler.getArmorBonus();
                         break;
                     case 3:
@@ -566,7 +572,7 @@ public class Character {
 
     }
 
-    private void selectLightArmor(){
+    private void selectLightArmor() {
         Scanner user_input = new Scanner(System.in);
         ArrayList<ArmorList> armorListList = new ArrayList<>(Arrays.asList(EquippedArmor.PADDED, EquippedArmor.LEATHER,
                 EquippedArmor.STUDDED_LEATHER, EquippedArmor.CHAIN_SHIRT));
@@ -589,16 +595,23 @@ public class Character {
                 System.out.println("Select a number from the list of available armor");
                 System.out.println();
             } else {
-                validSelection = true;
                 switch (intSelection){
                     case 1:
-                        this.EquippedArmor = EquippedArmor.PADDED;
-                        this.ArmorClass += paddedArmor.getArmorBonus();
+                        if (ableToUseArmor(paddedArmor) ==  TRUE) {
+                            validSelection = true;
+                            this.EquippedArmor = EquippedArmor.PADDED;
+                            this.ArmorClass += paddedArmor.getArmorBonus();
+                            subtractGold(paddedArmor.getCost());
+                        }
                         break;
                     case 2:
-                        this.EquippedArmor = EquippedArmor.LEATHER;
                         LeatherArmor leatherArmor = armorObjects.getLeatherArmor();
-                        this.ArmorClass += leatherArmor.getArmorBonus();
+                        if (ableToUseArmor(leatherArmor) ==  TRUE) {
+                            validSelection = true;
+                            this.EquippedArmor = EquippedArmor.LEATHER;
+                            this.ArmorClass += leatherArmor.getArmorBonus();
+                            subtractGold(leatherArmor.getCost());
+                        }
                         break;
                     case 3:
                         // TODO:
@@ -822,7 +835,7 @@ public class Character {
                 case HUMAN:
                     human = new Human();
                     for (Vision spectra : human.getVision()) {
-                        setVision(spectra);
+                        addToVisionSet(spectra);
                     }
                     setSpeed(human.getBaseLandSpeed());
                     addToLanguages(Languages.COMMON);
@@ -872,7 +885,7 @@ public class Character {
         }
     }
 
-    public void setVision(Vision vision) {
+    public void addToVisionSet(Vision vision) {
         this.vision.add(vision);
     }
 
@@ -1021,7 +1034,8 @@ public class Character {
                     case 1:
                         if(ableToUseWeapon(longSword) == TRUE) {
                             setEquippedWeapon(WeaponList.SWORD_LONG);
-                            EquippedWeaponObject = longSword;
+                            setEquippedWeaponObject(longSword);
+                            subtractGold(longSword.getCost());
                         }
                         break;
                     case 2:
@@ -1034,38 +1048,217 @@ public class Character {
         }
     }
 
-    private Boolean ableToUseWeapon(Weapon weapon){
+    private Boolean ableToUseWeapon(Weapon weapon) {
         Boolean able = FALSE;
+        ArrayList<WeaponTypes> weaponProficiencies = null;
         switch(getJobClass()) {
             case FIGHTER:
-                if (isMartialWeapon(weapon) || isSimpleWeapon(weapon)) {
-                    able = TRUE;
-                }
+                weaponProficiencies = fighter.getWeaponProficiencies();
                 break;
             // TODO: Finish this list
             case ROUGE:
-                // if () {
+                // weaponProficiencies = rogue.getWeaponProficiencies();
                 // break;
             case RANGER:
+                // weaponProficiencies = ranger.getWeaponProficiencies();
+                // break;
             default:
                 able = FALSE;
+        }
+        if (weaponProficiencies.contains(weapon.getWeaponClass())) {
+            able = TRUE;
         }
         return able;
     }
 
-    private Boolean isMartialWeapon(Weapon tool){
-        if(tool.getWeaponClass() == WeaponTypes.MARTIAL){
-            return TRUE;
+    private Boolean ableToUseArmor(Armor armor) {
+        Boolean able = FALSE;
+        ArrayList<ArmorTypes> armorProficiencies = null;
+        switch(getJobClass()) {
+            case FIGHTER:
+                armorProficiencies = fighter.getArmorProficiencies();
+                break;
+            // TODO: Finish this list
+            case ROUGE:
+                // weaponProficiencies = rogue.getWeaponProficiencies();
+                // break;
+            case RANGER:
+                // weaponProficiencies = ranger.getWeaponProficiencies();
+                // break;
+            default:
+                able = FALSE;
+        }
+        if (armorProficiencies.contains(armor.getArmorType())) {
+            able = TRUE;
+        }
+        return able;
+    }
+
+    public void setGold(int gold) {
+        this.Gold = gold;
+    }
+
+    public Integer getGold() {
+        return Gold;
+    }
+
+    public void addToGold(Integer gold) {
+        if(gold > 0) {
+            this.Gold += gold;
         } else {
-            return FALSE;
+            // TODO: exception handler
         }
     }
 
-    private Boolean isSimpleWeapon(Weapon tool){
-        if(tool.getWeaponClass() == WeaponTypes.SIMPLE){
-            return TRUE;
+    public void subtractGold(Integer gold) {
+        if(this.Gold > gold && gold > 0) {
+            this.Gold -= gold;
         } else {
-            return FALSE;
+            // TODO: exception handler
         }
+    }
+
+    public ArrayList<BaseAbilities> getAbilities() {
+        return abilities;
+    }
+
+    public void setAbilities(ArrayList<BaseAbilities> abilities) {
+        this.abilities = abilities;
+    }
+
+    public ArrayList<Integer> getStats() {
+        return stats;
+    }
+
+    public void setStats(ArrayList<Integer> stats) {
+        this.stats = stats;
+    }
+
+    public void setModifiers(ArrayList<Integer> modifiers) {
+        this.modifiers = modifiers;
+    }
+
+    public void addToVisionSet(ArrayList<Vision> vision) {
+        this.vision = vision;
+    }
+
+    public void setReflexSavingThrow(int reflexSavingThrow) {
+        ReflexSavingThrow = reflexSavingThrow;
+    }
+
+    public void setFortitudeSavingThrow(int fortitudeSavingThrow) {
+        FortitudeSavingThrow = fortitudeSavingThrow;
+    }
+
+    public void setWillSavingThrow(int willSavingThrow) {
+        WillSavingThrow = willSavingThrow;
+    }
+
+    public ArmorList getEquippedArmor() {
+        return EquippedArmor;
+    }
+
+    public void setEquippedArmor(ArmorList equippedArmor) {
+        EquippedArmor = equippedArmor;
+    }
+
+    public ArmorObjects getArmorObjects() {
+        return armorObjects;
+    }
+
+    public void setArmorObjects(ArmorObjects armorObjects) {
+        this.armorObjects = armorObjects;
+    }
+
+    public ShieldObjects getShieldObjects() {
+        return shieldObjects;
+    }
+
+    public void setShieldObjects(ShieldObjects shieldObjects) {
+        this.shieldObjects = shieldObjects;
+    }
+
+    public ShieldTypes getShield() {
+        return Shield;
+    }
+
+    public void setShield(ShieldTypes shield) {
+        Shield = shield;
+    }
+
+    public Weapon getEquippedWeaponObject() {
+        return EquippedWeaponObject;
+    }
+
+    public void setEquippedWeaponObject(Weapon equippedWeaponObject) {
+        EquippedWeaponObject = equippedWeaponObject;
+    }
+
+    public int getInitiativeModifier() {
+        return InitiativeModifier;
+    }
+
+    public void setGrapple(int grapple) {
+        Grapple = grapple;
+    }
+
+    public ArrayList<Languages> getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(ArrayList<Languages> language) {
+        this.language = language;
+    }
+
+    public void setNumberOfFeats(int numberOfFeats) {
+        this.numberOfFeats = numberOfFeats;
+    }
+
+    public void setMaximumHitPoints(int maximumHitPoints) {
+        MaximumHitPoints = maximumHitPoints;
+    }
+
+    public Classes getJob() {
+        return job;
+    }
+
+    public void setJob(Classes job) {
+        this.job = job;
+    }
+
+    public void setSecondaryJob(Classes secondaryJob) {
+        this.secondaryJob = secondaryJob;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public int getNakedWeight() {
+        return nakedWeight;
+    }
+
+    public void setNakedWeight(int nakedWeight) {
+        this.nakedWeight = nakedWeight;
+    }
+
+    public int getExperiencePoints() {
+        return ExperiencePoints;
+    }
+
+    public void setSkills(List<Skills> skills) {
+        this.skills = skills;
+    }
+
+    public void setSkillRanks(List<Double> skillRanks) {
+        this.skillRanks = skillRanks;
+    }
+
+    public Fighter getFighter() {
+        return fighter;
+    }
+
+    public void setFighter(Fighter fighter) {
+        this.fighter = fighter;
     }
 }

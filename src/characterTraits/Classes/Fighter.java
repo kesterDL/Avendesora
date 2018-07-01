@@ -25,10 +25,10 @@ public class Fighter {
     private int skillPoints1stLevel = 0;
     private int skillPointsAtEachLevel = 0;
     private int numberOfFeats = 0;
-    private ArmorTypes armorProficiencies = ArmorTypes.ALL;
-    private ShieldTypes shieldProficiencies = ShieldTypes.ALL;
-    private List<WeaponTypes> weaponProficiencies = new ArrayList<>(Arrays.asList(WeaponTypes.SIMPLE,WeaponTypes.MARTIAL));
-    private List<Skills> classSkills = new ArrayList<>(Arrays.asList(CLIMB,CRAFT,
+    private ArrayList<ArmorTypes> armorProficiencies = new ArrayList<>(Arrays.asList(ArmorTypes.ALL));
+    private ArrayList<ShieldTypes> shieldProficiencies = new ArrayList<>(Arrays.asList(ShieldTypes.ALL));
+    private ArrayList<WeaponTypes> weaponProficiencies = new ArrayList<>(Arrays.asList(WeaponTypes.SIMPLE,WeaponTypes.MARTIAL));
+    private ArrayList<Skills> classSkills = new ArrayList<>(Arrays.asList(CLIMB,CRAFT,
             HANDLE_ANIMAL, INTIMIDATE, JUMP, RIDE, SWIM));
 
     public Fighter(int IntModifier) {
@@ -40,15 +40,15 @@ public class Fighter {
         setWillSave(1);
     }
 
-    public ArmorTypes getArmorProficiencies() {
+    public ArrayList<ArmorTypes> getArmorProficiencies() {
         return armorProficiencies;
     }
 
-    public ShieldTypes getShieldProficiencies() {
+    public ArrayList<ShieldTypes> getShieldProficiencies() {
         return shieldProficiencies;
     }
 
-    public List<WeaponTypes> getWeaponProficiencies() {
+    public ArrayList<WeaponTypes> getWeaponProficiencies() {
         return weaponProficiencies;
     }
 
@@ -94,7 +94,7 @@ public class Fighter {
         }
     }
 
-    public List<Skills> getClassSkills() {
+    public ArrayList<Skills> getClassSkills() {
         return classSkills;
     }
     public int getNumberOfFeats() {

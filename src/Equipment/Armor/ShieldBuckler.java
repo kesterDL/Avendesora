@@ -2,7 +2,7 @@ package Equipment.Armor;
 
 public class ShieldBuckler {
     ShieldTypes shieldType = ShieldTypes.BUCKLER;
-    Integer cost = 15;
+    Integer gold = 15;
     Integer armorBonus = 1;
     Integer armorCheckPenalty = -1;
     Double arcaneSpellFailureChance = 0.05;
@@ -13,7 +13,7 @@ public class ShieldBuckler {
     }
 
     public Integer getCost() {
-        return cost;
+        return gold;
     }
 
     public Integer getArmorBonus() {
