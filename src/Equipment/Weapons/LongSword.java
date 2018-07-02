@@ -69,4 +69,12 @@ public class LongSword extends Weapon {
     public void setWeapon(WeaponList weapon) {
         this.weapon = weapon;
     }
+
+    @Override
+    public Integer rollDamage() {
+        Integer damage = 0;
+        damage = dice.nextInt(8 - 1 + 1) + 1;
+        return damage;
+    }
+
 }

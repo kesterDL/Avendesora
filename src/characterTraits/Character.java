@@ -222,6 +222,8 @@ public class Character {
     LongSword longSword =  new LongSword();
     // Armor
     PaddedArmor paddedArmor = new PaddedArmor();
+    // Dice
+    Random dice = new Random();
 
 
     public Character(Race race, Classes jobClass, Classes secondJobClass, Gender gender) {
@@ -256,8 +258,27 @@ public class Character {
     }
 
     public Integer rollAD6() {
-        Random d6 = new Random();
-        return d6.nextInt(6 - 1 + 1) + 1;
+        return dice.nextInt(6 - 1 + 1) + 1;
+    }
+
+    public Integer rollAD20() {
+        return dice.nextInt(20 - 1 + 1) + 1;
+    }
+
+    public Integer rollAD12() {
+        return dice.nextInt(12 - 1 + 1) + 1;
+    }
+
+    public Integer rollAD10() {
+        return dice.nextInt(10 - 1 + 1) + 1;
+    }
+
+    public Integer rollAD8() {
+        return dice.nextInt(8 - 1 + 1) + 1;
+    }
+
+    public Integer rollAD4() {
+        return dice.nextInt(4 - 1 + 1) + 1;
     }
 
     private void setStatsListForCreation() {
@@ -1296,5 +1317,18 @@ public class Character {
         } else {
             // TODO: Exception handler
         }
+    }
+
+    public Integer rollToHit(){
+        Integer natural = rollAD20();
+        if(natural == 20){
+            System.out.println("CRITICAL HIT!!!");
+            return getEquippedWeaponObject().critical(TRUE);
+        }
+        return rollAD20() + getBaseAttackBonus();
+    }
+
+    public Integer rollDamage() {
+        return getEquippedWeaponObject().rollDamage() + getStrengthModifier();
     }
 }

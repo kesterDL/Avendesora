@@ -49,6 +49,9 @@ public class Begin {
         System.out.println("Armor Class = " + Ralf.getArmorClass());
         // Equipped Weapon
         System.out.println("Equipped Weapon: " + Ralf.getEquippedWeapon());
+
+        System.out.println("Attack Roll: " + Ralf.rollToHit());
+        System.out.println("Damage: " + Ralf.rollDamage());
     }
 
 }
