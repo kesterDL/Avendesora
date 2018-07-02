@@ -7,6 +7,8 @@ import Equipment.Weapons.WeaponList;
 import Equipment.Weapons.WeaponTypes;
 import characterTraits.Classes.Classes;
 import characterTraits.Classes.Fighter;
+import characterTraits.Feats.Feat;
+import characterTraits.Feats.Feats;
 import characterTraits.Race.Human;
 import characterTraits.Race.Race;
 
@@ -151,6 +153,10 @@ public class Character {
      */
     private int numberOfFeats;
     /**
+     * List of all the character's feats.
+     */
+    private ArrayList<Feats> feats = new ArrayList<Feats>();
+    /**
      * Character's Max Hit points.
      */
     private int MaximumHitPoints;
@@ -237,7 +243,8 @@ public class Character {
         setGender(gender);
         setExperiencePoints(0);
         setInitiativeModifier(0);
-
+        addToFeatSet(Feats.DODGE);
+        addToFeatSet(Feats.IMPROVED_INITIATIVE);
     }
 
     private Integer rollAnAbilityStat() {
@@ -595,13 +602,17 @@ public class Character {
                 System.out.println("Select a number from the list of available armor");
                 System.out.println();
             } else {
+                validSelection = true;
                 switch (intSelection){
                     case 1:
                         if (ableToUseArmor(paddedArmor) ==  TRUE) {
-                            validSelection = true;
+                            System.out.println("Armor Selected PADDEDß");
                             this.EquippedArmor = EquippedArmor.PADDED;
                             this.ArmorClass += paddedArmor.getArmorBonus();
                             subtractGold(paddedArmor.getCost());
+
+                        } else {
+                            validSelection = FALSE;
                         }
                         break;
                     case 2:
@@ -611,6 +622,8 @@ public class Character {
                             this.EquippedArmor = EquippedArmor.LEATHER;
                             this.ArmorClass += leatherArmor.getArmorBonus();
                             subtractGold(leatherArmor.getCost());
+                        } else {
+                            validSelection = FALSE;
                         }
                         break;
                     case 3:
@@ -623,6 +636,7 @@ public class Character {
                         break;
                     default:
                         // TODO:
+                        validSelection = true;
                         this.EquippedArmor = EquippedArmor.LEATHER;
                 }
             }
@@ -905,6 +919,11 @@ public class Character {
         this.numberOfFeats += additionalFeats;
     }
 
+    public void subtractFromFeats(int num) {
+        if(getNumberOfFeats() > num) {
+            this.numberOfFeats -= num;
+        }
+    }
     public void addToLanguages(Languages language) {
         this.language.add(language);
     }
@@ -1260,5 +1279,22 @@ public class Character {
 
     public void setFighter(Fighter fighter) {
         this.fighter = fighter;
+    }
+
+    public ArrayList<Feats> getFeats() {
+        return feats;
+    }
+
+    public void setFeats(ArrayList<Feats> feats) {
+        this.feats = feats;
+    }
+
+    public void addToFeatSet(Feats feat) {
+        if(getNumberOfFeats() > 0) {
+            feats.add(feat);
+            subtractFromFeats(1);
+        } else {
+            // TODO: Exception handler
+        }
     }
 }

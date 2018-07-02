@@ -25,7 +25,7 @@ public class Fighter {
     private int skillPoints1stLevel = 0;
     private int skillPointsAtEachLevel = 0;
     private int numberOfFeats = 0;
-    private ArrayList<ArmorTypes> armorProficiencies = new ArrayList<>(Arrays.asList(ArmorTypes.ALL));
+    private ArrayList<ArmorTypes> armorProficiencies = new ArrayList<>(Arrays.asList(ArmorTypes.LIGHT,ArmorTypes.MEDIUM, ArmorTypes.HEAVY));
     private ArrayList<ShieldTypes> shieldProficiencies = new ArrayList<>(Arrays.asList(ShieldTypes.ALL));
     private ArrayList<WeaponTypes> weaponProficiencies = new ArrayList<>(Arrays.asList(WeaponTypes.SIMPLE,WeaponTypes.MARTIAL));
     private ArrayList<Skills> classSkills = new ArrayList<>(Arrays.asList(CLIMB,CRAFT,

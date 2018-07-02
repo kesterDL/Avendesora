@@ -1,4 +1,5 @@
 import characterTraits.Classes.Classes;
+import characterTraits.Feats.Feats;
 import characterTraits.Gender;
 import characterTraits.Race.Race;
 import characterTraits.Character;
@@ -12,6 +13,9 @@ public class Begin {
     public static void main(String[] args) {
         Character Ralf = new Character(Race.HUMAN, Classes.FIGHTER, Classes.NONE, Gender.MALE);
         ArrayList<Integer> mods = Ralf.getAbilityModifiers();
+        for(int i = 0; i < 5; i++) {
+            System.out.println();
+        }
         System.out.println("STR " + Ralf.getStrength() + " Mod " + Ralf.getStrengthModifier());
         System.out.println("DEX " + Ralf.getDexterity() + " Mod " + mods.get(1));
         System.out.println("CON " + Ralf.getConstitution() + " Mod " + mods.get(2));
@@ -36,7 +40,11 @@ public class Begin {
         System.out.println(Ralf.getSkillandRank(Skills.CLIMB));
         System.out.println(Ralf.getSkillandRank(Skills.INTIMIDATE));
         // Feats
-        System.out.println("Feats = " + Ralf.getNumberOfFeats());
+        System.out.println("Unallocated Feats = " + Ralf.getNumberOfFeats());
+        ArrayList<Feats> feats = Ralf.getFeats();
+        for (Feats feat : feats) {
+            System.out.println("Feat: " + feat);
+        }
         // ArmorList Class
         System.out.println("Armor Class = " + Ralf.getArmorClass());
         // Equipped Weapon
