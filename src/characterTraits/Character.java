@@ -109,6 +109,10 @@ public class Character {
      */
     private ArmorList EquippedArmor;
     /**
+     * Character's current equipped armor object.
+     */
+    private Armor EquippedArmorObject;
+    /**
      * All the armor objects.
      */
     private ArmorObjects armorObjects = new ArmorObjects();
@@ -220,8 +224,7 @@ public class Character {
     Human human;
     // Weapons
     LongSword longSword =  new LongSword();
-    // Armor
-    PaddedArmor paddedArmor = new PaddedArmor();
+
     // Dice
     Random dice = new Random();
 
@@ -626,10 +629,12 @@ public class Character {
                 validSelection = true;
                 switch (intSelection){
                     case 1:
+                        Armor paddedArmor = new PaddedArmor();
                         if (ableToUseArmor(paddedArmor) ==  TRUE) {
-                            System.out.println("Armor Selected PADDEDß");
+                            System.out.println("Armor Selected PADDED");
+                            setEquippedArmorObject(paddedArmor);
                             this.EquippedArmor = EquippedArmor.PADDED;
-                            this.ArmorClass += paddedArmor.getArmorBonus();
+                            this.ArmorClass += getEquippedArmorObject().getArmorBonus();
                             subtractGold(paddedArmor.getCost());
 
                         } else {
@@ -637,7 +642,7 @@ public class Character {
                         }
                         break;
                     case 2:
-                        LeatherArmor leatherArmor = armorObjects.getLeatherArmor();
+                        Armor leatherArmor = new LeatherArmor();
                         if (ableToUseArmor(leatherArmor) ==  TRUE) {
                             validSelection = true;
                             this.EquippedArmor = EquippedArmor.LEATHER;
@@ -660,6 +665,9 @@ public class Character {
                         validSelection = true;
                         this.EquippedArmor = EquippedArmor.LEATHER;
                 }
+                this.EquippedArmor = getEquippedArmorObject().getArmor();
+                this.ArmorClass += getEquippedArmorObject().getArmorBonus();
+                subtractGold(getEquippedArmorObject().getCost());
             }
         }
 
@@ -1206,7 +1214,7 @@ public class Character {
         return armorObjects;
     }
 
-    public void setArmorObjects(ArmorObjects armorObjects) {
+    public void generateArmorObjects(ArmorObjects armorObjects) {
         this.armorObjects = armorObjects;
     }
 
@@ -1330,5 +1338,13 @@ public class Character {
 
     public Integer rollDamage() {
         return getEquippedWeaponObject().rollDamage() + getStrengthModifier();
+    }
+
+    public Armor getEquippedArmorObject() {
+        return EquippedArmorObject;
+    }
+
+    public void setEquippedArmorObject(Armor equippedArmorObject) {
+        EquippedArmorObject = equippedArmorObject;
     }
 }

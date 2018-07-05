@@ -2,6 +2,7 @@ package Equipment.Armor;
 
 public class Armor {
     private ArmorTypes armorType;
+    private ArmorList armor;
     private Integer gold;
     private Integer armorBonus;
     private Integer maxDexBonus;
@@ -72,5 +73,13 @@ public class Armor {
 
     public void setWeight(Integer weight) {
         this.weight = weight;
+    }
+
+    public ArmorList getArmor() {
+        return armor;
+    }
+
+    public void setArmor(ArmorList armor) {
+        this.armor = armor;
     }
 }

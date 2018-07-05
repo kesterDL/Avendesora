@@ -52,6 +52,7 @@ public class Begin {
 
         System.out.println("Attack Roll: " + Ralf.rollToHit());
         System.out.println("Damage: " + Ralf.rollDamage());
+
     }
 
 }
