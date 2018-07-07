@@ -7,10 +7,9 @@ import Equipment.Weapons.WeaponList;
 import Equipment.Weapons.WeaponTypes;
 import characterTraits.Classes.Classes;
 import characterTraits.Classes.Fighter;
-import characterTraits.Feats.Feat;
 import characterTraits.Feats.Feats;
 import characterTraits.Race.Human;
-import characterTraits.Race.Race;
+import characterTraits.Race.RaceChoice;
 
 import java.util.*;
 
@@ -80,9 +79,9 @@ public class Character {
      */
     private ArrayList<Integer> modifiers = new ArrayList<>();
     /**
-     * Character's Race type.
+     * Character's RaceChoice type.
      */
-    private Race race;
+    private RaceChoice raceChoice;
     /**
      * Character's Vision Spectrum.
      */
@@ -112,14 +111,6 @@ public class Character {
      * Character's current equipped armor object.
      */
     private Armor EquippedArmorObject;
-    /**
-     * All the armor objects.
-     */
-    private ArmorObjects armorObjects = new ArmorObjects();
-    /**
-     * All the shield objects.
-     */
-    private ShieldObjects shieldObjects = new ShieldObjects();
     /**
      * Character's current shield.
      */
@@ -220,24 +211,19 @@ public class Character {
     // Creates all the races and classes to choose from when creating a character
     // Classes
     Fighter fighter;
-    // Races
-    Human human;
-    // Weapons
-    LongSword longSword =  new LongSword();
-
     // Dice
     Random dice = new Random();
 
 
-    public Character(Race race, Classes jobClass, Classes secondJobClass, Gender gender) {
+    public Character(RaceChoice raceChoice, Classes jobClass, Classes secondJobClass, Gender gender) {
 
         // Initial Ability Stats
         selectAbilityStats();
         // Level 1
         setLevel(1);
         addToFeats(1);
-        // Race and Class
-        setRace(race);
+        // RaceChoice and Class
+        setRaceChoice(raceChoice);
         setClass(jobClass);
         // General Character Info
         setMaximumHitPoints(getJobClass());
@@ -536,7 +522,7 @@ public class Character {
 
     public void chooseArmorClass() {
         this.ArmorClass += getDexterityModifier();
-        if (getRace() == Race.GNOME || getRace() == Race.HALFLING){
+        if (getRaceChoice() == RaceChoice.GNOME || getRaceChoice() == RaceChoice.HALFLING){
             this.ArmorClass += 1;
         }
         selectArmor();
@@ -584,8 +570,8 @@ public class Character {
                         this.Shield= ShieldTypes.NONE;
                         break;
                     case 2:
+                        Shield buckler = new ShieldBuckler();
                         this.Shield = ShieldTypes.BUCKLER;
-                        ShieldBuckler buckler = shieldObjects.getBuckler();
                         subtractGold(buckler.getCost());
                         this.ArmorClass += buckler.getArmorBonus();
                         break;
@@ -863,20 +849,20 @@ public class Character {
         return modifiers;
     }
 
-    public void setRace(Race charRace) {
-        race = charRace;
+    public void setRaceChoice(RaceChoice charRaceChoice) {
+        raceChoice = charRaceChoice;
         setRacialTraits();
     }
 
-    public Race getRace() {
-        return race;
+    public RaceChoice getRaceChoice() {
+        return raceChoice;
     }
 
     private void setRacialTraits() {
-        if (race != null) {
-            switch (getRace()) {
+        if (raceChoice != null) {
+            switch (getRaceChoice()) {
                 case HUMAN:
-                    human = new Human();
+                    Human human = new Human();
                     for (Vision spectra : human.getVision()) {
                         addToVisionSet(spectra);
                     }
@@ -984,7 +970,7 @@ public class Character {
 
     public void setGrapple() {
         int sizeMod = 0;
-        switch(getRace()) {
+        switch(getRaceChoice()) {
             case HUMAN:
                 sizeMod = 0;
                 break;
@@ -1080,6 +1066,7 @@ public class Character {
                 validSelection = true;
                 switch (intSelection){
                     case 1:
+                        LongSword longSword =  new LongSword();
                         if(ableToUseWeapon(longSword) == TRUE) {
                             setEquippedWeapon(WeaponList.SWORD_LONG);
                             setEquippedWeaponObject(longSword);
@@ -1208,22 +1195,6 @@ public class Character {
 
     public void setEquippedArmor(ArmorList equippedArmor) {
         EquippedArmor = equippedArmor;
-    }
-
-    public ArmorObjects getArmorObjects() {
-        return armorObjects;
-    }
-
-    public void generateArmorObjects(ArmorObjects armorObjects) {
-        this.armorObjects = armorObjects;
-    }
-
-    public ShieldObjects getShieldObjects() {
-        return shieldObjects;
-    }
-
-    public void setShieldObjects(ShieldObjects shieldObjects) {
-        this.shieldObjects = shieldObjects;
     }
 
     public ShieldTypes getShield() {

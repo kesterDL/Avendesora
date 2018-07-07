@@ -1,7 +1,7 @@
 import characterTraits.Classes.Classes;
 import characterTraits.Feats.Feats;
 import characterTraits.Gender;
-import characterTraits.Race.Race;
+import characterTraits.Race.RaceChoice;
 import characterTraits.Character;
 import characterTraits.Skills;
 
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class Begin {
 
     public static void main(String[] args) {
-        Character Ralf = new Character(Race.HUMAN, Classes.FIGHTER, Classes.NONE, Gender.MALE);
+        Character Ralf = new Character(RaceChoice.HUMAN, Classes.FIGHTER, Classes.NONE, Gender.MALE);
         ArrayList<Integer> mods = Ralf.getAbilityModifiers();
         for(int i = 0; i < 5; i++) {
             System.out.println();

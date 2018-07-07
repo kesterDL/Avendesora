@@ -7,7 +7,7 @@ import characterTraits.Vision;
 
 import java.util.ArrayList;
 
-public class Human {
+public class Human extends Race{
     /**
      * Racial Ability Score Modifiers.
      */
