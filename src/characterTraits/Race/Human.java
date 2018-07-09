@@ -6,12 +6,13 @@ import characterTraits.Sizes;
 import characterTraits.Vision;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Human extends Race{
     /**
      * Racial Ability Score Modifiers.
      */
-    private ArrayList<Integer> abilityAdjustments = new ArrayList<>();
+    private ArrayList<Integer> abilityAdjustments;
     private int StrAdjustment;
     private int DexAdjustment;
     private int ConAdjustment;
@@ -19,29 +20,29 @@ public class Human extends Race{
     private int WisAdjustment;
     private int ChaAdjustment;
     /**
-     * Racial Favored Class.
+     * Racial Favored JobClass.
      */
     private ArrayList<Classes> favoredClasses = new ArrayList<>();
     /**
      * Racial Skill Points.
      */
-    private int extraSkillPoints = 4;
+    private int extraSkillPoints;
     /**
      * Bonus Feats.
      */
-    private int bonusFeats = 1;
+    private int bonusFeats;
     /**
      * Base Movement Speed on Land.
      */
-    private int baseLandSpeed = 30;
+    private int baseLandSpeed;
     /**
      * Racial Language.
      */
-    private Languages automaticLanguage = Languages.COMMON;
+    private Languages automaticLanguage;
     /**
      * Number of bonus languages.
      */
-    private int bonusLanguages = 1;
+    private int bonusLanguages;
     /**
      * Vision types.
      */
@@ -49,7 +50,7 @@ public class Human extends Race{
     /**
      * Physical size.
      */
-    Sizes size = Sizes.MEDIUM;
+    Sizes size;
 
     public Human() {
         StrAdjustment = 0;
@@ -58,7 +59,7 @@ public class Human extends Race{
         IntAdjustment = 0;
         WisAdjustment = 0;
         ChaAdjustment = 0;
-        this.abilityAdjustments = abilityAdjustments;
+        this.abilityAdjustments = new ArrayList<>(Arrays.asList(StrAdjustment, DexAdjustment, ConAdjustment, IntAdjustment, WisAdjustment, ChaAdjustment));
         this.favoredClasses.add(Classes.ANY);
         this.extraSkillPoints = 4;
         this.bonusFeats = 1;
@@ -69,7 +70,7 @@ public class Human extends Race{
         this.size = Sizes.MEDIUM;
     }
 
-
+    @Override
     public Sizes getSize() {
         return size;
     }

@@ -7,8 +7,10 @@ import Equipment.Weapons.WeaponList;
 import Equipment.Weapons.WeaponTypes;
 import characterTraits.Classes.Classes;
 import characterTraits.Classes.Fighter;
+import characterTraits.Classes.JobClass;
 import characterTraits.Feats.Feats;
 import characterTraits.Race.Human;
+import characterTraits.Race.Race;
 import characterTraits.Race.RaceChoice;
 
 import java.util.*;
@@ -100,7 +102,7 @@ public class Character {
     private int WillSavingThrow;
 
     /**
-     * Charater's EquippedArmor Class.
+     * Charater's EquippedArmor JobClass.
      */
     private Integer ArmorClass = 10;
     /**
@@ -164,6 +166,10 @@ public class Character {
      */
     private Classes job;
     /**
+     * Job class object.
+     */
+    private JobClass jobObject;
+    /**
      * Character's secondary job class.
      */
     private Classes secondaryJob;
@@ -208,9 +214,6 @@ public class Character {
      */
     private int Gold = 0;
 
-    // Creates all the races and classes to choose from when creating a character
-    // Classes
-    Fighter fighter;
     // Dice
     Random dice = new Random();
 
@@ -222,11 +225,11 @@ public class Character {
         // Level 1
         setLevel(1);
         addToFeats(1);
-        // RaceChoice and Class
+        // RaceChoice and JobClass
         setRaceChoice(raceChoice);
         setClass(jobClass);
         // General Character Info
-        setMaximumHitPoints(getJobClass());
+        setMaximumHitPoints();
         setGold(100);
         setGrapple();
         chooseArmorClass();
@@ -474,42 +477,28 @@ public class Character {
         return ReflexSavingThrow;
     }
 
-    private void setReflexSavingThrow(Classes job, int magicMod) {
-        switch(job) {
-            case FIGHTER:
-                fighter.setReflexSave(getLevel());
-                this.ReflexSavingThrow =  fighter.getReflexSave() + getDexterityModifier() + magicMod;
-                break;
-            // TODO:
-        }
+    private void calculateReflexSavingThrow(int magicMod) {
+        getJobObject().setReflexSave(getJobObject().calculateReflexSave(getDexterityModifier()));
+        setReflexSavingThrow(getJobObject().getReflexSave() + getDexterityModifier() + magicMod);
     }
 
     public int getFortitudeSavingThrow() {
         return FortitudeSavingThrow;
     }
 
-    private void setFortitudeSavingThrow(Classes job, int magicMod) {
-        switch(job) {
-            case FIGHTER:
-                fighter.setFortitudeSave(getLevel());
-                this.FortitudeSavingThrow =  fighter.getFortitudeSave()+ getConstitutionModifier() + magicMod;
-                break;
-            // TODO:
-        }
+    private void calculateFortitudeSavingThrow(int magicMod) {
+        getJobObject().setFortitudeSave(getJobObject().calculateFortitudeSave(getLevel()));
+        setFortitudeSavingThrow(getJobObject().getFortitudeSave() + getConstitutionModifier() + magicMod);
     }
 
     public int getWillSavingThrow() {
         return WillSavingThrow;
     }
 
-    private void setWillSavingThrow( Classes job, int magicMod) {
-        switch(job) {
-            case FIGHTER:
-                fighter.setWillSave(getLevel());
-                this.WillSavingThrow =  fighter.getWillSave() + getWisdomModifier() + magicMod;
-                break;
-            // TODO:
-        }
+    private void calculateWillSavingThrow(int magicMod) {
+        getJobObject().setWillSave(getJobObject().calculateWillSave(getLevel()));
+        setWillSavingThrow(getJobObject().getWillSave() + getWisdomModifier() + magicMod);
+
     }
 
     public void setArmorClass(Integer armorClass) {
@@ -723,8 +712,8 @@ public class Character {
         return MaximumHitPoints;
     }
 
-    public void setMaximumHitPoints(Classes job) {
-        switch(job) {
+    public void setMaximumHitPoints() {
+        switch(getJob()) {
             case FIGHTER:
             case PALADIN:
                 this.MaximumHitPoints = 10 + getConstitutionModifier();
@@ -862,7 +851,8 @@ public class Character {
         if (raceChoice != null) {
             switch (getRaceChoice()) {
                 case HUMAN:
-                    Human human = new Human();
+                    Race human = new Human();
+                    // TODO: Create a Racial object
                     for (Vision spectra : human.getVision()) {
                         addToVisionSet(spectra);
                     }
@@ -889,28 +879,28 @@ public class Character {
     }
     public void setClass(Classes jobClass) {
         this.job = jobClass;
-        adjustForClass(jobClass);
+        switch(job) {
+            case FIGHTER:
+                JobClass fighter = new Fighter(getIntelligenceModifier());
+                setJobObject(fighter);
+        }
+        adjustForClass();
     }
 
     public void setSecondaryClass(Classes jobClass) {
         this.secondaryJob = jobClass;
     }
 
-    private void adjustForClass(Classes job){
-        ArrayList<Integer> mods = getAbilityModifiers();
-        if(job != null) {
-            switch(job) {
-                case FIGHTER:
-                    fighter = new Fighter(mods.get(3));
-                    fighter.setNumberOfFeats(getLevel());
-                    addToFeats(fighter.getNumberOfFeats());
-                    setBaseAttackBonus(getLevel());
-                    setSkillPoints(fighter.getSkillPoints1stLevel());
-                    break;
-            }
-            setReflexSavingThrow(getJobClass(), 0);
-            setWillSavingThrow(getJobClass(), 0);
-            setFortitudeSavingThrow(getJobClass(), 0);
+    private void adjustForClass() {
+        if(getJob() != null) {
+            getJobObject().setNumberOfFeats(getJobObject().calculateNumberOfFeats(getIntelligenceModifier()));
+            addToFeats(getJobObject().getNumberOfFeats());
+            getJobObject().setBaseAttackBonus(1);
+            setBaseAttackBonus(getJobObject().getBaseAttackBonus());
+            setSkillPoints(getJobObject().getSkillPoints1stLevel());
+            calculateReflexSavingThrow(0);
+            setWillSavingThrow(0);
+            setFortitudeSavingThrow(0);
         }
     }
 
@@ -952,12 +942,9 @@ public class Character {
     }
 
     private void setBaseAttackBonus(int level) {
-        switch(job) {
-            case FIGHTER:
-                fighter.setBaseAttackBonus(level);
-                this.BaseAttackBonus =  fighter.getBaseAttackBonus();
-                break;
-        }
+        getJobObject().setBaseAttackBonus(level);
+        this.BaseAttackBonus =  getJobObject().getBaseAttackBonus();
+
     }
 
     public int getBaseAttackBonus() {
@@ -990,13 +977,8 @@ public class Character {
         if(points > unspentPoints) {
             System.out.println("Not Enough Skill Points");
         } else if(points % 0.5 == 0 && this.SkillPoints >= 0.5) {
-            List<Skills> classSkills = new ArrayList<Skills>();
+            List<Skills> classSkills = getJobObject().getClassSkills();
 
-            switch (job) {
-                case FIGHTER:
-                    classSkills = fighter.getClassSkills();
-                    break;
-            }
             if (classSkills.contains(skill) && points <= 4.0) {
                 skills.add(skill);
                 skillRanks.add(points);
@@ -1085,22 +1067,7 @@ public class Character {
 
     private Boolean ableToUseWeapon(Weapon weapon) {
         Boolean able = FALSE;
-        ArrayList<WeaponTypes> weaponProficiencies = null;
-        switch(getJobClass()) {
-            case FIGHTER:
-                weaponProficiencies = fighter.getWeaponProficiencies();
-                break;
-            // TODO: Finish this list
-            case ROUGE:
-                // weaponProficiencies = rogue.getWeaponProficiencies();
-                // break;
-            case RANGER:
-                // weaponProficiencies = ranger.getWeaponProficiencies();
-                // break;
-            default:
-                able = FALSE;
-        }
-        if (weaponProficiencies.contains(weapon.getWeaponClass())) {
+        if (getJobObject().getWeaponProficiencies().contains(weapon.getWeaponClass())) {
             able = TRUE;
         }
         return able;
@@ -1108,22 +1075,7 @@ public class Character {
 
     private Boolean ableToUseArmor(Armor armor) {
         Boolean able = FALSE;
-        ArrayList<ArmorTypes> armorProficiencies = null;
-        switch(getJobClass()) {
-            case FIGHTER:
-                armorProficiencies = fighter.getArmorProficiencies();
-                break;
-            // TODO: Finish this list
-            case ROUGE:
-                // weaponProficiencies = rogue.getWeaponProficiencies();
-                // break;
-            case RANGER:
-                // weaponProficiencies = ranger.getWeaponProficiencies();
-                // break;
-            default:
-                able = FALSE;
-        }
-        if (armorProficiencies.contains(armor.getArmorType())) {
+        if (getJobObject().getArmorProficiencies().contains(armor.getArmorType())) {
             able = TRUE;
         }
         return able;
@@ -1273,14 +1225,6 @@ public class Character {
         this.skillRanks = skillRanks;
     }
 
-    public Fighter getFighter() {
-        return fighter;
-    }
-
-    public void setFighter(Fighter fighter) {
-        this.fighter = fighter;
-    }
-
     public ArrayList<Feats> getFeats() {
         return feats;
     }
@@ -1317,5 +1261,13 @@ public class Character {
 
     public void setEquippedArmorObject(Armor equippedArmorObject) {
         EquippedArmorObject = equippedArmorObject;
+    }
+
+    public JobClass getJobObject() {
+        return jobObject;
+    }
+
+    public void setJobObject(JobClass jobObject) {
+        this.jobObject = jobObject;
     }
 }

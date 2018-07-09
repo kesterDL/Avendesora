@@ -19,7 +19,7 @@ public class Race {
     private int WisAdjustment;
     private int ChaAdjustment;
     /**
-     * Racial Favored Class.
+     * Racial Favored JobClass.
      */
     private ArrayList<Classes> favoredClasses;
     /**

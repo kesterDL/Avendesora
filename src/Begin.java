@@ -45,7 +45,7 @@ public class Begin {
         for (Feats feat : feats) {
             System.out.println("Feat: " + feat);
         }
-        // ArmorList Class
+        // ArmorList JobClass
         System.out.println("Armor Class = " + Ralf.getArmorClass());
         // Equipped Weapon
         System.out.println("Equipped Weapon: " + Ralf.getEquippedWeapon());
