@@ -104,7 +104,7 @@ public class Character {
     /**
      * Charater's EquippedArmor JobClass.
      */
-    private Integer ArmorClass = 10;
+    private Integer ArmorClass;
     /**
      * Character's current armor.
      */
@@ -510,34 +510,23 @@ public class Character {
     }
 
     public void chooseArmorClass() {
-        this.ArmorClass += getDexterityModifier();
+        Integer armorClass = 10 + getDexterityModifier();
         if (getRaceChoice() == RaceChoice.GNOME || getRaceChoice() == RaceChoice.HALFLING){
-            this.ArmorClass += 1;
+            armorClass += 1;
         }
-        selectArmor();
-        selectShield();
+        armorClass += selectLightArmor();
+        armorClass += selectShield();
+        setArmorClass(armorClass);
     }
 
-    public void selectArmor() {
-        ArmorTypes armorClass = selectArmorClass();
-        switch(armorClass){
-            case LIGHT:
-                selectLightArmor();
-                break;
-            case MEDIUM:
-                // TODO:
-            case HEAVY:
-                // TODO:
-        }
-    }
-
-    private void selectShield() {
+    private Integer selectShield() {
         Scanner user_input = new Scanner(System.in);
         ArrayList<ShieldTypes> shieldList = new ArrayList<>(Arrays.asList(ShieldTypes.NONE,ShieldTypes.BUCKLER,ShieldTypes.LIGHT_WOODEN,
                 ShieldTypes.LIGHT_STEEL, ShieldTypes.HEAVY_WOODEN, ShieldTypes.HEAVY_STEEL, ShieldTypes.TOWER));
         String selection;
         Integer intSelection = 0;
         Boolean validSelection = false;
+        Integer bonus = 0;
 
         while (!validSelection) {
             System.out.println("Select the number for the shield you would like to carry. ");
@@ -562,7 +551,7 @@ public class Character {
                         Shield buckler = new ShieldBuckler();
                         this.Shield = ShieldTypes.BUCKLER;
                         subtractGold(buckler.getCost());
-                        this.ArmorClass += buckler.getArmorBonus();
+                        bonus += buckler.getArmorBonus();
                         break;
                     case 3:
                         // TODO:
@@ -575,10 +564,10 @@ public class Character {
                 }
             }
         }
-
+        return bonus;
     }
 
-    private void selectLightArmor() {
+    private Integer selectLightArmor() {
         Scanner user_input = new Scanner(System.in);
         ArrayList<ArmorList> armorListList = new ArrayList<>(Arrays.asList(EquippedArmor.PADDED, EquippedArmor.LEATHER,
                 EquippedArmor.STUDDED_LEATHER, EquippedArmor.CHAIN_SHIRT));
@@ -586,6 +575,7 @@ public class Character {
         String selection;
         Integer intSelection = 0;
         Boolean validSelection = false;
+        Integer armorBonus = 0;
 
         while (!validSelection) {
             System.out.println("Select the number for the armor you would like to wear. ");
@@ -606,12 +596,8 @@ public class Character {
                     case 1:
                         Armor paddedArmor = new PaddedArmor();
                         if (ableToUseArmor(paddedArmor) ==  TRUE) {
-                            System.out.println("Armor Selected PADDED");
+                            System.out.println("Armor Selected Padded");
                             setEquippedArmorObject(paddedArmor);
-                            this.EquippedArmor = EquippedArmor.PADDED;
-                            this.ArmorClass += getEquippedArmorObject().getArmorBonus();
-                            subtractGold(paddedArmor.getCost());
-
                         } else {
                             validSelection = FALSE;
                         }
@@ -619,10 +605,8 @@ public class Character {
                     case 2:
                         Armor leatherArmor = new LeatherArmor();
                         if (ableToUseArmor(leatherArmor) ==  TRUE) {
-                            validSelection = true;
-                            this.EquippedArmor = EquippedArmor.LEATHER;
-                            this.ArmorClass += leatherArmor.getArmorBonus();
-                            subtractGold(leatherArmor.getCost());
+                            System.out.println("Armor Selected: Leather");
+                            setEquippedArmorObject(leatherArmor);
                         } else {
                             validSelection = FALSE;
                         }
@@ -640,12 +624,13 @@ public class Character {
                         validSelection = true;
                         this.EquippedArmor = EquippedArmor.LEATHER;
                 }
-                this.EquippedArmor = getEquippedArmorObject().getArmor();
-                this.ArmorClass += getEquippedArmorObject().getArmorBonus();
+
+                setEquippedArmor(getEquippedArmorObject().getArmor());
+                armorBonus += getEquippedArmorObject().getArmorBonus();
                 subtractGold(getEquippedArmorObject().getCost());
             }
         }
-
+        return armorBonus;
 
     }
 
