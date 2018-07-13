@@ -4,7 +4,6 @@ import Equipment.Armor.*;
 import Equipment.Weapons.LongSword;
 import Equipment.Weapons.Weapon;
 import Equipment.Weapons.WeaponList;
-import Equipment.Weapons.WeaponTypes;
 import characterTraits.Classes.Classes;
 import characterTraits.Classes.Fighter;
 import characterTraits.Classes.JobClass;
