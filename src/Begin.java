@@ -1,3 +1,4 @@
+
 import characterTraits.Classes.Classes;
 import characterTraits.Feats.Feats;
 import characterTraits.Gender;
@@ -5,7 +6,11 @@ import characterTraits.Race.RaceChoice;
 import characterTraits.Character;
 import characterTraits.Skills;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
+
+import javax.swing.*;
 
 
 public class Begin {
@@ -49,6 +54,51 @@ public class Begin {
         System.out.println("Armor Class = " + Ralf.getArmorClass());
         // Equipped Weapon
         System.out.println("Equipped Weapon: " + Ralf.getEquippedWeapon());
+
+        CreationWindow window = new CreationWindow(Ralf);
+    }
+
+    public static class CreationWindow extends JFrame {
+        JFrame frame = new JFrame();
+        JLabel resultLabel;
+        JButton button;
+        ArrayList<Integer> stats;
+        Character character;
+
+        public CreationWindow(Character character) {
+            this.character = character;
+            // TODO: create a list to list out all the stats.
+            // TODO: character.getStats() is an empty list due to "private void setAbility(BaseAbilities ability)"
+            createGUI();
+        }
+
+        public void createGUI() {
+
+            button = new JButton("Click");
+            ActionListener listener = new addInterestListener();
+            button.addActionListener(listener);
+
+            resultLabel = new JLabel(stats.toString());
+
+            JPanel panel_1 = new JPanel();
+            JPanel panel_2 = new JPanel();
+            panel_1.add(button);
+            panel_1.add(resultLabel);
+            frame.add(panel_1);
+
+            frame.setSize(500, 100);
+            frame.setTitle("Character Stats");
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+            frame.setVisible(true);
+        }
+
+        class addInterestListener implements ActionListener {
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                resultLabel.setText("ReRolling Stats");
+            }
+        }
 
     }
 
