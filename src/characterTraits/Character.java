@@ -188,13 +188,15 @@ public class Character {
 
     private int sumOfRollsMinusMin(ArrayList<Integer> list) {
         int min = list.get(0);
+        int minIndex = 0;
         int sum = 0;
         for(int i = 0; i < list.size() - 1; i++) {
             if (list.get(i+1) < min) {
                 min = list.get(i+1);
+                minIndex = i;
             }
         }
-        list.remove(min);
+        list.remove(minIndex);
         for(Integer num: list) {
             sum += num;
         }

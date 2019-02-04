@@ -25,7 +25,7 @@ public class Human extends Race{
         setRacialBonusFeats(1);
         setRacialBaseLandSpeed(30);
         setAutomaticRacialLanguage(languages);
-        setRacialBonusLanguages(1);
+//        setRacialBonusLanguages(1);
         setRacialVision(vision);
         setRaceSize(Sizes.MEDIUM);
     }
