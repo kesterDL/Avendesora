@@ -19,105 +19,52 @@ import static java.lang.Boolean.TRUE;
 
 public class Character {
     /**
-     * Character's base strength score.
+     * Map of abilityScores and their score.
      */
-    private int Strength;
+    private Map<BaseAbilities, Integer> abilityScores = createBaseAbilityMap();
     /**
-     * Character's base dexterity score.
+     * Map of scores and their modifiers.
      */
-    private int Dexterity;
+    private Map<Integer, Integer> abilityModifiers = createModifierMap();
     /**
-     * Character's base constitution score.
-     */
-    private int Constitution;
-    /**
-     * Character's base intelligence score.
-     */
-    private int Intelligence;
-    /**
-     * Character's base wisdom score.
-     */
-    private int Wisdom;
-    /**
-     * Character's base charisma score.
-     */
-    private int Charisma;
-    /**
-     * List of abilities.
-     */
-    private ArrayList<BaseAbilities> abilities = new ArrayList<>(Arrays.asList(BaseAbilities.STRENGTH, BaseAbilities.DEXTERITY,BaseAbilities.CONSTITUTION,
-            BaseAbilities.INTELLIGENCE, BaseAbilities.WISDOM, BaseAbilities.CHARISMA));
-    /**
-     * List of character's stats.
-     */
-    private ArrayList<Integer> stats = new ArrayList<>();
-    /**
-     * Character's base strength score.
-     */
-    private int StrengthModifier;
-    /**
-     * Character's base dexterity score.
-     */
-    private int DexterityModifier;
-    /**
-     * Character's base constitution score.
-     */
-    private int ConstitutionModifier;
-    /**
-     * Character's base intelligence score.
-     */
-    private int IntelligenceModifier;
-    /**
-     * Character's base wisdom score.
-     */
-    private int WisdomModifier;
-    /**
-     * Character's base charisma score.
-     */
-    private int CharismaModifier;
-    /**
-     * Character's Ability Modifiers
-     */
-    private ArrayList<Integer> modifiers = new ArrayList<>();
-    /**
-     * Character's RaceChoice type.
+     * Character's Race type.
      */
     private RaceChoice raceChoice;
     /**
-     * Character's Vision Spectrum.
+     * Vision Spectrum.
      */
     private ArrayList<Vision> vision = new ArrayList<>();
     /**
-     * Charater's Dexterity Saving Throw.
+     * Dexterity Saving Throw.
      */
     private int ReflexSavingThrow;
     /**
-     * Charater's Constitution Saving Throw.
+     * Constitution Saving Throw.
      */
     private int FortitudeSavingThrow;
     /**
-     * Charater's Wisdom Saving Throw.
+     * Wisdom Saving Throw.
      */
     private int WillSavingThrow;
 
     /**
-     * Charater's EquippedArmor JobClass.
+     * EquippedArmor rating.
      */
     private Integer ArmorClass;
     /**
-     * Character's current armor.
+     * Current armor.
      */
     private ArmorList EquippedArmor;
     /**
-     * Character's current equipped armor object.
+     * Equipped armor object.
      */
     private Armor EquippedArmorObject;
     /**
-     * Character's current shield.
+     * Current shield.
      */
     private ShieldTypes Shield;
     /**
-     * Character's current weapon.
+     * Current weapon.
      */
     private WeaponList EquippedWeapon;
     /**
@@ -125,19 +72,19 @@ public class Character {
      */
     private Weapon EquippedWeaponObject;
     /**
-     * Character's Initiative.
+     * Initiative.
      */
     private int InitiativeModifier;
     /**
-     * Character's base attack bonus.
+     * Base attack bonus.
      */
     private int BaseAttackBonus;
     /**
-     * Character's Grapple modifier.
+     * Grapple modifier.
      */
     private int Grapple;
     /**
-     * Character's Base Movement Speed.
+     * Base Movement Speed.
      */
     private int Speed;
     /**
@@ -153,15 +100,15 @@ public class Character {
      */
     private ArrayList<Feats> feats = new ArrayList<Feats>();
     /**
-     * Character's Max Hit points.
+     * Max Hit points.
      */
     private int MaximumHitPoints;
     /**
-     * Character's Current Hit points.
+     * Current Hit points.
      */
     private int CurrentHitPoints;
     /**
-     * Character's class type.
+     * Job class.
      */
     private Classes job;
     /**
@@ -169,7 +116,7 @@ public class Character {
      */
     private JobClass jobObject;
     /**
-     * Character's secondary job class.
+     * Secondary job class.
      */
     private Classes secondaryJob;
     /**
@@ -185,15 +132,15 @@ public class Character {
      */
     private Gender gender;
     /**
-     * Character's naked weight.
+     * Naked weight.
      */
     private int nakedWeight = 0;
     /**
-     * Character's Current Experience Points.
+     * Current Experience Points.
      */
     private int ExperiencePoints = 0;
     /**
-     * Character's Skill Points.
+     * Unallocated Skill Points.
      */
     private int SkillPoints = 0;
     /**
@@ -205,11 +152,11 @@ public class Character {
      */
     private List<Double> skillRanks = new ArrayList<>();
     /**
-     * Character's Current Level.
+     * Current Level.
      */
     private int Level = 0;
     /**
-     * Amount of money character owns.
+     * Amount of money character owns (in gold).
      */
     private int Gold = 0;
 
@@ -217,12 +164,12 @@ public class Character {
     Random dice = new Random();
 
 
-    public Character(RaceChoice raceChoice, Classes jobClass, Classes secondJobClass, Gender gender) {
+    public Character(RaceChoice raceChoice, Classes jobClass, Gender gender) {
 
-        // Initial Ability Stats
-        selectAbilityStats();
         // Level 1
         setLevel(1);
+        // Initial Ability Stats
+        selectAbilityStats();
         addToFeats(1);
         // RaceChoice and JobClass
         setRaceChoice(raceChoice);
@@ -235,17 +182,53 @@ public class Character {
         chooseWeapon();
         setGender(gender);
         setExperiencePoints(0);
-        setInitiativeModifier(0);
         addToFeatSet(Feats.DODGE);
         addToFeatSet(Feats.IMPROVED_INITIATIVE);
     }
 
-    private Integer rollAnAbilityStat() {
-        int stat = 0;
-        for(int j = 0; j < 3; j++){
-            stat += rollAD6();
+    private int sumOfRollsMinusMin(ArrayList<Integer> list) {
+        int min = list.get(0);
+        int sum = 0;
+        for(int i = 0; i < list.size() - 1; i++) {
+            if (list.get(i+1) < min) {
+                min = list.get(i+1);
+            }
         }
-        return stat;
+        list.remove(min);
+        for(Integer num: list) {
+            sum += num;
+        }
+        return sum;
+    }
+
+    private Integer rollAnAbilityStat() {
+        ArrayList<Integer> rolls = new ArrayList<>();
+        for(int j = 0; j < 4; j++){
+            rolls.add(rollAD6());
+        }
+        return sumOfRollsMinusMin(rolls);
+    }
+
+    private Map<BaseAbilities, Integer> createBaseAbilityMap() {
+        Map<BaseAbilities, Integer> scores = new HashMap<>();
+        scores.put(BaseAbilities.STRENGTH, null);
+        scores.put(BaseAbilities.DEXTERITY, null);
+        scores.put(BaseAbilities.CONSTITUTION, null);
+        scores.put(BaseAbilities.INTELLIGENCE, null);
+        scores.put(BaseAbilities.WISDOM, null);
+        scores.put(BaseAbilities.CHARISMA, null);
+
+        return scores;
+    }
+
+    private Map<Integer, Integer> createModifierMap() {
+        Map<Integer, Integer> modifiers = new HashMap<>();
+
+        for (int i = 0; i < 25; i++) {
+            modifiers.put(i, calculateModifier(i));
+        }
+
+        return modifiers;
     }
 
     public Integer rollAD6() {
@@ -272,64 +255,48 @@ public class Character {
         return dice.nextInt(4 - 1 + 1) + 1;
     }
 
-    private void setStatsListForCreation() {
+    private ArrayList<Integer> rollStatsForCreation() {
+        ArrayList<Integer> abilityRolls = new ArrayList<>();
         // Roll the all the scores and save them in a list
         for(int i = 0; i < 6; i++){
-            this.stats.add(rollAnAbilityStat());
+            abilityRolls.add(rollAnAbilityStat());
         }
+
+        return abilityRolls;
     }
 
-    private void printOutStatsForCreation() {
+    private void printOutRollsForCreation(ArrayList<Integer> abilityRolls) {
         // Print all the scores to the user
-        for(int i = 0; i < stats.size(); i++) {
-            if ( i == stats.size()-1){
-                System.out.print(stats.get(i));
+        for(int i = 0; i < abilityRolls.size(); i++) {
+            if ( i == abilityRolls.size()-1){
+                System.out.print(abilityRolls.get(i));
             } else {
-                System.out.print(stats.get(i) + ", ");
+                System.out.print(abilityRolls.get(i) + ", ");
             }
         }
         System.out.println();
     }
 
     public void printOutCharacterAbilityStats() {
-        for (BaseAbilities ability: abilities) {
-            switch(ability){
-                case STRENGTH:
-                    System.out.println(ability.toString() + ": " + getStrength());
-                    break;
-                case DEXTERITY:
-                    System.out.println(ability.toString() + " : " + getDexterity());
-                    break;
-                case CONSTITUTION:
-                    System.out.println(ability.toString() + " : " + getConstitution());
-                    break;
-                case INTELLIGENCE:
-                    System.out.println(ability.toString() + ": " + getIntelligence());
-                    break;
-                case WISDOM:
-                    System.out.println(ability.toString() + ": " + getWisdom());
-                    break;
-                case CHARISMA:
-                    System.out.println(ability.toString() + ": " + getCharisma());
-                    break;
-            }
+        Iterator abilities = getAbilityScores().entrySet().iterator();
+        while (abilities.hasNext()) {
+            Map.Entry keyPair = (Map.Entry)abilities.next();
+            System.out.println(keyPair.getKey() + ": " + keyPair.getValue());
         }
     }
 
     public void selectAbilityStats() {
-        this.stats = new ArrayList<>();
         // Roll the all the scores and save them in a list
-        setStatsListForCreation();
+        ArrayList<Integer> abilityRolls = rollStatsForCreation();
         // Ask user to choose each stat from the list
-        for (BaseAbilities ability: abilities) {
-            printOutStatsForCreation();
-            setAbility(ability);
+        for (BaseAbilities ability: abilityScores.keySet()) {
+            printOutRollsForCreation(abilityRolls);
+            setAbility(ability, abilityRolls);
         }
-        setAllBaseAbilityModifiers();
         printOutCharacterAbilityStats();
     }
 
-    private void setAbility(BaseAbilities ability) {
+    private void setAbility(final BaseAbilities ability, final ArrayList<Integer> abilityRolls) {
         Scanner user_input = new Scanner(System.in);
         String selection;
         Integer intSelection = 0;
@@ -340,9 +307,9 @@ public class Character {
             selection = user_input.next();
             intSelection = Integer.parseInt(selection);
             // Accept input and assign the stat
-            if(!stats.contains(intSelection)) {
+            if(!abilityRolls.contains(intSelection)) {
                 System.out.println("Select a score from the list of available stats");
-                printOutStatsForCreation();
+                printOutRollsForCreation(abilityRolls);
             } else {
                 // Remove ability from list
                 validSelection = true;
@@ -366,117 +333,89 @@ public class Character {
                         setCharisma(intSelection);
                         break;
                 }
-                stats.remove(intSelection);
+                abilityRolls.remove(intSelection);
                 System.out.println("Character's " + ability.toString() + " is: " + selection);
             }
         }
     }
 
-    public ArrayList<Integer> getModifiers() {
-        return modifiers;
+    public Integer getStrength() {
+        return abilityScores.get(BaseAbilities.STRENGTH);
     }
 
-    public int getStrength() {
-        return Strength;
+    public void setStrength(final int strength) {
+        abilityScores.put(BaseAbilities.STRENGTH, strength);
     }
 
-    public void setStrength(int strength) {
-        this.Strength = strength;
+    public Integer getDexterity() {
+        return abilityScores.get(BaseAbilities.DEXTERITY);
     }
 
-    public int getDexterity() {
-        return Dexterity;
+    public void setDexterity(final int dexterity) {
+        abilityScores.put(BaseAbilities.DEXTERITY, dexterity);
     }
 
-    public void setDexterity(int dexterity) {
-        this.Dexterity = dexterity;
+    public Integer getConstitution() {
+        return abilityScores.get(BaseAbilities.CONSTITUTION);
     }
 
-    public int getConstitution() {
-        return Constitution;
+    public void setConstitution(final int constitution) {
+        abilityScores.put(BaseAbilities.CONSTITUTION, constitution);
     }
 
-    public void setConstitution(int constitution) {
-        this.Constitution = constitution;
+    public Integer getIntelligence() {
+        return abilityScores.get(BaseAbilities.INTELLIGENCE);
     }
 
-    public int getIntelligence() {
-        return Intelligence;
+    public void setIntelligence(final int intelligence) {
+        abilityScores.put(BaseAbilities.INTELLIGENCE, intelligence);
     }
 
-    public void setIntelligence(int intelligence) {
-        this.Intelligence = intelligence;
+    public Integer getWisdom() {
+        return abilityScores.get(BaseAbilities.WISDOM);
     }
 
-    public int getWisdom() {
-        return Wisdom;
+    public void setWisdom(final int wisdom) {
+        abilityScores.put(BaseAbilities.WISDOM, wisdom);
     }
 
-    public void setWisdom(int wisdom) {
-        this.Wisdom = wisdom;
+    public Integer getCharisma() {
+        return abilityScores.get(BaseAbilities.CHARISMA);
     }
 
-    public int getCharisma() {
-        return Charisma;
+    public void setCharisma(final int charisma) {
+        abilityScores.put(BaseAbilities.CHARISMA, charisma);
     }
 
-    public void setCharisma(int charisma) {
-        this.Charisma = charisma;
+    public Integer getStrengthModifier() {
+        return abilityModifiers.get(abilityScores.get(BaseAbilities.STRENGTH));
     }
 
-    public int getStrengthModifier() {
-        return StrengthModifier;
+    public Integer getDexterityModifier() {
+        return abilityModifiers.get(abilityScores.get(BaseAbilities.DEXTERITY));
     }
 
-    private void setStrengthModifier(int strengthModifier) {
-        StrengthModifier = strengthModifier;
-    }
-
-    public int getDexterityModifier() {
-        return DexterityModifier;
-    }
-
-    private void setDexterityModifier(int dexterityModifier) {
-        DexterityModifier = dexterityModifier;
-    }
-
-    public int getConstitutionModifier() {
-        return ConstitutionModifier;
-    }
-
-    private void setConstitutionModifier(int constitutionModifier) {
-        ConstitutionModifier = constitutionModifier;
+    public Integer getConstitutionModifier() {
+        return abilityModifiers.get(abilityScores.get(BaseAbilities.CONSTITUTION));
     }
 
     public int getIntelligenceModifier() {
-        return IntelligenceModifier;
-    }
-
-    private void setIntelligenceModifier(int intelligenceModifier) {
-        IntelligenceModifier = intelligenceModifier;
+        return abilityModifiers.get(abilityScores.get(BaseAbilities.INTELLIGENCE));
     }
 
     public int getWisdomModifier() {
-        return WisdomModifier;
-    }
-
-    private void setWisdomModifier(int wisdomModifier) {
-        WisdomModifier = wisdomModifier;
+        return abilityModifiers.get(abilityScores.get(BaseAbilities.WISDOM));
     }
 
     public int getCharismaModifier() {
-        return CharismaModifier;
-    }
-
-    private void setCharismaModifier(int charismaModifier) {
-        CharismaModifier = charismaModifier;
+        return abilityModifiers.get(abilityScores.get(BaseAbilities.CHARISMA));
     }
 
     public int getReflexSavingThrow() {
         return ReflexSavingThrow;
     }
 
-    private void calculateReflexSavingThrow(int magicMod) {
+    private void calculateReflexSavingThrow(final int magicMod) {
         getJobObject().setReflexSave(getJobObject().calculateReflexSave(getDexterityModifier()));
         setReflexSavingThrow(getJobObject().getReflexSave() + getDexterityModifier() + magicMod);
     }
@@ -485,8 +424,8 @@ public class Character {
         return FortitudeSavingThrow;
     }
 
-    private void calculateFortitudeSavingThrow(int magicMod) {
-        getJobObject().setFortitudeSave(getJobObject().calculateFortitudeSave(getLevel()));
+    private void calculateFortitudeSavingThrow(final int magicMod) {
+        getJobObject().calculateFortitudeSave(getLevel());
         setFortitudeSavingThrow(getJobObject().getFortitudeSave() + getConstitutionModifier() + magicMod);
     }
 
@@ -494,7 +433,7 @@ public class Character {
         return WillSavingThrow;
     }
 
-    private void calculateWillSavingThrow(int magicMod) {
+    private void calculateWillSavingThrow(final int magicMod) {
         getJobObject().setWillSave(getJobObject().calculateWillSave(getLevel()));
         setWillSavingThrow(getJobObject().getWillSave() + getWisdomModifier() + magicMod);
 
@@ -676,9 +615,9 @@ public class Character {
         return InitiativeModifier;
     }
 
-    public void setInitiativeModifier(int additionalMod) {
-        if (modifiers.get(1) > 0) {
-            InitiativeModifier = modifiers.get(1) + additionalMod;
+    public void setInitiativeModifier(final int additionalMod) {
+        if (getDexterityModifier() > 0) {
+            InitiativeModifier = getDexterityModifier() + additionalMod;
         } else {
             InitiativeModifier = 0;
         }
@@ -688,7 +627,7 @@ public class Character {
         return Speed;
     }
 
-    public void setSpeed(int speed) {
+    public void setSpeed(final int speed) {
         this.Speed = speed;
     }
 
@@ -748,11 +687,11 @@ public class Character {
         return ExperiencePoints;
     }
 
-    public void setExperiencePoints(int experiencePoints) {
+    private void setExperiencePoints(final int experiencePoints) {
         this.ExperiencePoints = experiencePoints;
     }
 
-    public void addToExperiencePoints(int points) {
+    public void addToExperiencePoints(final int points) {
         this.ExperiencePoints += points;
     }
 
@@ -760,49 +699,11 @@ public class Character {
         return Level;
     }
 
-    public void setLevel(int level) {
+    private void setLevel(final int level) {
         Level = level;
     }
 
-    public void setAllBaseAbilityModifiers() {
-        for (BaseAbilities ability: abilities){
-            setAbilityModifier(ability);
-        }
-        this.modifiers = new ArrayList<>(Arrays.asList(getStrengthModifier(), getDexterityModifier(), getConstitutionModifier(),
-                getIntelligenceModifier(), getWisdomModifier(), getCharismaModifier()));
-    }
-
-    public void setAbilityModifier(BaseAbilities ability) {
-        int abilityScore = 0;
-        switch(ability){
-            case STRENGTH:
-                abilityScore = getStrength();
-                setStrengthModifier(calculateModifier(abilityScore));
-                break;
-            case DEXTERITY:
-                abilityScore = getDexterity();
-                setDexterityModifier(calculateModifier(abilityScore));
-                break;
-            case CONSTITUTION:
-                abilityScore = getConstitution();
-                setConstitutionModifier(calculateModifier(abilityScore));
-                break;
-            case INTELLIGENCE:
-                abilityScore = getIntelligence();
-                setIntelligenceModifier(calculateModifier(abilityScore));
-                break;
-            case WISDOM:
-                abilityScore = getWisdom();
-                setWisdomModifier(calculateModifier(abilityScore));
-                break;
-            case CHARISMA:
-                abilityScore = getCharisma();
-                setCharismaModifier(calculateModifier(abilityScore));
-                break;
-        }
-    }
-
-    public Integer calculateModifier(Integer abilityScore) {
+    private Integer calculateModifier(Integer abilityScore) {
         int modifier;
         if(abilityScore%2 != 0) {
             modifier = -6;
@@ -818,11 +719,7 @@ public class Character {
         return modifier;
     }
 
-    public ArrayList<Integer> getAbilityModifiers() {
-        return modifiers;
-    }
-
-    public void setRaceChoice(RaceChoice charRaceChoice) {
+    private void setRaceChoice(RaceChoice charRaceChoice) {
         raceChoice = charRaceChoice;
         setRacialTraits();
     }
@@ -837,12 +734,12 @@ public class Character {
                 case HUMAN:
                     Race human = new Human();
                     // TODO: Create a Racial object
-                    for (Vision spectra : human.getVision()) {
+                    for (Vision spectra : human.getRacialVision()) {
                         addToVisionSet(spectra);
                     }
-                    setSpeed(human.getBaseLandSpeed());
+                    setSpeed(human.getRacialBaseLandSpeed());
                     addToLanguages(Languages.COMMON);
-                    addToFeats(human.getBonusFeats());
+                    addToFeats(human.getRacialBonusFeats());
                     break;
                 case DWARF:
                     int constitution = getConstitution();
@@ -861,7 +758,7 @@ public class Character {
             }
         }
     }
-    public void setClass(Classes jobClass) {
+    public void setClass(final Classes jobClass) {
         this.job = jobClass;
         switch(job) {
             case FIGHTER:
@@ -883,8 +780,8 @@ public class Character {
             setBaseAttackBonus(getJobObject().getBaseAttackBonus());
             setSkillPoints(getJobObject().getSkillPoints1stLevel());
             calculateReflexSavingThrow(0);
-            setWillSavingThrow(0);
-            setFortitudeSavingThrow(0);
+            calculateFortitudeSavingThrow(0);
+            calculateWillSavingThrow(0);
         }
     }
 
@@ -896,7 +793,7 @@ public class Character {
         return vision;
     }
 
-    public void setSkillPoints(int points) {
+    public void setSkillPoints(final int points) {
         this.SkillPoints = points;
     }
 
@@ -904,16 +801,16 @@ public class Character {
         return SkillPoints;
     }
 
-    public void addToFeats(int additionalFeats) {
+    public void addToFeats(final int additionalFeats) {
         this.numberOfFeats += additionalFeats;
     }
 
-    public void subtractFromFeats(int num) {
+    public void subtractFromFeats(final int num) {
         if(getNumberOfFeats() > num) {
             this.numberOfFeats -= num;
         }
     }
-    public void addToLanguages(Languages language) {
+    public void addToLanguages(final Languages language) {
         this.language.add(language);
     }
 
@@ -925,7 +822,7 @@ public class Character {
         return secondaryJob;
     }
 
-    private void setBaseAttackBonus(int level) {
+    private void setBaseAttackBonus(final int level) {
         getJobObject().setBaseAttackBonus(level);
         this.BaseAttackBonus =  getJobObject().getBaseAttackBonus();
 
@@ -949,14 +846,14 @@ public class Character {
                 sizeMod = -4;
                 break;
         }
-        this.Grapple = getBaseAttackBonus() + getAbilityModifiers().get(0) + sizeMod;
+        this.Grapple = getBaseAttackBonus() + getStrengthModifier() + sizeMod;
     }
 
     public int getGrapple() {
         return Grapple;
     }
 
-    public void firstTimeRankSkill(Skills skill, double points) {
+    public void firstTimeRankSkill(final Skills skill, final double points) {
         double unspentPoints = getSkillPoints();
         if(points > unspentPoints) {
             System.out.println("Not Enough Skill Points");
@@ -987,7 +884,7 @@ public class Character {
         return this.skillRanks;
     }
 
-    public String getSkillandRank(Skills skill) {
+    public String getSkillandRank(final Skills skill) {
         int location = 0;
         Double rank = 0.0;
         if(skills.contains(skill)){
@@ -998,7 +895,7 @@ public class Character {
         return info;
     }
 
-    public void setEquippedWeapon(WeaponList equippedWeapon) {
+    public void setEquippedWeapon(final WeaponList equippedWeapon) {
         this.EquippedWeapon = equippedWeapon;
     }
 
@@ -1049,7 +946,7 @@ public class Character {
         }
     }
 
-    private Boolean ableToUseWeapon(Weapon weapon) {
+    private Boolean ableToUseWeapon(final Weapon weapon) {
         Boolean able = FALSE;
         if (getJobObject().getWeaponProficiencies().contains(weapon.getWeaponClass())) {
             able = TRUE;
@@ -1057,7 +954,7 @@ public class Character {
         return able;
     }
 
-    private Boolean ableToUseArmor(Armor armor) {
+    private Boolean ableToUseArmor(final Armor armor) {
         Boolean able = FALSE;
         if (getJobObject().getArmorProficiencies().contains(armor.getArmorType())) {
             able = TRUE;
@@ -1065,7 +962,7 @@ public class Character {
         return able;
     }
 
-    public void setGold(int gold) {
+    public void setGold(final int gold) {
         this.Gold = gold;
     }
 
@@ -1081,7 +978,7 @@ public class Character {
         }
     }
 
-    public void subtractGold(Integer gold) {
+    public void subtractGold(final Integer gold) {
         if(this.Gold > gold && gold > 0) {
             this.Gold -= gold;
         } else {
@@ -1089,39 +986,27 @@ public class Character {
         }
     }
 
-    public ArrayList<BaseAbilities> getAbilities() {
-        return abilities;
+    public Map<BaseAbilities, Integer> getAbilityScores() {
+        return abilityScores;
     }
 
-    public void setAbilities(ArrayList<BaseAbilities> abilities) {
-        this.abilities = abilities;
+    public void setAbilityScores(final Map<BaseAbilities, Integer> abilityScores) {
+        this.abilityScores = abilityScores;
     }
 
-    public ArrayList<Integer> getStats() {
-        return stats;
-    }
-
-    public void setStats(ArrayList<Integer> stats) {
-        this.stats = stats;
-    }
-
-    public void setModifiers(ArrayList<Integer> modifiers) {
-        this.modifiers = modifiers;
-    }
-
-    public void addToVisionSet(ArrayList<Vision> vision) {
+    public void addToVisionSet(final ArrayList<Vision> vision) {
         this.vision = vision;
     }
 
-    public void setReflexSavingThrow(int reflexSavingThrow) {
+    public void setReflexSavingThrow(final int reflexSavingThrow) {
         ReflexSavingThrow = reflexSavingThrow;
     }
 
-    public void setFortitudeSavingThrow(int fortitudeSavingThrow) {
+    public void setFortitudeSavingThrow(final int fortitudeSavingThrow) {
         FortitudeSavingThrow = fortitudeSavingThrow;
     }
 
-    public void setWillSavingThrow(int willSavingThrow) {
+    public void setWillSavingThrow(final int willSavingThrow) {
         WillSavingThrow = willSavingThrow;
     }
 
@@ -1129,7 +1014,7 @@ public class Character {
         return EquippedArmor;
     }
 
-    public void setEquippedArmor(ArmorList equippedArmor) {
+    public void setEquippedArmor(final ArmorList equippedArmor) {
         EquippedArmor = equippedArmor;
     }
 
@@ -1145,7 +1030,7 @@ public class Character {
         return EquippedWeaponObject;
     }
 
-    public void setEquippedWeaponObject(Weapon equippedWeaponObject) {
+    public void setEquippedWeaponObject(final Weapon equippedWeaponObject) {
         EquippedWeaponObject = equippedWeaponObject;
     }
 
@@ -1153,7 +1038,7 @@ public class Character {
         return InitiativeModifier;
     }
 
-    public void setGrapple(int grapple) {
+    public void setGrapple(final int grapple) {
         Grapple = grapple;
     }
 
@@ -1161,15 +1046,15 @@ public class Character {
         return language;
     }
 
-    public void setLanguage(ArrayList<Languages> language) {
+    public void setLanguage(final ArrayList<Languages> language) {
         this.language = language;
     }
 
-    public void setNumberOfFeats(int numberOfFeats) {
+    public void setNumberOfFeats(final int numberOfFeats) {
         this.numberOfFeats = numberOfFeats;
     }
 
-    public void setMaximumHitPoints(int maximumHitPoints) {
+    public void setMaximumHitPoints(final int maximumHitPoints) {
         MaximumHitPoints = maximumHitPoints;
     }
 
@@ -1177,11 +1062,11 @@ public class Character {
         return job;
     }
 
-    public void setJob(Classes job) {
+    public void setJob(final Classes job) {
         this.job = job;
     }
 
-    public void setSecondaryJob(Classes secondaryJob) {
+    public void setSecondaryJob(final Classes secondaryJob) {
         this.secondaryJob = secondaryJob;
     }
 
@@ -1193,7 +1078,7 @@ public class Character {
         return nakedWeight;
     }
 
-    public void setNakedWeight(int nakedWeight) {
+    public void setNakedWeight(final int nakedWeight) {
         this.nakedWeight = nakedWeight;
     }
 
@@ -1201,11 +1086,11 @@ public class Character {
         return ExperiencePoints;
     }
 
-    public void setSkills(List<Skills> skills) {
+    public void setSkills(final List<Skills> skills) {
         this.skills = skills;
     }
 
-    public void setSkillRanks(List<Double> skillRanks) {
+    public void setSkillRanks(final List<Double> skillRanks) {
         this.skillRanks = skillRanks;
     }
 
@@ -1213,11 +1098,11 @@ public class Character {
         return feats;
     }
 
-    public void setFeats(ArrayList<Feats> feats) {
+    public void setFeats(final ArrayList<Feats> feats) {
         this.feats = feats;
     }
 
-    public void addToFeatSet(Feats feat) {
+    public void addToFeatSet(final Feats feat) {
         if(getNumberOfFeats() > 0) {
             feats.add(feat);
             subtractFromFeats(1);
@@ -1243,7 +1128,7 @@ public class Character {
         return EquippedArmorObject;
     }
 
-    public void setEquippedArmorObject(Armor equippedArmorObject) {
+    public void setEquippedArmorObject(final Armor equippedArmorObject) {
         EquippedArmorObject = equippedArmorObject;
     }
 
@@ -1251,7 +1136,7 @@ public class Character {
         return jobObject;
     }
 
-    public void setJobObject(JobClass jobObject) {
+    public void setJobObject(final JobClass jobObject) {
         this.jobObject = jobObject;
     }
 }

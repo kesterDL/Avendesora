@@ -145,9 +145,12 @@ public class Fighter extends JobClass {
     }
 
     public Integer calculateFortitudeSave(int level) {
-        Integer save = 0;
-        if(level % 2 == 0 && level > 0) {
-            save += 1;
+        Integer save = 2;
+        while(level > 0) {
+            if (level % 2 == 0 && level > 0) {
+                save += 1;
+            }
+            level--;
         }
         return save;
     }

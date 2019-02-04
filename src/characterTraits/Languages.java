@@ -7,5 +7,9 @@ public enum Languages {
     ELVEN,
     GNOME,
     GOBLIN,
-    ORC
+    ORC,
+    GIANT,
+    TERRAN,
+    UNDERCOMMON
+
 }

@@ -6,18 +6,20 @@ import characterTraits.Sizes;
 import characterTraits.Vision;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Race {
     /**
      * Racial Ability Score Modifiers.
      */
-    private ArrayList<Integer> abilityAdjustments;
-    private int StrAdjustment;
-    private int DexAdjustment;
-    private int ConAdjustment;
-    private int IntAdjustment;
-    private int WisAdjustment;
-    private int ChaAdjustment;
+    private Map<String, Integer> abilityAdjustments = new HashMap<>();
+    final private String StrAdjustment = "StrAdjustment";
+    final private String DexAdjustment = "DexAdjustment";
+    final private String ConAdjustment = "ConAdjustment";
+    final private String IntAdjustment = "IntAdjustment";
+    final private String WisAdjustment = "WisAdjustment";
+    final private String ChaAdjustment = "ChaAdjustment";
     /**
      * Racial Favored JobClass.
      */
@@ -37,11 +39,11 @@ public class Race {
     /**
      * Racial Language.
      */
-    private Languages automaticLanguage;
+    private ArrayList<Languages> automaticLanguage = new ArrayList<>();
     /**
      * Number of bonus languages.
      */
-    private int bonusLanguages;
+    private ArrayList<Languages> bonusLanguages;
     /**
      * Vision types.
      */
@@ -51,123 +53,123 @@ public class Race {
      */
     Sizes size;
 
-    public ArrayList<Integer> getAbilityAdjustments() {
+    public Map<String, Integer> getRacialAbilityAdjustments() {
         return abilityAdjustments;
     }
 
-    public void setAbilityAdjustments(ArrayList<Integer> abilityAdjustments) {
+    public void setRacialAbilityAdjustments(Map<String, Integer> abilityAdjustments) {
         this.abilityAdjustments = abilityAdjustments;
     }
 
-    public int getStrAdjustment() {
-        return StrAdjustment;
+    public int getRacialStrAdjustment() {
+        return abilityAdjustments.get(StrAdjustment);
     }
 
-    public void setStrAdjustment(int strAdjustment) {
-        StrAdjustment = strAdjustment;
+    public void setRacialStrAdjustment(int strAdjustment) {
+        abilityAdjustments.put(StrAdjustment,strAdjustment);
     }
 
-    public int getDexAdjustment() {
-        return DexAdjustment;
+    public int getRacialDexAdjustment() {
+        return abilityAdjustments.get(DexAdjustment);
     }
 
-    public void setDexAdjustment(int dexAdjustment) {
-        DexAdjustment = dexAdjustment;
+    public void setRacialDexAdjustment(int dexAdjustment) {
+        abilityAdjustments.put(DexAdjustment, dexAdjustment);
     }
 
-    public int getConAdjustment() {
-        return ConAdjustment;
+    public int getRacialConAdjustment() {
+        return abilityAdjustments.get(ConAdjustment);
     }
 
-    public void setConAdjustment(int conAdjustment) {
-        ConAdjustment = conAdjustment;
+    public void setRacialConAdjustment(int conAdjustment) {
+        abilityAdjustments.put(ConAdjustment, conAdjustment);
     }
 
-    public int getIntAdjustment() {
-        return IntAdjustment;
+    public int getRacialIntAdjustment() {
+        return abilityAdjustments.get(IntAdjustment);
     }
 
-    public void setIntAdjustment(int intAdjustment) {
-        IntAdjustment = intAdjustment;
+    public void setRacialIntAdjustment(int intAdjustment) {
+        abilityAdjustments.put(IntAdjustment, intAdjustment);
     }
 
-    public int getWisAdjustment() {
-        return WisAdjustment;
+    public int getRacialWisAdjustment() {
+        return abilityAdjustments.get(WisAdjustment);
     }
 
-    public void setWisAdjustment(int wisAdjustment) {
-        WisAdjustment = wisAdjustment;
+    public void setRacialWisAdjustment(int wisAdjustment) {
+        abilityAdjustments.put(WisAdjustment, wisAdjustment);
     }
 
-    public int getChaAdjustment() {
-        return ChaAdjustment;
+    public int getRacialChaAdjustment() {
+        return abilityAdjustments.get(ChaAdjustment);
     }
 
-    public void setChaAdjustment(int chaAdjustment) {
-        ChaAdjustment = chaAdjustment;
+    public void setRacialChaAdjustment(int chaAdjustment) {
+        abilityAdjustments.put(ChaAdjustment, chaAdjustment);
     }
 
-    public ArrayList<Classes> getFavoredClasses() {
+    public ArrayList<Classes> getRaceFavoredClasses() {
         return favoredClasses;
     }
 
-    public void setFavoredClasses(ArrayList<Classes> favoredClasses) {
+    public void setRaceFavoredClasses(ArrayList<Classes> favoredClasses) {
         this.favoredClasses = favoredClasses;
     }
 
-    public int getExtraSkillPoints() {
+    public int getRacialExtraSkillPoints() {
         return extraSkillPoints;
     }
 
-    public void setExtraSkillPoints(int extraSkillPoints) {
+    public void setRacialExtraSkillPoints(int extraSkillPoints) {
         this.extraSkillPoints = extraSkillPoints;
     }
 
-    public int getBonusFeats() {
+    public int getRacialBonusFeats() {
         return bonusFeats;
     }
 
-    public void setBonusFeats(int bonusFeats) {
+    public void setRacialBonusFeats(int bonusFeats) {
         this.bonusFeats = bonusFeats;
     }
 
-    public int getBaseLandSpeed() {
+    public int getRacialBaseLandSpeed() {
         return baseLandSpeed;
     }
 
-    public void setBaseLandSpeed(int baseLandSpeed) {
+    public void setRacialBaseLandSpeed(int baseLandSpeed) {
         this.baseLandSpeed = baseLandSpeed;
     }
 
-    public Languages getAutomaticLanguage() {
+    public ArrayList<Languages> getAutomaticRacialLanguage() {
         return automaticLanguage;
     }
 
-    public void setAutomaticLanguage(Languages automaticLanguage) {
+    public void setAutomaticRacialLanguage(ArrayList<Languages> automaticLanguage) {
         this.automaticLanguage = automaticLanguage;
     }
 
-    public int getBonusLanguages() {
+    public ArrayList<Languages> getRacialBonusLanguages() {
         return bonusLanguages;
     }
 
-    public void setBonusLanguages(int bonusLanguages) {
+    public void setRacialBonusLanguages(ArrayList<Languages> bonusLanguages) {
         this.bonusLanguages = bonusLanguages;
     }
 
-    public ArrayList<Vision> getVision() {
+    public ArrayList<Vision> getRacialVision() {
         return vision;
     }
 
-    public void setVision(ArrayList<Vision> vision) {
+    public void setRacialVision(ArrayList<Vision> vision) {
         this.vision = vision;
     }
 
-    public Sizes getSize() {
+    public Sizes getRaceSize() {
         return size;
     }
 
-    public void setSize(Sizes size) {
+    public void setRaceSize(Sizes size) {
         this.size = size;
     }
 }
