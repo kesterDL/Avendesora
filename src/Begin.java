@@ -21,47 +21,47 @@ import javax.swing.*;
 public class Begin extends javax.swing.JFrame  {
 
     public static void main(String[] args) {
-        Character Ralf = new Character(RaceChoice.HUMAN, Classes.FIGHTER, Gender.MALE);
-        Ralf.setCharacterName("Ralf");
+        Character Loeb = new Character(RaceChoice.HUMAN, Classes.FIGHTER, Gender.MALE);
+        Loeb.setCharacterName("Loeb");
 
         for(int i = 0; i < 5; i++) {
             System.out.println();
         }
-        System.out.println("STR " + Ralf.getStrength() + " Mod " + Ralf.getStrengthModifier());
-        System.out.println("DEX " + Ralf.getDexterity() + " Mod " + Ralf.getDexterityModifier());
-        System.out.println("CON " + Ralf.getConstitution() + " Mod " + Ralf.getConstitutionModifier());
-        System.out.println("INT " + Ralf.getIntelligence() + " Mod " + Ralf.getIntelligenceModifier());
-        System.out.println("WIS " + Ralf.getWisdom() + " Mod " + Ralf.getWisdomModifier());
-        System.out.println("CHA " + Ralf.getCharisma() + " Mod " + Ralf.getCharismaModifier());
+        System.out.println("STR " + Loeb.getStrength() + " Mod " + Loeb.getStrengthModifier());
+        System.out.println("DEX " + Loeb.getDexterity() + " Mod " + Loeb.getDexterityModifier());
+        System.out.println("CON " + Loeb.getConstitution() + " Mod " + Loeb.getConstitutionModifier());
+        System.out.println("INT " + Loeb.getIntelligence() + " Mod " + Loeb.getIntelligenceModifier());
+        System.out.println("WIS " + Loeb.getWisdom() + " Mod " + Loeb.getWisdomModifier());
+        System.out.println("CHA " + Loeb.getCharisma() + " Mod " + Loeb.getCharismaModifier());
         System.out.println();
-        System.out.println("HP " + Ralf.getMaximumHitPoints());
+        System.out.println("HP " + Loeb.getMaximumHitPoints());
         System.out.println();
-        System.out.println("Fortitude Save " + Ralf.getFortitudeSavingThrow());
-        System.out.println("Reflex Save " + Ralf.getReflexSavingThrow());
-        System.out.println("Will Save " + Ralf.getWillSavingThrow());
-        System.out.println("Base Attack Bonus " + Ralf.getBaseAttackBonus());
+        System.out.println("Fortitude Save " + Loeb.getFortitudeSavingThrow());
+        System.out.println("Reflex Save " + Loeb.getReflexSavingThrow());
+        System.out.println("Will Save " + Loeb.getWillSavingThrow());
+        System.out.println("Base Attack Bonus " + Loeb.getBaseAttackBonus());
         System.out.println();
-        System.out.println("Initiative Mod " + Ralf.getInitiative());
+        System.out.println("Initiative Mod " + Loeb.getInitiative());
         // Skills
-        System.out.println("Total Skill Points = " + Ralf.getSkillPoints());
-        Ralf.firstTimeRankSkill(Skills.CLIMB, 3);
-        Ralf.firstTimeRankSkill(Skills.CONCENTRATION, 4);
-        System.out.println("Remaining Skill Points " + Ralf.getSkillPoints());
-        System.out.println(Ralf.getSkillandRank(Skills.CONCENTRATION));
-        System.out.println(Ralf.getSkillandRank(Skills.CLIMB));
-        System.out.println(Ralf.getSkillandRank(Skills.INTIMIDATE));
+        System.out.println("Total Skill Points = " + Loeb.getSkillPoints());
+        Loeb.firstTimeRankSkill(Skills.CLIMB, 3);
+        Loeb.firstTimeRankSkill(Skills.CONCENTRATION, 4);
+        System.out.println("Remaining Skill Points " + Loeb.getSkillPoints());
+        System.out.println(Loeb.getSkillandRank(Skills.CONCENTRATION));
+        System.out.println(Loeb.getSkillandRank(Skills.CLIMB));
+        System.out.println(Loeb.getSkillandRank(Skills.INTIMIDATE));
         // Feats
-        System.out.println("Unallocated Feats = " + Ralf.getNumberOfFeats());
-        ArrayList<Feats> feats = Ralf.getFeats();
+        System.out.println("Unallocated Feats = " + Loeb.getNumberOfFeats());
+        ArrayList<Feats> feats = Loeb.getFeats();
         for (Feats feat : feats) {
             System.out.println("Feat: " + feat);
         }
         // ArmorList JobClass
-        System.out.println("Armor Class = " + Ralf.getArmorClass());
+        System.out.println("Armor Class = " + Loeb.getArmorClass());
         // Equipped Weapon
-        System.out.println("Equipped Weapon: " + Ralf.getEquippedWeapon());
+        System.out.println("Equipped Weapon: " + Loeb.getEquippedWeapon());
 
-//        CreationWindow window = new CreationWindow(Ralf);
+//        CreationWindow window = new CreationWindow(Loeb);
 //        window.setVisible(true);
     }
 
