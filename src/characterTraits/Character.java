@@ -766,6 +766,7 @@ public class Character {
             case FIGHTER:
                 JobClass fighter = new Fighter(getIntelligenceModifier());
                 setJobObject(fighter);
+                System.out.println("=== Setting class... Skill points: " + getJobObject().getSkillPoints1stLevel());
         }
         adjustForClass();
     }
@@ -781,6 +782,7 @@ public class Character {
             getJobObject().setBaseAttackBonus(1);
             setBaseAttackBonus(getJobObject().getBaseAttackBonus());
             // TODO: There is an error in setting the skill points
+            getJobObject().setSkillPoints1stLevel(getIntelligenceModifier());
             System.out.println("======= Adjust for class Skill points: " + getJobObject().getSkillPoints1stLevel());
             setSkillPoints(getJobObject().getSkillPoints1stLevel());
             calculateReflexSavingThrow(0);
