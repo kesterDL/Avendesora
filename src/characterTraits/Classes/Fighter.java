@@ -29,7 +29,7 @@ public class Fighter extends JobClass {
     private ArrayList<WeaponTypes> weaponProficiencies;
     private ArrayList<Skills> classSkills;
 
-    public Fighter(int IntModifier) {
+    public Fighter(final int IntModifier) {
         setHitDice(Dice.d10);
         setSkillPoints1stLevel(calculateSkillPoints1stLevel(IntModifier));
         setNumberOfFeats(1);
@@ -62,7 +62,7 @@ public class Fighter extends JobClass {
     }
 
     @Override
-    public Integer calculateNumberOfFeats(int level) {
+    public Integer calculateNumberOfFeats(final int level) {
         int lvl = level;
         int numFeats = 0;
         if(level == 1) {
@@ -76,7 +76,7 @@ public class Fighter extends JobClass {
     }
 
     @Override
-    public void setNumberOfFeats(int numberOfFeats) {
+    public void setNumberOfFeats(final int numberOfFeats) {
         this.numberOfFeats = numberOfFeats;
     }
 
@@ -95,12 +95,12 @@ public class Fighter extends JobClass {
         return skillPoints1stLevel;
     }
 
-    public Integer calculateSkillPoints1stLevel(int IntModifier) {
+    public Integer calculateSkillPoints1stLevel(final int IntModifier) {
         Integer points = (2 + IntModifier) * 4;
-        if(skillPoints1stLevel < 4){
+        if(points < 4){
             points = 4;
         }
-
+        System.out.println("==== Determining Starting skill points: " + points);
         return points;
     }
 
@@ -135,7 +135,7 @@ public class Fighter extends JobClass {
     }
 
     @Override
-    public void setBaseAttackBonus(int level) {
+    public void setBaseAttackBonus(final int level) {
         this.baseAttackBonus = level;
     }
 
@@ -176,7 +176,7 @@ public class Fighter extends JobClass {
     }
 
     @Override
-    public Integer calculateWillSave(int level) {
+    public Integer calculateWillSave(final int level) {
         Integer save = 0;
         if(level % 3 == 0 && level > 0) {
             save += 1;
@@ -189,7 +189,7 @@ public class Fighter extends JobClass {
         return secondAttackBonus;
     }
 
-    private Integer calculateSecondAttackBonus(int level) {
+    private Integer calculateSecondAttackBonus(final int level) {
         Integer bonus = 0;
         if(level < 6) {
             this.secondAttackBonus = 0;
@@ -203,12 +203,12 @@ public class Fighter extends JobClass {
     }
 
     @Override
-    public void setThirdAttackBonus(int thirdAttackBonus) {
+    public void setThirdAttackBonus(final int thirdAttackBonus) {
         this.thirdAttackBonus = thirdAttackBonus;
     }
 
     @Override
-    public void setHitDice(Dice hitDice) {
+    public void setHitDice(final Dice hitDice) {
         this.hitDice = hitDice;
     }
 
@@ -218,47 +218,47 @@ public class Fighter extends JobClass {
     }
 
     @Override
-    public void setArmorProficiencies(ArrayList<ArmorTypes> armorProficiencies) {
+    public void setArmorProficiencies(final ArrayList<ArmorTypes> armorProficiencies) {
         this.armorProficiencies = armorProficiencies;
     }
 
     @Override
-    public void setShieldProficiencies(ArrayList<ShieldTypes> shieldProficiencies) {
+    public void setShieldProficiencies(final ArrayList<ShieldTypes> shieldProficiencies) {
         this.shieldProficiencies = shieldProficiencies;
     }
 
     @Override
-    public void setWeaponProficiencies(ArrayList<WeaponTypes> weaponProficiencies) {
+    public void setWeaponProficiencies(final ArrayList<WeaponTypes> weaponProficiencies) {
         this.weaponProficiencies = weaponProficiencies;
     }
 
     @Override
-    public void setClassSkills(ArrayList<Skills> classSkills) {
+    public void setClassSkills(final ArrayList<Skills> classSkills) {
         this.classSkills = classSkills;
     }
 
     @Override
-    public void setSecondAttackBonus(int secondAttackBonus) {
+    public void setSecondAttackBonus(final int secondAttackBonus) {
         this.secondAttackBonus = secondAttackBonus;
     }
 
     @Override
-    public void setFortitudeSave(int fortitudeSave) {
+    public void setFortitudeSave(final int fortitudeSave) {
         FortitudeSave = fortitudeSave;
     }
 
     @Override
-    public void setReflexSave(int reflexSave) {
+    public void setReflexSave(final int reflexSave) {
         ReflexSave = reflexSave;
     }
 
     @Override
-    public void setWillSave(int willSave) {
+    public void setWillSave(final int willSave) {
         WillSave = willSave;
     }
 
     @Override
-    public void setSkillPointsAtEachLevel(int skillPointsAtEachLevel) {
+    public void setSkillPointsAtEachLevel(final int skillPointsAtEachLevel) {
         this.skillPointsAtEachLevel = skillPointsAtEachLevel;
     }
 }

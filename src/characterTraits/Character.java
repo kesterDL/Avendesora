@@ -780,6 +780,8 @@ public class Character {
             addToFeats(getJobObject().getNumberOfFeats());
             getJobObject().setBaseAttackBonus(1);
             setBaseAttackBonus(getJobObject().getBaseAttackBonus());
+            // TODO: There is an error in setting the skill points
+            System.out.println("======= Adjust for class Skill points: " + getJobObject().getSkillPoints1stLevel());
             setSkillPoints(getJobObject().getSkillPoints1stLevel());
             calculateReflexSavingThrow(0);
             calculateFortitudeSavingThrow(0);
