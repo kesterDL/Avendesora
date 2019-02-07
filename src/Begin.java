@@ -7,20 +7,19 @@ import characterTraits.Gender;
 import characterTraits.Race.RaceChoice;
 import characterTraits.Character;
 import characterTraits.Skills;
+import org.json.JSONException;
 
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import javax.swing.*;
 
 
-public class Begin extends javax.swing.JFrame  {
+public class Begin extends javax.swing.JFrame {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws JSONException, IOException {
         Character Loeb = new Character(RaceChoice.HUMAN, Classes.FIGHTER, Gender.MALE);
         Loeb.setCharacterName("Loeb");
 
@@ -61,6 +60,7 @@ public class Begin extends javax.swing.JFrame  {
         // Equipped Weapon
         System.out.println("Equipped Weapon: " + Loeb.getEquippedWeapon());
 
+        FifthEditionAPI.callDnd5eAPI();
 //        CreationWindow window = new CreationWindow(Loeb);
 //        window.setVisible(true);
     }
