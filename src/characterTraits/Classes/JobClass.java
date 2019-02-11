@@ -8,9 +8,6 @@ import characterTraits.Dice;
 import characterTraits.Skills;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-
-import static characterTraits.Skills.*;
 
 public class JobClass {
     private Dice hitDice;
@@ -21,8 +18,7 @@ public class JobClass {
     private int ReflexSave;
     private int WillSave;
     private Alignment preferredAlignment;
-    private int skillPoints1stLevel;
-    private int skillPointsAtEachLevel;
+    private int skillPoints;
     private int numberOfFeats;
     private ArrayList<ArmorTypes> armorProficiencies;
     private ArrayList<ShieldTypes> shieldProficiencies;
@@ -88,6 +84,9 @@ public class JobClass {
         return level;
     }
 
+    public Integer calculateNumberOfFeats(int level) {
+        return level;
+    }
     public int getWillSave() {
         return WillSave;
     }
@@ -104,28 +103,16 @@ public class JobClass {
         this.preferredAlignment = preferredAlignment;
     }
 
-    public int getSkillPoints1stLevel() {
-        return skillPoints1stLevel;
+    public int getSkillPoints() {
+        return skillPoints;
     }
 
-    public void setSkillPoints1stLevel(int skillPoints1stLevel) {
-        this.skillPoints1stLevel = skillPoints1stLevel;
-    }
-
-    public int getSkillPointsAtEachLevel() {
-        return skillPointsAtEachLevel;
-    }
-
-    public void setSkillPointsAtEachLevel(int skillPointsAtEachLevel) {
-        this.skillPointsAtEachLevel = skillPointsAtEachLevel;
+    public void setSkillPoints(int skillPoints) {
+        this.skillPoints = skillPoints;
     }
 
     public int getNumberOfFeats() {
         return numberOfFeats;
-    }
-
-    public Integer calculateNumberOfFeats(int level) {
-        return level;
     }
 
     public void setNumberOfFeats(int numberOfFeats) {
