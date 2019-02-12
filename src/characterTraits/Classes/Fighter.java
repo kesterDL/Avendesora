@@ -5,28 +5,27 @@ import Equipment.Armor.ShieldTypes;
 import Equipment.Weapons.WeaponTypes;
 import characterTraits.Alignment;
 import characterTraits.Dice;
-import characterTraits.Skills;
+import static characterTraits.Skills.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
-import static characterTraits.Skills.*;
+
 
 public class Fighter extends JobClass {
 
-    public Fighter(final int IntModifier) {
+    public Fighter(final int IntModifier, final int level) {
         setHitDice(Dice.d10);
-        setSkillPoints(calculateSkillPoints(IntModifier));
+        setSkillPoints(calculateSkillPoints(IntModifier, level));
         setNumberOfFeats(1);
-        setBaseAttackBonus(1);
-        setSecondAttackBonus(0);
-        setThirdAttackBonus(0);
-        setFortitudeSave(calculateFortitudeSave(1));
-        setReflexSave(calculateReflexSave(1));
-        setWillSave(calculateWillSave(1));
+        setBaseAttackBonus(level);
+        setSecondAttackBonus(calculateSecondAttackBonus(level));
+        setThirdAttackBonus(calculateThirdAttackBonus(level));
+        setFortitudeSave(calculateFortitudeSave(level));
+        setReflexSave(calculateReflexSave(level));
+        setWillSave(calculateWillSave(level));
         setPreferredAlignment(Alignment.Any);
-        setNumberOfFeats(calculateNumberOfFeats(1));
+        setNumberOfFeats(calculateNumberOfFeats(level));
         ArrayList armorProficiencies = new ArrayList<>(Arrays.asList(ArmorTypes.LIGHT,ArmorTypes.MEDIUM, ArmorTypes.HEAVY));
         setArmorProficiencies(armorProficiencies);
         ArrayList shieldProficiencies = new ArrayList<>(Arrays.asList(ShieldTypes.ALL));
@@ -50,10 +49,12 @@ public class Fighter extends JobClass {
         return numFeats;
     }
 
-    public Integer calculateSkillPoints(final int IntModifier) {
+    public Integer calculateSkillPoints(final int IntModifier, final int level) {
         Integer points = (2 + IntModifier) * 4;
-        if(points < 4){
+        if(level == 1 && points < 4){
             points = 4;
+        } else if (level > 1) {
+            points = getSkillPoints() + 2 + IntModifier;
         }
         return points;
     }
@@ -89,10 +90,17 @@ public class Fighter extends JobClass {
         return save;
     }
 
-
     private Integer calculateSecondAttackBonus(final int level) {
         Integer bonus = 0;
         if(level < 6) {
+            bonus = 0;
+        }
+        return bonus;
+    }
+
+    private Integer calculateThirdAttackBonus(final int level) {
+        Integer bonus = 0;
+        if(level < 11) {
             bonus = 0;
         }
         return bonus;

@@ -11,15 +11,15 @@ import java.util.ArrayList;
 
 public class JobClass {
     private Dice hitDice;
-    private int baseAttackBonus;
-    private int secondAttackBonus;
-    private int thirdAttackBonus;
-    private int FortitudeSave;
-    private int ReflexSave;
-    private int WillSave;
+    private Integer baseAttackBonus;
+    private Integer secondAttackBonus;
+    private Integer thirdAttackBonus;
+    private Integer FortitudeSave;
+    private Integer ReflexSave;
+    private Integer WillSave;
     private Alignment preferredAlignment;
-    private int skillPoints;
-    private int numberOfFeats;
+    private Integer skillPoints;
+    private Integer numberOfFeats;
     private ArrayList<ArmorTypes> armorProficiencies;
     private ArrayList<ShieldTypes> shieldProficiencies;
     private ArrayList<WeaponTypes> weaponProficiencies;
@@ -104,6 +104,9 @@ public class JobClass {
     }
 
     public int getSkillPoints() {
+        if (skillPoints == null) {
+            setSkillPoints(0);
+        }
         return skillPoints;
     }
 

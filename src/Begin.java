@@ -1,6 +1,7 @@
 
 import Equipment.Armor.ArmorList;
 import Equipment.Weapons.WeaponList;
+import Spells.Dictionary;
 import characterTraits.Classes.Classes;
 import characterTraits.Feats.Feats;
 import characterTraits.Gender;
@@ -23,9 +24,6 @@ public class Begin extends javax.swing.JFrame {
         Character Loeb = new Character(RaceChoice.HUMAN, Classes.FIGHTER, Gender.MALE);
         Loeb.setCharacterName("Loeb");
 
-        for(int i = 0; i < 5; i++) {
-            System.out.println();
-        }
         System.out.println("STR " + Loeb.getStrength() + " Mod " + Loeb.getStrengthModifier());
         System.out.println("DEX " + Loeb.getDexterity() + " Mod " + Loeb.getDexterityModifier());
         System.out.println("CON " + Loeb.getConstitution() + " Mod " + Loeb.getConstitutionModifier());
@@ -60,7 +58,8 @@ public class Begin extends javax.swing.JFrame {
         // Equipped Weapon
         System.out.println("Equipped Weapon: " + Loeb.getEquippedWeapon());
 
-        FifthEditionAPI.callDnd5eAPI();
+//        FifthEditionAPI.callDnd5eAPI();
+        Dictionary.getAllSpells();
 //        CreationWindow window = new CreationWindow(Loeb);
 //        window.setVisible(true);
     }

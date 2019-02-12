@@ -11,19 +11,6 @@ import java.net.URL;
 
 public class FifthEditionAPI {
 
-    private class Spell {
-        private Integer index;
-        private String name;
-
-        @Override
-        public String toString() {
-            return index + " " + name;
-        }
-    }
-
-
-
-    // http://localhost:8080/RESTfulExample/json/product/get
     public static void callDnd5eAPI() {
 
         try {
@@ -54,7 +41,7 @@ public class FifthEditionAPI {
             JSONObject myResponse = new JSONObject(response.toString());
             System.out.println("index: " + myResponse.getString("index"));
             System.out.println("name: " + myResponse.getString("name"));
-            System.out.println("school: " + myResponse.get("school"));
+            System.out.println("school: " + myResponse.getJSONObject("school").get("name"));
             openConnection.disconnect();
 
         } catch (MalformedURLException e) {

@@ -169,7 +169,7 @@ public class Character {
         // Level 1
         setLevel(1);
         // Initial Ability Stats
-        selectAbilityStats();
+        defaultCharacterStats();
         addToFeats(1);
         // RaceChoice and JobClass
         setRaceChoice(raceChoice);
@@ -178,8 +178,8 @@ public class Character {
         setMaximumHitPoints();
         setGold(100);
         setGrapple();
-        chooseArmorClass();
-        chooseWeapon();
+        defaultArmor();
+        defaultWeapon();
         setGender(gender);
         setExperiencePoints(0);
         addToFeatSet(Feats.DODGE);
@@ -203,7 +203,7 @@ public class Character {
         return sum;
     }
 
-    private Integer rollAnAbilityStat() {
+    public Integer rollAnAbilityStat() {
         ArrayList<Integer> rolls = new ArrayList<>();
         for(int j = 0; j < 4; j++){
             rolls.add(rollAD6());
@@ -293,12 +293,24 @@ public class Character {
         // Ask user to choose each stat from the list
         for (BaseAbilities ability: abilityScores.keySet()) {
             printOutRollsForCreation(abilityRolls);
-            setAbility(ability, abilityRolls);
+            userselectAbility(ability, abilityRolls);
         }
         printOutCharacterAbilityStats();
     }
 
-    private void setAbility(final BaseAbilities ability, final ArrayList<Integer> abilityRolls) {
+    public void putAbilityStat(final BaseAbilities ability, final Integer abilityStat) {
+        abilityScores.put(ability, abilityStat);
+    }
+
+    private void defaultCharacterStats() {
+        ArrayList<Integer> abilityRolls = rollStatsForCreation();
+        for (BaseAbilities ability: abilityScores.keySet()) {
+            putAbilityStat(ability, abilityRolls.get(0));
+            abilityRolls.remove(0);
+        }
+    }
+
+    private void userselectAbility(final BaseAbilities ability, final ArrayList<Integer> abilityRolls) {
         Scanner user_input = new Scanner(System.in);
         String selection;
         Integer intSelection = 0;
@@ -447,6 +459,20 @@ public class Character {
 
     public int getArmorClass() {
         return ArmorClass;
+    }
+
+    public void defaultArmor() {
+        Integer armorClass = 10 + getDexterityModifier();
+        if (getRaceChoice() == RaceChoice.GNOME || getRaceChoice() == RaceChoice.HALFLING){
+            armorClass += 1;
+        }
+        Shield buckler = new ShieldBuckler();
+        Armor leatherArmor = new LeatherArmor();
+        setShield(ShieldTypes.BUCKLER);
+        setEquippedArmorObject(leatherArmor);
+        subtractGold(buckler.getCost());
+        armorClass += buckler.getArmorBonus() + leatherArmor.getArmorBonus();
+        setArmorClass(armorClass);
     }
 
     public void chooseArmorClass() {
@@ -764,7 +790,7 @@ public class Character {
         this.job = jobClass;
         switch(job) {
             case FIGHTER:
-                JobClass fighter = new Fighter(getIntelligenceModifier());
+                JobClass fighter = new Fighter(getIntelligenceModifier(), getLevel());
                 setJobObject(fighter);
         }
         adjustForClass();
@@ -903,6 +929,13 @@ public class Character {
 
     public WeaponList getEquippedWeapon() {
         return EquippedWeapon;
+    }
+
+    public void defaultWeapon() {
+        LongSword longSword =  new LongSword();
+        setEquippedWeapon(WeaponList.SWORD_LONG);
+        setEquippedWeaponObject(longSword);
+        subtractGold(longSword.getCost());
     }
 
     public void chooseWeapon() {
