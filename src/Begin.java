@@ -1,7 +1,8 @@
 
 import Equipment.Armor.ArmorList;
 import Equipment.Weapons.WeaponList;
-import Spells.Dictionary;
+import SpellBook.SpellCompendium;
+import SpellBook.SpellsAPI;
 import characterTraits.Classes.Classes;
 import characterTraits.Feats.Feats;
 import characterTraits.Gender;
@@ -57,9 +58,7 @@ public class Begin extends javax.swing.JFrame {
         System.out.println("Armor Class = " + Loeb.getArmorClass());
         // Equipped Weapon
         System.out.println("Equipped Weapon: " + Loeb.getEquippedWeapon());
-
-//        FifthEditionAPI.callDnd5eAPI();
-        Dictionary.getAllSpells();
+        SpellsAPI.getSpecificSpell(SpellCompendium.ACID_ARROW);
 //        CreationWindow window = new CreationWindow(Loeb);
 //        window.setVisible(true);
     }

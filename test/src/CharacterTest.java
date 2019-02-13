@@ -1,16 +1,16 @@
+package src;
+
 import characterTraits.Character;
 import characterTraits.Classes.Classes;
-import characterTraits.Dice;
 import characterTraits.Gender;
 import characterTraits.Race.RaceChoice;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class characterTest {
+public class CharacterTest {
     Character Loeb = new Character(RaceChoice.HUMAN, Classes.FIGHTER, Gender.MALE);
+
     @Test
-    void rollStats() {
-        int stat = Loeb.rollAnAbilityStat();
-        Assert.assertTrue(stat > 2 && stat < 19);
+    public void testRolls() {
+
     }
 }
