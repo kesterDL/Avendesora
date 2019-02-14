@@ -48,16 +48,9 @@ public class SpellsAPI {
 
     public static JSONObject getAllSpells() {
         JSONObject json = new JSONObject();
-        try {
             json = callURL("http://www.dnd5eapi.co/api/spells/");
-            System.out.println(json.toString());
+//            System.out.println(json.toString());
 
-            System.out.println("count: " + json.getString("count"));
-            System.out.println("Spell #4: " + json.getJSONArray("results").getJSONObject(3).getString("name"));
-            return json;
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
         return json;
     }
 
@@ -67,7 +60,7 @@ public class SpellsAPI {
         Boolean spellFound = false;
         int iteration = 0;
 
-        while(!spellFound && iteration <= numOfSpells) {
+        while(!spellFound && iteration < numOfSpells) {
             if(spellArray.getJSONObject(iteration).getString("name").contains(spellName)) {
                 spellFound = true;
             } else {
@@ -75,13 +68,17 @@ public class SpellsAPI {
             }
         }
         if(spellFound) {
-//            System.out.println("Spell found at index: " + iteration);
-//            System.out.println(spellArray.getJSONObject(iteration).getString("name"));
+//            getSpellDescription(spellArray.getJSONObject(iteration));
             return spellArray.getJSONObject(iteration);
         } else {
-            System.out.println("NO SPELL FOUND");
+            System.out.println("** " + spellName + " was not found in the spell book **");
             return null;
         }
     }
 
+
+    public static String getSpellDescription(JSONObject spell) throws JSONException {
+        JSONObject spellJSON = callURL(spell.getString("url"));
+        return spellJSON.getJSONArray("desc").getString(0);
+    }
 }

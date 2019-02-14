@@ -22,7 +22,7 @@ import javax.swing.*;
 public class Begin extends javax.swing.JFrame {
 
     public static void main(String[] args) throws JSONException, IOException {
-        Character Loeb = new Character(RaceChoice.HUMAN, Classes.FIGHTER, Gender.MALE);
+        Character Loeb = new Character(RaceChoice.HUMAN, Classes.FIGHTER);
         Loeb.setCharacterName("Loeb");
 
         System.out.println("STR " + Loeb.getStrength() + " Mod " + Loeb.getStrengthModifier());
@@ -58,7 +58,7 @@ public class Begin extends javax.swing.JFrame {
         System.out.println("Armor Class = " + Loeb.getArmorClass());
         // Equipped Weapon
         System.out.println("Equipped Weapon: " + Loeb.getEquippedWeapon());
-        SpellsAPI.getSpecificSpell(SpellCompendium.ACID_ARROW);
+        System.out.println(SpellsAPI.getSpellDescription(SpellsAPI.getSpecificSpell(SpellCompendium.LONGSTRIDER)));
 //        CreationWindow window = new CreationWindow(Loeb);
 //        window.setVisible(true);
     }

@@ -11,6 +11,7 @@ import characterTraits.Feats.Feats;
 import characterTraits.Race.Human;
 import characterTraits.Race.Race;
 import characterTraits.Race.RaceChoice;
+import com.sun.istack.internal.NotNull;
 
 import java.util.*;
 
@@ -163,8 +164,11 @@ public class Character {
     // Dice
     Random dice = new Random();
 
+    public Character() {
 
-    public Character(RaceChoice raceChoice, Classes jobClass, Gender gender) {
+    }
+
+    public Character(RaceChoice raceChoice, Classes jobClass) {
 
         // Level 1
         setLevel(1);
@@ -180,13 +184,12 @@ public class Character {
         setGrapple();
         defaultArmor();
         defaultWeapon();
-        setGender(gender);
         setExperiencePoints(0);
         addToFeatSet(Feats.DODGE);
         addToFeatSet(Feats.IMPROVED_INITIATIVE);
     }
 
-    private int sumOfRollsMinusMin(ArrayList<Integer> list) {
+    private int sumOfRollsMinusMin(@NotNull ArrayList<Integer> list) {
         int min = list.get(0);
         int minIndex = 0;
         int sum = 0;
@@ -430,7 +433,7 @@ public class Character {
     }
 
     private void calculateReflexSavingThrow(final int magicMod) {
-        getJobObject().setReflexSave(getJobObject().calculateReflexSave(getDexterityModifier()));
+        getJobObject().calculateReflexSave(getDexterityModifier());
         setReflexSavingThrow(getJobObject().getReflexSave() + getDexterityModifier() + magicMod);
     }
 
@@ -448,7 +451,7 @@ public class Character {
     }
 
     private void calculateWillSavingThrow(final int magicMod) {
-        getJobObject().setWillSave(getJobObject().calculateWillSave(getLevel()));
+        getJobObject().calculateWillSave(getLevel());
         setWillSavingThrow(getJobObject().getWillSave() + getWisdomModifier() + magicMod);
 
     }
@@ -747,7 +750,7 @@ public class Character {
         return modifier;
     }
 
-    private void setRaceChoice(RaceChoice charRaceChoice) {
+    public void setRaceChoice(RaceChoice charRaceChoice) {
         raceChoice = charRaceChoice;
         setRacialTraits();
     }

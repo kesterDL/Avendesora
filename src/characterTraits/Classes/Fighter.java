@@ -14,6 +14,8 @@ import java.util.Arrays;
 
 public class Fighter extends JobClass {
 
+    public Fighter(){}
+
     public Fighter(final int IntModifier, final int level) {
         setHitDice(Dice.d10);
         setSkillPoints(calculateSkillPoints(IntModifier, level));
