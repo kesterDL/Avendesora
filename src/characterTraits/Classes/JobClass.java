@@ -9,7 +9,7 @@ import characterTraits.Skills;
 
 import java.util.ArrayList;
 
-public class JobClass {
+public abstract class JobClass {
     private Dice hitDice;
     private Integer baseAttackBonus;
     private Integer secondAttackBonus;

@@ -8,7 +8,7 @@ import characterTraits.Vision;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Human extends Race{
+public class Human extends Race {
 
     public Human() {
         ArrayList<Vision> vision = new ArrayList<>(Arrays.asList(Vision.NORMAL));
