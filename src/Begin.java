@@ -5,7 +5,6 @@ import SpellBook.SpellCompendium;
 import SpellBook.SpellsAPI;
 import characterTraits.Classes.Classes;
 import characterTraits.Feats.Feats;
-import characterTraits.Gender;
 import characterTraits.Race.RaceChoice;
 import characterTraits.Character;
 import characterTraits.Skills;
@@ -41,15 +40,15 @@ public class Begin extends javax.swing.JFrame {
         System.out.println();
         System.out.println("Initiative Mod " + Loeb.getInitiative());
         // Skills
-        System.out.println("Total Skill Points = " + Loeb.getSkillPoints());
+        System.out.println("Total Skill Points = " + Loeb.getUnallocatedSkillPoints());
         Loeb.firstTimeRankSkill(Skills.CLIMB, 3);
         Loeb.firstTimeRankSkill(Skills.CONCENTRATION, 4);
-        System.out.println("Remaining Skill Points " + Loeb.getSkillPoints());
-        System.out.println(Loeb.getSkillandRank(Skills.CONCENTRATION));
-        System.out.println(Loeb.getSkillandRank(Skills.CLIMB));
-        System.out.println(Loeb.getSkillandRank(Skills.INTIMIDATE));
+        System.out.println("Remaining Skill Points " + Loeb.getUnallocatedSkillPoints());
+        System.out.println(Loeb.getSkillRank(Skills.CONCENTRATION));
+        System.out.println(Loeb.getSkillRank(Skills.CLIMB));
+        System.out.println(Loeb.getSkillRank(Skills.INTIMIDATE));
         // Feats
-        System.out.println("Unallocated Feats = " + Loeb.getNumberOfFeats());
+        System.out.println("Unallocated Feats = " + Loeb.getNumberOfUnallocatedFeats());
         ArrayList<Feats> feats = Loeb.getFeats();
         for (Feats feat : feats) {
             System.out.println("Feat: " + feat);

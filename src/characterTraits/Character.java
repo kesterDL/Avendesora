@@ -95,7 +95,7 @@ public class Character {
     /**
      * Total number of feats.
      */
-    private int numberOfFeats;
+    private int numberOfUnallocatedFeats;
     /**
      * List of all the character's feats.
      */
@@ -109,17 +109,13 @@ public class Character {
      */
     private int CurrentHitPoints;
     /**
-     * Job class.
-     */
-    private Classes job;
-    /**
      * Job class object.
      */
     private JobClass jobObject;
     /**
      * Secondary job class.
      */
-    private Classes secondaryJob;
+    private JobClass secondaryJob;
     /**
      * Character's Name.
      */
@@ -143,15 +139,11 @@ public class Character {
     /**
      * Unallocated Skill Points.
      */
-    private int SkillPoints = 0;
+    private int unallocatedSkillPoints = 0;
     /**
-     * List of character's skills
+     * List of character's skill and rank;
      */
-    private List<Skills> skills = new ArrayList<>();
-    /**
-     * Rank of each skill.
-     */
-    private List<Double> skillRanks = new ArrayList<>();
+    private Map<Skills, Double> skills = new HashMap<>();
     /**
      * Current Level.
      */
@@ -174,14 +166,13 @@ public class Character {
         setLevel(1);
         // Initial Ability Stats
         defaultCharacterStats();
-        addToFeats(1);
         // RaceChoice and JobClass
         setRaceChoice(raceChoice);
         setClass(jobClass);
         // General Character Info
-        setMaximumHitPoints();
+        rollMaximumHitPoints();
         setGold(100);
-        setGrapple();
+        calculateGrapple();
         defaultArmor();
         defaultWeapon();
         setExperiencePoints(0);
@@ -666,22 +657,43 @@ public class Character {
         return MaximumHitPoints;
     }
 
-    public void setMaximumHitPoints() {
-        switch(getJob()) {
-            case FIGHTER:
-            case PALADIN:
-                this.MaximumHitPoints = 10 + getConstitutionModifier();
+    public void rollMaximumHitPoints() {
+
+        switch(getJobObject().getHitDice()) {
+            case d4:
+                if(getLevel() == 1) {
+                    setMaximumHitPoints(4 + getConstitutionModifier());
+                } else {
+                    addToMaxHitPoints(rollAD4() + getConstitutionModifier());
+                }
                 break;
-            case WIZARD:
-            case SORCERER:
-                this.MaximumHitPoints = 4 + getConstitutionModifier();
+            case d6:
+                if(getLevel() == 1) {
+                    setMaximumHitPoints(6 + getConstitutionModifier());
+                } else {
+                    addToMaxHitPoints(rollAD6() + getConstitutionModifier());
+                }
                 break;
-            case ROUGE:
-            case BARD:
-                this.MaximumHitPoints = 6 + getConstitutionModifier();
+            case d8:
+                if(getLevel() == 1) {
+                    setMaximumHitPoints(8 + getConstitutionModifier());
+                } else {
+                    addToMaxHitPoints(rollAD8() + getConstitutionModifier());
+                }
                 break;
-            case BARBARIAN:
-                this.MaximumHitPoints = 12 + getConstitutionModifier();
+            case d10:
+                if (getLevel() == 1) {
+                    setMaximumHitPoints(10 + getConstitutionModifier());
+                } else {
+                    addToMaxHitPoints(rollAD10() + getConstitutionModifier());
+                }
+                break;
+            case d12:
+                if (getLevel() == 1) {
+                    setMaximumHitPoints(12 + getConstitutionModifier());
+                } else {
+                    addToMaxHitPoints(rollAD12() + getConstitutionModifier());
+                }
                 break;
         }
     }
@@ -690,8 +702,11 @@ public class Character {
         return CurrentHitPoints;
     }
 
-    public void setCurrentHitPoints(int currentHitPoints) {
-        this.CurrentHitPoints = currentHitPoints;
+    public void addToMaxHitPoints(int hitpoints) {
+        setMaximumHitPoints(getMaximumHitPoints() + hitpoints);
+    }
+    public void setCurrentHitPoints(int hitPoints) {
+        this.CurrentHitPoints = hitPoints;
     }
 
     public String getCharacterName() {
@@ -750,6 +765,10 @@ public class Character {
         return modifier;
     }
 
+    public void addToUnallocatedSkillPoints(int points) {
+        this.unallocatedSkillPoints += points;
+    }
+
     public void setRaceChoice(RaceChoice charRaceChoice) {
         raceChoice = charRaceChoice;
         setRacialTraits();
@@ -764,13 +783,13 @@ public class Character {
             switch (getRaceChoice()) {
                 case HUMAN:
                     Race human = new Human();
-                    // TODO: Create a Racial object
                     for (Vision spectra : human.getRacialVision()) {
                         addToVisionSet(spectra);
                     }
                     setSpeed(human.getRacialBaseLandSpeed());
                     addToLanguages(Languages.COMMON);
-                    addToFeats(human.getRacialBonusFeats());
+                    addToUnallocatedFeats(human.getRacialBonusFeats());
+                    addToUnallocatedSkillPoints(human.getRacialExtraSkillPoints());
                     break;
                 case DWARF:
                     int constitution = getConstitution();
@@ -789,9 +808,9 @@ public class Character {
             }
         }
     }
+
     public void setClass(final Classes jobClass) {
-        this.job = jobClass;
-        switch(job) {
+        switch(jobClass) {
             case FIGHTER:
                 JobClass fighter = new Fighter(getIntelligenceModifier(), getLevel());
                 setJobObject(fighter);
@@ -799,17 +818,21 @@ public class Character {
         adjustForClass();
     }
 
-    public void setSecondaryClass(Classes jobClass) {
-        this.secondaryJob = jobClass;
+    public void setSecondaryClass(final Classes jobClass) {
+        switch(jobClass) {
+            case FIGHTER:
+                JobClass fighter = new Fighter(getIntelligenceModifier(), getLevel());
+                setJobObject(fighter);
+        }
     }
 
     private void adjustForClass() {
         if(getJob() != null) {
             getJobObject().setNumberOfFeats(getJobObject().calculateNumberOfFeats(getIntelligenceModifier()));
-            addToFeats(getJobObject().getNumberOfFeats());
+            addToUnallocatedFeats(getJobObject().getNumberOfFeats());
             getJobObject().setBaseAttackBonus(1);
             setBaseAttackBonus(getJobObject().getBaseAttackBonus());
-            setSkillPoints(getJobObject().getSkillPoints());
+            addToUnallocatedSkillPoints(getJobObject().getSkillPoints());
             calculateReflexSavingThrow(0);
             calculateFortitudeSavingThrow(0);
             calculateWillSavingThrow(0);
@@ -824,50 +847,42 @@ public class Character {
         return vision;
     }
 
-    public void setSkillPoints(final int points) {
-        this.SkillPoints = points;
+    public void setUnallocatedSkillPoints(final int points) {
+        this.unallocatedSkillPoints = points;
     }
 
-    public int getSkillPoints() {
-        return SkillPoints;
+    public int getUnallocatedSkillPoints() {
+        return unallocatedSkillPoints;
     }
 
-    public void addToFeats(final int additionalFeats) {
-        this.numberOfFeats += additionalFeats;
+    public void addToUnallocatedFeats(final int additionalFeats) {
+        this.numberOfUnallocatedFeats += additionalFeats;
     }
 
-    public void subtractFromFeats(final int num) {
-        if(getNumberOfFeats() > num) {
-            this.numberOfFeats -= num;
+    public void subtractFromUnallocatedFeats(final int num) {
+        if(getNumberOfUnallocatedFeats() > num) {
+            this.numberOfUnallocatedFeats -= num;
         }
     }
+
     public void addToLanguages(final Languages language) {
         this.language.add(language);
-    }
-
-    public Classes getJobClass() {
-        return job;
-    }
-
-    public Classes getSecondaryJob() {
-        return secondaryJob;
     }
 
     private void setBaseAttackBonus(final int level) {
         getJobObject().setBaseAttackBonus(level);
         this.BaseAttackBonus =  getJobObject().getBaseAttackBonus();
-
     }
 
     public int getBaseAttackBonus() {
         return BaseAttackBonus;
     }
 
-    public int getNumberOfFeats() {
-        return numberOfFeats;
+    public int getNumberOfUnallocatedFeats() {
+        return numberOfUnallocatedFeats;
     }
 
-    public void setGrapple() {
+    public void calculateGrapple() {
         int sizeMod = 0;
         switch(getRaceChoice()) {
             case HUMAN:
@@ -885,21 +900,19 @@ public class Character {
     }
 
     public void firstTimeRankSkill(final Skills skill, final double points) {
-        double unspentPoints = getSkillPoints();
-        if(points > unspentPoints) {
+
+        if(points > getUnallocatedSkillPoints()) {
             System.out.println("Not Enough Skill Points");
-        } else if(points % 0.5 == 0 && this.SkillPoints >= 0.5) {
+        } else if(points % 0.5 == 0 && getUnallocatedSkillPoints() >= 0.5) {
             List<Skills> classSkills = getJobObject().getClassSkills();
 
             if (classSkills.contains(skill) && points <= 4.0) {
-                skills.add(skill);
-                skillRanks.add(points);
-                SkillPoints -= points;
+                skills.put(skill, points);
+                unallocatedSkillPoints -= points;
             } else if(!classSkills.contains(skill) && points <= 4.0) {
                 double nonClassrank = points / 2.0;
-                skills.add(skill);
-                skillRanks.add(nonClassrank);
-                SkillPoints -= points;
+                skills.put(skill, nonClassrank);
+                unallocatedSkillPoints -= points;
             }else {
                 System.out.println("Max rank at level 1 is 4, or 2 for non class skills");
             }
@@ -907,23 +920,16 @@ public class Character {
 
     }
 
-    public List<Skills> getSkills() {
+    public Map<Skills, Double> getSkills() {
         return this.skills;
     }
 
-    public List<Double> getSkillRanks() {
-        return this.skillRanks;
-    }
-
-    public String getSkillandRank(final Skills skill) {
-        int location = 0;
-        Double rank = 0.0;
-        if(skills.contains(skill)){
-            location = skills.indexOf(skill);
-            rank = skillRanks.get(location);
+    public Double getSkillRank(final Skills skill) {
+        if(skills.containsKey(skill)){
+            return skills.get(skill);
+        } else {
+            return 0.0;
         }
-        String info = "Skill: " + skill.toString() + " Rank: " + rank.toString();
-        return info;
     }
 
     public void setEquippedWeapon(final WeaponList equippedWeapon) {
@@ -1076,7 +1082,7 @@ public class Character {
         return InitiativeModifier;
     }
 
-    public void setGrapple(final int grapple) {
+    public void calculateGrapple(final int grapple) {
         Grapple = grapple;
     }
 
@@ -1088,8 +1094,8 @@ public class Character {
         this.language = language;
     }
 
-    public void setNumberOfFeats(final int numberOfFeats) {
-        this.numberOfFeats = numberOfFeats;
+    public void setNumberOfUnallocatedFeats(final int numberOfUnallocatedFeats) {
+        this.numberOfUnallocatedFeats = numberOfUnallocatedFeats;
     }
 
     public void setMaximumHitPoints(final int maximumHitPoints) {
@@ -1097,14 +1103,14 @@ public class Character {
     }
 
     public Classes getJob() {
-        return job;
+        return jobObject.getJobClass();
     }
 
-    public void setJob(final Classes job) {
-        this.job = job;
+    public void setJob(final JobClass job) {
+        this.jobObject = job;
     }
 
-    public void setSecondaryJob(final Classes secondaryJob) {
+    public void setSecondaryJob(final JobClass secondaryJob) {
         this.secondaryJob = secondaryJob;
     }
 
@@ -1124,12 +1130,8 @@ public class Character {
         return ExperiencePoints;
     }
 
-    public void setSkills(final List<Skills> skills) {
+    public void setSkills(final HashMap<Skills,Double> skills) {
         this.skills = skills;
-    }
-
-    public void setSkillRanks(final List<Double> skillRanks) {
-        this.skillRanks = skillRanks;
     }
 
     public ArrayList<Feats> getFeats() {
@@ -1141,25 +1143,12 @@ public class Character {
     }
 
     public void addToFeatSet(final Feats feat) {
-        if(getNumberOfFeats() > 0) {
+        if(getNumberOfUnallocatedFeats() > 0) {
             feats.add(feat);
-            subtractFromFeats(1);
+            subtractFromUnallocatedFeats(1);
         } else {
             // TODO: Exception handler
         }
-    }
-
-    public Integer rollToHit(){
-        Integer natural = rollAD20();
-        if(natural == 20){
-            System.out.println("CRITICAL HIT!!!");
-            return getEquippedWeaponObject().critical(TRUE);
-        }
-        return rollAD20() + getBaseAttackBonus();
-    }
-
-    public Integer rollDamage() {
-        return getEquippedWeaponObject().rollDamage() + getStrengthModifier();
     }
 
     public Armor getEquippedArmorObject() {

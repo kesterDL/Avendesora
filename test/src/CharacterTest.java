@@ -2,10 +2,6 @@ package src;
 
 import characterTraits.Character;
 import characterTraits.Classes.Classes;
-import characterTraits.Classes.JobClass;
-import characterTraits.Gender;
-import characterTraits.Race.Human;
-import characterTraits.Race.Race;
 import characterTraits.Race.RaceChoice;
 import org.junit.Assert;
 import org.junit.Before;
@@ -47,7 +43,7 @@ public class CharacterTest {
     @Test
     public void testClass() {
         Character John = new Character(RaceChoice.HUMAN, Classes.FIGHTER);
-        Assert.assertTrue(John.getSkillPoints() > 0);
+        Assert.assertTrue(John.getUnallocatedSkillPoints() > 0);
     }
 
     @Test

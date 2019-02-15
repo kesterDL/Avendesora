@@ -17,6 +17,7 @@ public class Fighter extends JobClass {
     public Fighter(){}
 
     public Fighter(final int IntModifier, final int level) {
+        setJobClass(Classes.FIGHTER);
         setHitDice(Dice.d10);
         setSkillPoints(calculateSkillPoints(IntModifier, level));
         setNumberOfFeats(1);
@@ -51,6 +52,7 @@ public class Fighter extends JobClass {
         return numFeats;
     }
 
+    @Override
     public Integer calculateSkillPoints(final int IntModifier, final int level) {
         Integer points = (2 + IntModifier) * 4;
         if(level == 1 && points < 4){
@@ -92,7 +94,8 @@ public class Fighter extends JobClass {
         return save;
     }
 
-    private Integer calculateSecondAttackBonus(final int level) {
+    @Override
+    public Integer calculateSecondAttackBonus(final int level) {
         Integer bonus = 0;
         if(level < 6) {
             bonus = 0;
@@ -100,7 +103,8 @@ public class Fighter extends JobClass {
         return bonus;
     }
 
-    private Integer calculateThirdAttackBonus(final int level) {
+    @Override
+    public Integer calculateThirdAttackBonus(final int level) {
         Integer bonus = 0;
         if(level < 11) {
             bonus = 0;

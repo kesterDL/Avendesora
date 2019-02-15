@@ -24,6 +24,15 @@ public abstract class JobClass {
     private ArrayList<ShieldTypes> shieldProficiencies;
     private ArrayList<WeaponTypes> weaponProficiencies;
     private ArrayList<Skills> classSkills;
+    private Classes jobClass;
+
+    public Classes getJobClass() {
+        return jobClass;
+    }
+
+    public void setJobClass(Classes jobClass) {
+        this.jobClass = jobClass;
+    }
 
     public Dice getHitDice() {
         return hitDice;
@@ -56,6 +65,23 @@ public abstract class JobClass {
     public void setThirdAttackBonus(int thirdAttackBonus) {
         this.thirdAttackBonus = thirdAttackBonus;
     }
+
+    public Integer calculateSecondAttackBonus(final int level) {
+        Integer bonus = 0;
+        if(level < 6) {
+            bonus = 0;
+        }
+        return bonus;
+    }
+
+    public Integer calculateThirdAttackBonus(final int level) {
+        Integer bonus = 0;
+        if(level < 11) {
+            bonus = 0;
+        }
+        return bonus;
+    }
+
     public Integer calculateFortitudeSave(int level) {
         return level;
     }
@@ -112,6 +138,16 @@ public abstract class JobClass {
 
     public void setSkillPoints(int skillPoints) {
         this.skillPoints = skillPoints;
+    }
+
+    public Integer calculateSkillPoints(final int IntModifier, final int level) {
+        Integer points = (2 + IntModifier) * 4;
+        if(level == 1 && points < 4){
+            points = 4;
+        } else if (level > 1) {
+            points = getSkillPoints() + 2 + IntModifier;
+        }
+        return points;
     }
 
     public int getNumberOfFeats() {
