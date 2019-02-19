@@ -111,4 +111,9 @@ public class Fighter extends JobClass {
         }
         return bonus;
     }
+
+    @Override
+    public Integer calculateBaseAttackBonus(final int level, final int abilityMod, final int sizeModifier) {
+        return level + abilityMod + sizeModifier;
+    }
 }

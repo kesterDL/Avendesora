@@ -8,6 +8,7 @@ import characterTraits.Classes.Classes;
 import characterTraits.Classes.Fighter;
 import characterTraits.Classes.JobClass;
 import characterTraits.Feats.Feats;
+import characterTraits.Race.Dwarf;
 import characterTraits.Race.Human;
 import characterTraits.Race.Race;
 import characterTraits.Race.RaceChoice;
@@ -28,9 +29,9 @@ public class Character {
      */
     private Map<Integer, Integer> abilityModifiers = createModifierMap();
     /**
-     * Character's Race type.
+     * Object for the selected race.
      */
-    private RaceChoice raceChoice;
+    private Race raceObject;
     /**
      * Vision Spectrum.
      */
@@ -166,7 +167,7 @@ public class Character {
         // Roll Ability Stats
         defaultCharacterStats();
         // Set RaceChoice and JobClass and adjust stats accordingly
-        setRaceChoice(raceChoice);
+        setRaceObject(raceChoice);
         setClass(jobClass);
         // General Character Info
         rollMaximumHitPoints();
@@ -456,7 +457,8 @@ public class Character {
 
     public void defaultArmor() {
         Integer armorClass = 10 + getDexterityModifier();
-        if (getRaceChoice() == RaceChoice.GNOME || getRaceChoice() == RaceChoice.HALFLING){
+        RaceChoice race = getRaceObject().getSelectedRace();
+        if (race == RaceChoice.GNOME || race == RaceChoice.HALFLING){
             armorClass += 1;
         }
         Shield buckler = new ShieldBuckler();
@@ -470,7 +472,8 @@ public class Character {
 
     public void chooseArmorClass() {
         Integer armorClass = 10 + getDexterityModifier();
-        if (getRaceChoice() == RaceChoice.GNOME || getRaceChoice() == RaceChoice.HALFLING){
+        RaceChoice race = getRaceObject().getSelectedRace();
+        if (race == RaceChoice.GNOME || race == RaceChoice.HALFLING){
             armorClass += 1;
         }
         armorClass += selectLightArmor();
@@ -768,44 +771,39 @@ public class Character {
         this.unallocatedSkillPoints += points;
     }
 
-    public void setRaceChoice(RaceChoice charRaceChoice) {
-        raceChoice = charRaceChoice;
-        setRacialTraits();
+    public Race getRaceObject() {
+        return this.raceObject;
     }
 
-    public RaceChoice getRaceChoice() {
-        return raceChoice;
-    }
-
-    private void setRacialTraits() {
-        if (raceChoice != null) {
-            switch (getRaceChoice()) {
-                case HUMAN:
-                    Race human = new Human();
-                    for (Vision spectra : human.getRacialVision()) {
-                        addToVisionSet(spectra);
-                    }
-                    setSpeed(human.getRacialBaseLandSpeed());
-                    addToLanguages(Languages.COMMON);
-                    addToUnallocatedFeats(human.getRacialBonusFeats());
-                    addToUnallocatedSkillPoints(human.getRacialExtraSkillPoints());
-                    break;
-                case DWARF:
-                    int constitution = getConstitution();
-                    int charisma = getCharisma();
-                    break;
-                case ELVEN:
-                    break;
-                case GNOME:
-                    break;
-                case HALF_ORC:
-                    break;
-                case HALFLING:
-                    break;
-                case HALF_ELVEN:
-                    break;
-            }
+    public void setRaceObject(final RaceChoice raceChoice) {
+        switch (raceChoice) {
+            case HUMAN:
+                this.raceObject = new Human();
+                break;
+            case DWARF:
+                this.raceObject = new Dwarf();
+                int constitution = getConstitution();
+                int charisma = getCharisma();
+                break;
+            case ELVEN:
+                break;
+            case GNOME:
+                break;
+            case HALF_ORC:
+                break;
+            case HALFLING:
+                break;
+            case HALF_ELVEN:
+                break;
         }
+
+        for (Vision spectra : raceObject.getRacialVision()) {
+            addToVisionSet(spectra);
+        }
+        setSpeed(raceObject.getRacialBaseLandSpeed());
+        addToLanguages(Languages.COMMON);
+        addToUnallocatedFeats(raceObject.getRacialBonusFeats());
+        addToUnallocatedSkillPoints(raceObject.getRacialExtraSkillPoints());
     }
 
     public void setClass(final Classes jobClass) {
@@ -829,7 +827,8 @@ public class Character {
         if(getJob() != null) {
             getJobObject().setNumberOfFeats(getJobObject().calculateNumberOfFeats(getIntelligenceModifier()));
             addToUnallocatedFeats(getJobObject().getNumberOfFeats());
-            getJobObject().setBaseAttackBonus(1);
+            getJobObject().setBaseAttackBonus(getJobObject().calculateBaseAttackBonus(getLevel(),
+                    getStrengthModifier(), getRaceObject().getSizeModifier()));
             setBaseAttackBonus(getJobObject().getBaseAttackBonus());
             addToUnallocatedSkillPoints(getJobObject().getSkillPoints());
             calculateReflexSavingThrow(0);
@@ -882,16 +881,7 @@ public class Character {
     }
 
     public void calculateGrapple() {
-        int sizeMod = 0;
-        switch(getRaceChoice()) {
-            case HUMAN:
-                sizeMod = 0;
-                break;
-            case GNOME:
-                sizeMod = -4;
-                break;
-        }
-        this.Grapple = getBaseAttackBonus() + getStrengthModifier() + sizeMod;
+        this.Grapple = getBaseAttackBonus() + getStrengthModifier() + getRaceObject().getSizeModifier();
     }
 
     public int getGrapple() {

@@ -34,4 +34,8 @@ public class Human extends Race {
         setRaceSize(Sizes.MEDIUM);
     }
 
+    @Override
+    public ArrayList<Classes> getRaceFavoredClasses() {
+        return super.getRaceFavoredClasses();
+    }
 }

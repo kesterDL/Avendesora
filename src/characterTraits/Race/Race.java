@@ -21,6 +21,10 @@ public abstract class Race {
     final private String WisAdjustment = "WisAdjustment";
     final private String ChaAdjustment = "ChaAdjustment";
     /**
+     * Selected race.
+     */
+    private RaceChoice selectedRace;
+    /**
      * Racial Favored JobClass.
      */
     private ArrayList<Classes> favoredClasses;
@@ -52,12 +56,17 @@ public abstract class Race {
      * Physical size.
      */
     Sizes size;
+    /**
+     * Size Modifier
+     * @return modifier
+     */
+    Integer sizeModifier;
 
     public Map<String, Integer> getRacialAbilityAdjustments() {
         return abilityAdjustments;
     }
 
-    public void setRacialAbilityAdjustments(Map<String, Integer> abilityAdjustments) {
+    public void setRacialAbilityAdjustments(final Map<String, Integer> abilityAdjustments) {
         this.abilityAdjustments = abilityAdjustments;
     }
 
@@ -65,7 +74,7 @@ public abstract class Race {
         return abilityAdjustments.get(StrAdjustment);
     }
 
-    public void setRacialStrAdjustment(int strAdjustment) {
+    public void setRacialStrAdjustment(final int strAdjustment) {
         abilityAdjustments.put(StrAdjustment,strAdjustment);
     }
 
@@ -73,7 +82,7 @@ public abstract class Race {
         return abilityAdjustments.get(DexAdjustment);
     }
 
-    public void setRacialDexAdjustment(int dexAdjustment) {
+    public void setRacialDexAdjustment(final int dexAdjustment) {
         abilityAdjustments.put(DexAdjustment, dexAdjustment);
     }
 
@@ -81,7 +90,7 @@ public abstract class Race {
         return abilityAdjustments.get(ConAdjustment);
     }
 
-    public void setRacialConAdjustment(int conAdjustment) {
+    public void setRacialConAdjustment(final int conAdjustment) {
         abilityAdjustments.put(ConAdjustment, conAdjustment);
     }
 
@@ -89,7 +98,7 @@ public abstract class Race {
         return abilityAdjustments.get(IntAdjustment);
     }
 
-    public void setRacialIntAdjustment(int intAdjustment) {
+    public void setRacialIntAdjustment(final int intAdjustment) {
         abilityAdjustments.put(IntAdjustment, intAdjustment);
     }
 
@@ -97,7 +106,7 @@ public abstract class Race {
         return abilityAdjustments.get(WisAdjustment);
     }
 
-    public void setRacialWisAdjustment(int wisAdjustment) {
+    public void setRacialWisAdjustment(final int wisAdjustment) {
         abilityAdjustments.put(WisAdjustment, wisAdjustment);
     }
 
@@ -105,7 +114,7 @@ public abstract class Race {
         return abilityAdjustments.get(ChaAdjustment);
     }
 
-    public void setRacialChaAdjustment(int chaAdjustment) {
+    public void setRacialChaAdjustment(final int chaAdjustment) {
         abilityAdjustments.put(ChaAdjustment, chaAdjustment);
     }
 
@@ -113,7 +122,7 @@ public abstract class Race {
         return favoredClasses;
     }
 
-    public void setRaceFavoredClasses(ArrayList<Classes> favoredClasses) {
+    public void setRaceFavoredClasses(final ArrayList<Classes> favoredClasses) {
         this.favoredClasses = favoredClasses;
     }
 
@@ -121,7 +130,7 @@ public abstract class Race {
         return extraSkillPoints;
     }
 
-    public void setRacialExtraSkillPoints(int extraSkillPoints) {
+    public void setRacialExtraSkillPoints(final int extraSkillPoints) {
         this.extraSkillPoints = extraSkillPoints;
     }
 
@@ -129,7 +138,7 @@ public abstract class Race {
         return bonusFeats;
     }
 
-    public void setRacialBonusFeats(int bonusFeats) {
+    public void setRacialBonusFeats(final int bonusFeats) {
         this.bonusFeats = bonusFeats;
     }
 
@@ -137,7 +146,7 @@ public abstract class Race {
         return baseLandSpeed;
     }
 
-    public void setRacialBaseLandSpeed(int baseLandSpeed) {
+    public void setRacialBaseLandSpeed(final int baseLandSpeed) {
         this.baseLandSpeed = baseLandSpeed;
     }
 
@@ -145,7 +154,7 @@ public abstract class Race {
         return automaticLanguage;
     }
 
-    public void setAutomaticRacialLanguage(ArrayList<Languages> automaticLanguage) {
+    public void setAutomaticRacialLanguage(final ArrayList<Languages> automaticLanguage) {
         this.automaticLanguage = automaticLanguage;
     }
 
@@ -153,7 +162,7 @@ public abstract class Race {
         return bonusLanguages;
     }
 
-    public void setRacialBonusLanguages(ArrayList<Languages> bonusLanguages) {
+    public void setRacialBonusLanguages(final ArrayList<Languages> bonusLanguages) {
         this.bonusLanguages = bonusLanguages;
     }
 
@@ -161,7 +170,7 @@ public abstract class Race {
         return vision;
     }
 
-    public void setRacialVision(ArrayList<Vision> vision) {
+    public void setRacialVision(final ArrayList<Vision> vision) {
         this.vision = vision;
     }
 
@@ -169,7 +178,52 @@ public abstract class Race {
         return size;
     }
 
-    public void setRaceSize(Sizes size) {
+    public void setRaceSize(final Sizes size) {
         this.size = size;
+        setSizeModifier(size);
+    }
+
+    private void setSizeModifier(final Sizes size) {
+        switch(size) {
+            case FINE:
+                this.sizeModifier = 8;
+                break;
+            case DIMINUTIVE:
+                this.sizeModifier = 4;
+                break;
+            case TINY:
+                this.sizeModifier = 2;
+                break;
+            case SMALL:
+                this.sizeModifier = 1;
+                break;
+            case MEDIUM:
+                this.sizeModifier = 0;
+                break;
+            case LARGE:
+                this.sizeModifier = -1;
+                break;
+            case HUGE:
+                this.sizeModifier = -2;
+                break;
+            case GARGANTUAN:
+                this.sizeModifier = -4;
+                break;
+            case COLOSSAL:
+                this.sizeModifier = -8;
+                break;
+        }
+    }
+
+    public Integer getSizeModifier() {
+        return this.sizeModifier;
+    }
+
+    public void setSelectedRace(final RaceChoice race) {
+        this.selectedRace = race;
+    }
+
+    public RaceChoice getSelectedRace() {
+        return this.selectedRace;
     }
 }

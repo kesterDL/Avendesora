@@ -36,7 +36,7 @@ public class CharacterTest {
 
     @Test
     public void testRace() {
-        Loeb.setRaceChoice(RaceChoice.HUMAN);
+        Loeb.setRaceObject(RaceChoice.HUMAN);
         Assert.assertTrue(Loeb.getSpeed() == 30);
     }
 

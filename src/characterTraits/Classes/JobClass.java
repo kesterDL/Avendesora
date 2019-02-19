@@ -5,6 +5,7 @@ import Equipment.Armor.ShieldTypes;
 import Equipment.Weapons.WeaponTypes;
 import characterTraits.Alignment;
 import characterTraits.Dice;
+import characterTraits.Sizes;
 import characterTraits.Skills;
 
 import java.util.ArrayList;
@@ -50,6 +51,10 @@ public abstract class JobClass {
         this.baseAttackBonus = baseAttackBonus;
     }
 
+    public Integer calculateBaseAttackBonus(final int level, final int abilityMod, final int sizeModifier) {
+        return null;
+    }
+
     public int getSecondAttackBonus() {
         return secondAttackBonus;
     }
@@ -67,19 +72,11 @@ public abstract class JobClass {
     }
 
     public Integer calculateSecondAttackBonus(final int level) {
-        Integer bonus = 0;
-        if(level < 6) {
-            bonus = 0;
-        }
-        return bonus;
+        return null;
     }
 
     public Integer calculateThirdAttackBonus(final int level) {
-        Integer bonus = 0;
-        if(level < 11) {
-            bonus = 0;
-        }
-        return bonus;
+        return null;
     }
 
     public Integer calculateFortitudeSave(int level) {
