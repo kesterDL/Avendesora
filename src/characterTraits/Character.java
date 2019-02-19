@@ -157,16 +157,15 @@ public class Character {
     Random dice = new Random();
 
     public Character() {
-
     }
 
     public Character(RaceChoice raceChoice, Classes jobClass) {
 
         // Level 1
         setLevel(1);
-        // Initial Ability Stats
+        // Roll Ability Stats
         defaultCharacterStats();
-        // RaceChoice and JobClass
+        // Set RaceChoice and JobClass and adjust stats accordingly
         setRaceChoice(raceChoice);
         setClass(jobClass);
         // General Character Info
