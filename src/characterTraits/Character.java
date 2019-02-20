@@ -782,8 +782,6 @@ public class Character {
                 break;
             case DWARF:
                 this.raceObject = new Dwarf();
-                int constitution = getConstitution();
-                int charisma = getCharisma();
                 break;
             case ELVEN:
                 break;
@@ -796,14 +794,27 @@ public class Character {
             case HALF_ELVEN:
                 break;
         }
+        raceAdjustments(getRaceObject());
+    }
 
-        for (Vision spectra : raceObject.getRacialVision()) {
+    private void adjustStatsForRace(final Race race) {
+        setStrength(getStrength() + race.getRacialStrAdjustment());
+        setDexterity(getDexterity() + race.getRacialDexAdjustment());
+        setConstitution(getConstitution() + race.getRacialConAdjustment());
+        setIntelligence(getIntelligence() + race.getRacialIntAdjustment());
+        setWisdom(getWisdom() + race.getRacialWisAdjustment());
+        setCharisma(getCharisma() + race.getRacialChaAdjustment());
+    }
+
+    private void raceAdjustments(final Race race) {
+        adjustStatsForRace(race);
+        for (Vision spectra : getRaceObject().getRacialVision()) {
             addToVisionSet(spectra);
         }
-        setSpeed(raceObject.getRacialBaseLandSpeed());
-        addToLanguages(Languages.COMMON);
-        addToUnallocatedFeats(raceObject.getRacialBonusFeats());
-        addToUnallocatedSkillPoints(raceObject.getRacialExtraSkillPoints());
+        setSpeed(getRaceObject().getRacialBaseLandSpeed());
+        setLanguage(getRaceObject().getAutomaticRacialLanguage());
+        addToUnallocatedFeats(getRaceObject().getRacialBonusFeats());
+        addToUnallocatedSkillPoints(getRaceObject().getRacialExtraSkillPoints());
     }
 
     public void setClass(final Classes jobClass) {
