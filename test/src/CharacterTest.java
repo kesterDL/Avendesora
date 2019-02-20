@@ -16,6 +16,7 @@ public class CharacterTest {
     @Before
     public void generateCharacter() {
         Loeb = new Character();
+        Loeb.defaultCharacterStats();
     }
 
     @Test
@@ -35,9 +36,21 @@ public class CharacterTest {
     }
 
     @Test
-    public void testRace() {
+    public void testHumanRace() {
         Loeb.setRaceObject(RaceChoice.HUMAN);
         Assert.assertTrue(Loeb.getSpeed() == 30);
+    }
+
+    @Test
+    public void testDwarfRace() {
+        Character John = new Character();
+        John.defaultCharacterStats();
+        int charisma = John.getCharisma();
+        int con = John.getConstitution();
+
+        John.setRaceObject(RaceChoice.DWARF);
+        Assert.assertEquals(John.getConstitution(), con + 2, 0);
+        Assert.assertEquals(John.getCharisma(), charisma - 2, 0);
     }
 
     @Test

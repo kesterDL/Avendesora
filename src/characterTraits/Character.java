@@ -296,7 +296,7 @@ public class Character {
         abilityScores.put(ability, abilityStat);
     }
 
-    private void defaultCharacterStats() {
+    public void defaultCharacterStats() {
         ArrayList<Integer> abilityRolls = rollStatsForCreation();
         for (BaseAbilities ability: abilityScores.keySet()) {
             putAbilityStat(ability, abilityRolls.get(0));
@@ -794,7 +794,7 @@ public class Character {
             case HALF_ELVEN:
                 break;
         }
-        raceAdjustments(getRaceObject());
+        raceAdjustments(this.raceObject);
     }
 
     private void adjustStatsForRace(final Race race) {
