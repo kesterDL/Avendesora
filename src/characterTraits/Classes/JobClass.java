@@ -51,8 +51,8 @@ public abstract class JobClass {
         this.baseAttackBonus = baseAttackBonus;
     }
 
-    public Integer calculateBaseAttackBonus(final int level, final int abilityMod, final int sizeModifier) {
-        return null;
+    public Integer calculateBaseAttackBonus(final int level) {
+        return level;
     }
 
     public int getSecondAttackBonus() {

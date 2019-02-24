@@ -822,8 +822,8 @@ public class Character {
             case FIGHTER:
                 JobClass fighter = new Fighter(getIntelligenceModifier(), getLevel());
                 setJobObject(fighter);
+                adjustForClass(BaseAbilities.STRENGTH);
         }
-        adjustForClass();
     }
 
     public void setSecondaryClass(final Classes jobClass) {
@@ -834,18 +834,27 @@ public class Character {
         }
     }
 
-    private void adjustForClass() {
+    private void adjustForClass(final BaseAbilities ability) {
         if(getJob() != null) {
             getJobObject().setNumberOfFeats(getJobObject().calculateNumberOfFeats(getIntelligenceModifier()));
             addToUnallocatedFeats(getJobObject().getNumberOfFeats());
-            getJobObject().setBaseAttackBonus(getJobObject().calculateBaseAttackBonus(getLevel(),
-                    getStrengthModifier(), getRaceObject().getSizeModifier()));
-            setBaseAttackBonus(getJobObject().getBaseAttackBonus());
+            setBaseAttackBonus(calculateBaseAttackBonus(getLevel(),
+                    ability, getRaceObject().getSizeModifier()));
             addToUnallocatedSkillPoints(getJobObject().getSkillPoints());
             calculateReflexSavingThrow(0);
             calculateFortitudeSavingThrow(0);
             calculateWillSavingThrow(0);
         }
+    }
+
+    public Integer calculateBaseAttackBonus(final int level, final BaseAbilities ability, final int sizeModifier) {
+        int skillModifier = 0;
+        if(ability.equals(BaseAbilities.STRENGTH)) {
+            skillModifier = getStrengthModifier();
+        } else if (ability.equals(BaseAbilities.DEXTERITY)) {
+            skillModifier = getDexterityModifier();
+        }
+        return getJobObject().calculateBaseAttackBonus(level) + skillModifier + sizeModifier;
     }
 
     public void addToVisionSet(Vision vision) {

@@ -33,7 +33,7 @@ public class Fighter extends JobClass {
         setArmorProficiencies(armorProficiencies);
         ArrayList shieldProficiencies = new ArrayList<>(Arrays.asList(ShieldTypes.ALL));
         setShieldProficiencies(shieldProficiencies);
-        ArrayList weaponProficiencies = new ArrayList<>(Arrays.asList(WeaponTypes.SIMPLE,WeaponTypes.MARTIAL));
+        ArrayList weaponProficiencies = new ArrayList<>(Arrays.asList(WeaponTypes.SIMPLE, WeaponTypes.MARTIAL));
         setWeaponProficiencies(weaponProficiencies);
         ArrayList classSkills = new ArrayList<>(Arrays.asList(CLIMB,CRAFT, HANDLE_ANIMAL, INTIMIDATE, JUMP, RIDE, SWIM));
         setClassSkills(classSkills);
@@ -112,8 +112,4 @@ public class Fighter extends JobClass {
         return bonus;
     }
 
-    @Override
-    public Integer calculateBaseAttackBonus(final int level, final int abilityMod, final int sizeModifier) {
-        return level + abilityMod + sizeModifier;
-    }
 }
