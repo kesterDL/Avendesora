@@ -5,6 +5,7 @@ import Equipment.Weapons.LongSword;
 import Equipment.Weapons.Weapon;
 import Equipment.Weapons.WeaponList;
 import characterTraits.Classes.Classes;
+import characterTraits.Classes.Cleric;
 import characterTraits.Classes.Fighter;
 import characterTraits.Classes.JobClass;
 import characterTraits.Feats.Feats;
@@ -822,6 +823,11 @@ public class Character {
             case FIGHTER:
                 JobClass fighter = new Fighter(getIntelligenceModifier(), getLevel());
                 setJobObject(fighter);
+                adjustForClass(BaseAbilities.STRENGTH);
+                break;
+            case CLERIC:
+                JobClass cleric = new Cleric(getIntelligenceModifier(), getLevel(), Deities.PELOR);
+                setJobObject(cleric);
                 adjustForClass(BaseAbilities.STRENGTH);
         }
     }

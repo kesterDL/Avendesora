@@ -80,4 +80,9 @@ public class CharacterTest {
         Assert.assertEquals(John.getWisdomModifier(), John.getWillSavingThrow(), 0);
     }
 
+    @Test
+    public void testDwarfCleric() {
+        Character muffin = new Character(RaceChoice.DWARF, Classes.CLERIC);
+    }
+
 }
