@@ -147,6 +147,10 @@ public class Character {
      */
     private Map<Skills, Double> skills = new HashMap<>();
     /**
+     * Spells for each spell level per day.
+     */
+    private Map<Integer, Integer> spellsPerDay;
+    /**
      * Current Level.
      */
     private int Level = 0;
@@ -1180,5 +1184,20 @@ public class Character {
 
     public void setJobObject(final JobClass jobObject) {
         this.jobObject = jobObject;
+    }
+
+    public void setSpellsPerDay(Map<Integer, Integer> spellsPerDay) {
+        this.spellsPerDay = spellsPerDay;
+    }
+
+    public Map<Integer, Integer> getSpellsPerDay() {
+        return spellsPerDay;
+    }
+
+    public Map<Integer, Integer> calculateSpellsPerDay() {
+        Integer bonusSpells = getWisdomModifier();
+        getJobObject().setSpellsPerDay(getJobObject().calculateSpellsPerDay(getLevel()));
+        Map<Integer, Integer> spells = getJobObject().getSpellsPerDay();
+        return spells;
     }
 }
