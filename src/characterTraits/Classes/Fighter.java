@@ -9,7 +9,8 @@ import static characterTraits.Skills.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class Fighter extends JobClass {
@@ -110,6 +111,15 @@ public class Fighter extends JobClass {
             bonus = 0;
         }
         return bonus;
+    }
+
+    @Override
+    public Map<Integer, Integer> calculateSpellsPerDay(int level) {
+        Map<Integer, Integer> spells = new HashMap<>();
+        for (int i = level; i >= 0; i--) {
+            spells.put(i, 0);
+        }
+        return spells;
     }
 
 }

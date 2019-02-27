@@ -9,6 +9,8 @@ import characterTraits.Sizes;
 import characterTraits.Skills;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class JobClass {
     private Dice hitDice;
@@ -26,6 +28,7 @@ public abstract class JobClass {
     private ArrayList<WeaponTypes> weaponProficiencies;
     private ArrayList<Skills> classSkills;
     private Classes jobClass;
+    private Map<Integer, Integer> spellsPerDay;
 
     public Classes getJobClass() {
         return jobClass;
@@ -185,5 +188,30 @@ public abstract class JobClass {
 
     public void setClassSkills(ArrayList<Skills> classSkills) {
         this.classSkills = classSkills;
+    }
+
+    public void setSpellsPerDay( Map<Integer, Integer> spellsPerDay) {
+        this.spellsPerDay = spellsPerDay;
+    }
+
+    public  Map<Integer, Integer> getSpellsPerDay() {
+        return spellsPerDay;
+    }
+
+    public Map<Integer, Integer> calculateSpellsPerDay(int level) {
+        Map<Integer, Integer> spells = new HashMap<>();
+        for(int i = 1; i <= level; i++) {
+            if(i == 1) {
+                spells.put(i,3);
+                spells.put(1, 1);
+            } else if(i % 2 == 0) {
+                for(int j = 0; j < i; j++) {
+                    spells.put(j, spells.get(j) + 1);
+                }
+            } else if(i % 2 != 0) {
+                spells.put(i - 1, 1);
+            }
+        }
+        return spells;
     }
 }
