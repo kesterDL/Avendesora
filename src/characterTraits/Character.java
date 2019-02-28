@@ -174,6 +174,7 @@ public class Character {
         // Set RaceChoice and JobClass and adjust stats accordingly
         setRaceObject(raceChoice);
         setClass(jobClass);
+        setSpellsPerDay(calculateSpellsPerDay());
         // General Character Info
         rollMaximumHitPoints();
         setGold(100);
@@ -1195,9 +1196,14 @@ public class Character {
     }
 
     public Map<Integer, Integer> calculateSpellsPerDay() {
-        Integer bonusSpells = getWisdomModifier();
         getJobObject().setSpellsPerDay(getJobObject().calculateSpellsPerDay(getLevel()));
         Map<Integer, Integer> spells = getJobObject().getSpellsPerDay();
+        Map<Integer, Integer> bonusSpells = getJobObject().calculateBonusSpells(getWisdomModifier());
+
+        for (Integer i: bonusSpells.keySet()) {
+            spells.put(i, spells.get(i) + bonusSpells.get(i));
+        }
+
         return spells;
     }
 }

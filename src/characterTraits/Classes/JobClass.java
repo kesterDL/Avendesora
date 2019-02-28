@@ -30,6 +30,16 @@ public abstract class JobClass {
     private Classes jobClass;
     private Map<Integer, Integer> spellsPerDay;
 
+    public void setBonusSpells(Map<Integer, Integer> bonusSpells) {
+        this.bonusSpells = bonusSpells;
+    }
+
+    public Map<Integer, Integer> getBonusSpells() {
+        return bonusSpells;
+    }
+
+    private Map<Integer, Integer> bonusSpells;
+
     public Classes getJobClass() {
         return jobClass;
     }
@@ -213,5 +223,21 @@ public abstract class JobClass {
             }
         }
         return spells;
+    }
+
+    public Map<Integer, Integer> calculateBonusSpells(final int wisdomMod) {
+        Map<Integer,Integer> bonus = new HashMap<>();
+        bonus.put(0, 0);
+        if(wisdomMod < 1 ) {
+            for (int i = 9; i >= 0; i--) {
+                bonus.put(i, 0);
+            }
+        } else if (wisdomMod < 5) {
+            for(int spellLevel = 1; spellLevel < wisdomMod; spellLevel++) {
+                bonus.put(spellLevel, 1);
+            }
+        }
+
+        return bonus;
     }
 }

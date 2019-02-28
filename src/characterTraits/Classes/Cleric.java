@@ -9,11 +9,14 @@ import characterTraits.Dice;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import static characterTraits.Skills.*;
 
 public class Cleric extends JobClass {
     private Integer spellsPerDay;
+    private Map<Integer, Integer> bonusSpells;
 
 
     public Cleric(int IntModifier, int level, Deities deity) {
@@ -50,4 +53,5 @@ public class Cleric extends JobClass {
     public void adjustForDiety(Deities deity) {
 
     }
+
 }
