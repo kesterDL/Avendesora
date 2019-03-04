@@ -15,9 +15,6 @@ import java.util.Map;
 import static characterTraits.Skills.*;
 
 public class Cleric extends JobClass {
-    private Integer spellsPerDay;
-    private Map<Integer, Integer> bonusSpells;
-
 
     public Cleric(int IntModifier, int level, Deities deity) {
         setJobClass(Classes.CLERIC);
@@ -25,8 +22,8 @@ public class Cleric extends JobClass {
         setSkillPoints(calculateSkillPoints(IntModifier, level));
         setNumberOfFeats(1);
         setBaseAttackBonus(level);
-        setSecondAttackBonus(calculateSecondAttackBonus(level));
-        setThirdAttackBonus(calculateThirdAttackBonus(level));
+//        setSecondAttackBonus(calculateSecondAttackBonus(level));
+//        setThirdAttackBonus(calculateThirdAttackBonus(level));
         setFortitudeSave(calculateFortitudeSave(level));
         setReflexSave(calculateReflexSave(level));
         setWillSave(calculateWillSave(level));

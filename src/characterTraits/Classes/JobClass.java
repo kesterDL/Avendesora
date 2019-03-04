@@ -232,12 +232,13 @@ public abstract class JobClass {
             for (int i = 9; i >= 0; i--) {
                 bonus.put(i, 0);
             }
-        } else if (wisdomMod < 5) {
-            for(int spellLevel = 1; spellLevel < wisdomMod; spellLevel++) {
+        } else if (wisdomMod < 5 && wisdomMod > 0) {
+            for(int spellLevel = 1; spellLevel <= wisdomMod; spellLevel++) {
                 bonus.put(spellLevel, 1);
             }
         }
 
         return bonus;
     }
+
 }

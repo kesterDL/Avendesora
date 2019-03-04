@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.LinkedList;
+import java.util.Map;
 
 
 public class CharacterTest {
@@ -83,6 +84,55 @@ public class CharacterTest {
     @Test
     public void testDwarfCleric() {
         Character muffin = new Character(RaceChoice.DWARF, Classes.CLERIC);
+    }
+
+    @Test
+    public void dailySpells() {
+        Character John = new Character(RaceChoice.HUMAN, Classes.CLERIC);
+        int wisScore = John.getWisdom();
+        Map<Integer, Integer>bonus = John.getJobObject().getBonusSpells();
+        for (Integer key: bonus.keySet()) {
+            System.out.println("bonus key: " + key);
+        }
+        if(wisScore < 12) {
+            Assert.assertEquals(10, John.getJobObject().getBonusSpells().keySet().size(),0);
+        } else {
+            switch (wisScore) {
+                case 12:
+                case 13:
+                    Assert.assertEquals(2, John.getJobObject().getBonusSpells().keySet().size(), 0);
+                    Assert.assertEquals(John.getJobObject().getBonusSpells().get(0), 0, 0);
+                    Assert.assertEquals(John.getJobObject().getBonusSpells().get(1), 1, 0);
+                    break;
+                case 14:
+                case 15:
+                    Assert.assertEquals(3, John.getJobObject().getBonusSpells().keySet().size(), 0);
+                    Assert.assertEquals(John.getJobObject().getBonusSpells().get(0), 0, 0);
+                    Assert.assertEquals(John.getJobObject().getBonusSpells().get(1), 1, 0);
+                    Assert.assertEquals(John.getJobObject().getBonusSpells().get(2), 1, 0);
+                    break;
+                case 16:
+                case 17:
+                    Assert.assertEquals(4, John.getJobObject().getBonusSpells().keySet().size(), 0);
+                    Assert.assertEquals(John.getJobObject().getBonusSpells().get(0), 0, 0);
+                    Assert.assertEquals(John.getJobObject().getBonusSpells().get(1), 1, 0);
+                    Assert.assertEquals(John.getJobObject().getBonusSpells().get(2), 1, 0);
+                    Assert.assertEquals(John.getJobObject().getBonusSpells().get(3), 1, 0);
+                    break;
+                case 18:
+                case 19:
+                    Assert.assertEquals(5, John.getJobObject().getBonusSpells().keySet().size(), 0);
+                    Assert.assertEquals(John.getJobObject().getBonusSpells().get(0), 0, 0);
+                    Assert.assertEquals(John.getJobObject().getBonusSpells().get(1), 1, 0);
+                    Assert.assertEquals(John.getJobObject().getBonusSpells().get(2), 1, 0);
+                    Assert.assertEquals(John.getJobObject().getBonusSpells().get(3), 1, 0);
+                    Assert.assertEquals(John.getJobObject().getBonusSpells().get(4), 1, 0);
+                    break;
+                default:
+
+            }
+        }
+
     }
 
 }

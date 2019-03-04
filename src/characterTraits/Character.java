@@ -1198,9 +1198,10 @@ public class Character {
     public Map<Integer, Integer> calculateSpellsPerDay() {
         getJobObject().setSpellsPerDay(getJobObject().calculateSpellsPerDay(getLevel()));
         Map<Integer, Integer> spells = getJobObject().getSpellsPerDay();
-        Map<Integer, Integer> bonusSpells = getJobObject().calculateBonusSpells(getWisdomModifier());
+        getJobObject().setBonusSpells(getJobObject().calculateBonusSpells(getWisdomModifier()));
+        Map<Integer, Integer> bonusSpells = getJobObject().getBonusSpells();
 
-        for (Integer i: bonusSpells.keySet()) {
+        for (int i = 0; i < spells.keySet().size() - 1; i++) {
             spells.put(i, spells.get(i) + bonusSpells.get(i));
         }
 
