@@ -13,22 +13,27 @@ import characterTraits.Race.Dwarf;
 import characterTraits.Race.Human;
 import characterTraits.Race.Race;
 import characterTraits.Race.RaceChoice;
-import com.sun.istack.internal.NotNull;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.*;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 
+@Getter
+@Setter
+@NoArgsConstructor
 public class Character {
     /**
      * Map of abilityScores and their score.
      */
-    private Map<BaseAbilities, Integer> abilityScores = createBaseAbilityMap();
+    private Map<BaseAbilities, Integer> abilityScores;
     /**
      * Map of scores and their modifiers.
      */
-    private Map<Integer, Integer> abilityModifiers = createModifierMap();
+    private Map<Integer, Integer> abilityModifiers;
     /**
      * Object for the selected race.
      */
@@ -36,7 +41,7 @@ public class Character {
     /**
      * Vision Spectrum.
      */
-    private ArrayList<Vision> vision = new ArrayList<>();
+    private ArrayList<Vision> characterVision;
     /**
      * Dexterity Saving Throw.
      */
@@ -93,15 +98,15 @@ public class Character {
     /**
      * Languages a character speaks.
      */
-    private ArrayList<Languages> language = new ArrayList<>();
+    private ArrayList<Languages> language;
     /**
-     * Total number of feats.
+     * Total number of characterFeats.
      */
     private int numberOfUnallocatedFeats;
     /**
-     * List of all the character's feats.
+     * List of all the character's characterFeats.
      */
-    private ArrayList<Feats> feats = new ArrayList<Feats>();
+    private ArrayList<Feats> characterFeats;
     /**
      * Max Hit points.
      */
@@ -145,7 +150,7 @@ public class Character {
     /**
      * List of character's skill and rank;
      */
-    private Map<Skills, Double> skills = new HashMap<>();
+    private Map<Skills, Double> skills;
     /**
      * Spells for each spell level per day.
      */
@@ -159,14 +164,10 @@ public class Character {
      */
     private int Gold = 0;
 
-    // Dice
-    Random dice = new Random();
-
-    public Character() {
-    }
-
     public Character(RaceChoice raceChoice, Classes jobClass) {
-
+        initializeAbilityScoreMap();
+        initializeAbilityModifierMap();
+        this.characterVision = new ArrayList<>();
         // Level 1
         setLevel(1);
         // Roll Ability Stats
@@ -186,7 +187,7 @@ public class Character {
         addToFeatSet(Feats.IMPROVED_INITIATIVE);
     }
 
-    private int sumOfRollsMinusMin(@NotNull ArrayList<Integer> list) {
+    private int sumOfRollsMinusMin(ArrayList<Integer> list) {
         int min = list.get(0);
         int minIndex = 0;
         int sum = 0;
@@ -206,12 +207,13 @@ public class Character {
     public Integer rollAnAbilityStat() {
         ArrayList<Integer> rolls = new ArrayList<>();
         for(int j = 0; j < 4; j++){
-            rolls.add(rollAD6());
+            rolls.add(Dice.rollAD6());
         }
         return sumOfRollsMinusMin(rolls);
     }
 
-    private Map<BaseAbilities, Integer> createBaseAbilityMap() {
+    private Map<BaseAbilities, Integer> initializeAbilityScoreMap() {
+        abilityScores = new HashMap<>();
         Map<BaseAbilities, Integer> scores = new HashMap<>();
         scores.put(BaseAbilities.STRENGTH, null);
         scores.put(BaseAbilities.DEXTERITY, null);
@@ -219,42 +221,19 @@ public class Character {
         scores.put(BaseAbilities.INTELLIGENCE, null);
         scores.put(BaseAbilities.WISDOM, null);
         scores.put(BaseAbilities.CHARISMA, null);
-
+        abilityScores.putAll(scores);
         return scores;
     }
 
-    private Map<Integer, Integer> createModifierMap() {
+    private Map<Integer, Integer> initializeAbilityModifierMap() {
+        abilityModifiers = new HashMap<>();
         Map<Integer, Integer> modifiers = new HashMap<>();
 
         for (int i = 0; i < 25; i++) {
             modifiers.put(i, calculateModifier(i));
         }
-
+        abilityModifiers.putAll(modifiers);
         return modifiers;
-    }
-
-    public Integer rollAD6() {
-        return dice.nextInt(6 - 1 + 1) + 1;
-    }
-
-    public Integer rollAD20() {
-        return dice.nextInt(20 - 1 + 1) + 1;
-    }
-
-    public Integer rollAD12() {
-        return dice.nextInt(12 - 1 + 1) + 1;
-    }
-
-    public Integer rollAD10() {
-        return dice.nextInt(10 - 1 + 1) + 1;
-    }
-
-    public Integer rollAD8() {
-        return dice.nextInt(8 - 1 + 1) + 1;
-    }
-
-    public Integer rollAD4() {
-        return dice.nextInt(4 - 1 + 1) + 1;
     }
 
     private ArrayList<Integer> rollStatsForCreation() {
@@ -303,6 +282,8 @@ public class Character {
     }
 
     public void defaultCharacterStats() {
+        initializeAbilityScoreMap();
+        initializeAbilityModifierMap();
         ArrayList<Integer> abilityRolls = rollStatsForCreation();
         for (BaseAbilities ability: abilityScores.keySet()) {
             putAbilityStat(ability, abilityRolls.get(0));
@@ -672,35 +653,35 @@ public class Character {
                 if(getLevel() == 1) {
                     setMaximumHitPoints(4 + getConstitutionModifier());
                 } else {
-                    addToMaxHitPoints(rollAD4() + getConstitutionModifier());
+                    addToMaxHitPoints(Dice.rollAD4() + getConstitutionModifier());
                 }
                 break;
             case d6:
                 if(getLevel() == 1) {
                     setMaximumHitPoints(6 + getConstitutionModifier());
                 } else {
-                    addToMaxHitPoints(rollAD6() + getConstitutionModifier());
+                    addToMaxHitPoints(Dice.rollAD6() + getConstitutionModifier());
                 }
                 break;
             case d8:
                 if(getLevel() == 1) {
                     setMaximumHitPoints(8 + getConstitutionModifier());
                 } else {
-                    addToMaxHitPoints(rollAD8() + getConstitutionModifier());
+                    addToMaxHitPoints(Dice.rollAD8() + getConstitutionModifier());
                 }
                 break;
             case d10:
                 if (getLevel() == 1) {
                     setMaximumHitPoints(10 + getConstitutionModifier());
                 } else {
-                    addToMaxHitPoints(rollAD10() + getConstitutionModifier());
+                    addToMaxHitPoints(Dice.rollAD10() + getConstitutionModifier());
                 }
                 break;
             case d12:
                 if (getLevel() == 1) {
                     setMaximumHitPoints(12 + getConstitutionModifier());
                 } else {
-                    addToMaxHitPoints(rollAD12() + getConstitutionModifier());
+                    addToMaxHitPoints(Dice.rollAD12() + getConstitutionModifier());
                 }
                 break;
         }
@@ -869,11 +850,11 @@ public class Character {
     }
 
     public void addToVisionSet(Vision vision) {
-        this.vision.add(vision);
+        this.characterVision.add(vision);
     }
 
-    public ArrayList<Vision> getVision() {
-        return vision;
+    public ArrayList<Vision> getCharacterVision() {
+        return characterVision;
     }
 
     public void setUnallocatedSkillPoints(final int points) {
@@ -1059,7 +1040,7 @@ public class Character {
     }
 
     public void addToVisionSet(final ArrayList<Vision> vision) {
-        this.vision = vision;
+        this.characterVision = vision;
     }
 
     public void setReflexSavingThrow(final int reflexSavingThrow) {
@@ -1154,17 +1135,17 @@ public class Character {
         this.skills = skills;
     }
 
-    public ArrayList<Feats> getFeats() {
-        return feats;
+    public ArrayList<Feats> getCharacterFeats() {
+        return characterFeats;
     }
 
-    public void setFeats(final ArrayList<Feats> feats) {
-        this.feats = feats;
+    public void setCharacterFeats(final ArrayList<Feats> characterFeats) {
+        this.characterFeats = characterFeats;
     }
 
     public void addToFeatSet(final Feats feat) {
         if(getNumberOfUnallocatedFeats() > 0) {
-            feats.add(feat);
+            characterFeats.add(feat);
             subtractFromUnallocatedFeats(1);
         } else {
             // TODO: Exception handler

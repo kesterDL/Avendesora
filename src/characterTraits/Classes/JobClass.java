@@ -7,11 +7,17 @@ import characterTraits.Alignment;
 import characterTraits.Dice;
 import characterTraits.Sizes;
 import characterTraits.Skills;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+@NoArgsConstructor
+@Getter
+@Setter
 public abstract class JobClass {
     private Dice hitDice;
     private Integer baseAttackBonus;
@@ -30,59 +36,7 @@ public abstract class JobClass {
     private Classes jobClass;
     private Map<Integer, Integer> spellsPerDay;
 
-    public void setBonusSpells(Map<Integer, Integer> bonusSpells) {
-        this.bonusSpells = bonusSpells;
-    }
-
-    public Map<Integer, Integer> getBonusSpells() {
-        return bonusSpells;
-    }
-
-    private Map<Integer, Integer> bonusSpells;
-
-    public Classes getJobClass() {
-        return jobClass;
-    }
-
-    public void setJobClass(Classes jobClass) {
-        this.jobClass = jobClass;
-    }
-
-    public Dice getHitDice() {
-        return hitDice;
-    }
-
-    public void setHitDice(Dice hitDice) {
-        this.hitDice = hitDice;
-    }
-
-    public int getBaseAttackBonus() {
-        return baseAttackBonus;
-    }
-
-    public void setBaseAttackBonus(int baseAttackBonus) {
-        this.baseAttackBonus = baseAttackBonus;
-    }
-
-    public Integer calculateBaseAttackBonus(final int level) {
-        return level;
-    }
-
-    public int getSecondAttackBonus() {
-        return secondAttackBonus;
-    }
-
-    public void setSecondAttackBonus(int secondAttackBonus) {
-        this.secondAttackBonus = secondAttackBonus;
-    }
-
-    public int getThirdAttackBonus() {
-        return thirdAttackBonus;
-    }
-
-    public void setThirdAttackBonus(int thirdAttackBonus) {
-        this.thirdAttackBonus = thirdAttackBonus;
-    }
+    public Integer calculateBaseAttackBonus(final int level) { return level; }
 
     public Integer calculateSecondAttackBonus(final int level) {
         return null;
@@ -123,21 +77,6 @@ public abstract class JobClass {
     public Integer calculateNumberOfFeats(int level) {
         return level;
     }
-    public int getWillSave() {
-        return WillSave;
-    }
-
-    public void setWillSave(int willSave) {
-        WillSave = willSave;
-    }
-
-    public Alignment getPreferredAlignment() {
-        return preferredAlignment;
-    }
-
-    public void setPreferredAlignment(Alignment preferredAlignment) {
-        this.preferredAlignment = preferredAlignment;
-    }
 
     public int getSkillPoints() {
         if (skillPoints == null) {
@@ -158,54 +97,6 @@ public abstract class JobClass {
             points = getSkillPoints() + 2 + IntModifier;
         }
         return points;
-    }
-
-    public int getNumberOfFeats() {
-        return numberOfFeats;
-    }
-
-    public void setNumberOfFeats(int numberOfFeats) {
-        this.numberOfFeats = numberOfFeats;
-    }
-
-    public ArrayList<ArmorTypes> getArmorProficiencies() {
-        return armorProficiencies;
-    }
-
-    public void setArmorProficiencies(ArrayList<ArmorTypes> armorProficiencies) {
-        this.armorProficiencies = armorProficiencies;
-    }
-
-    public ArrayList<ShieldTypes> getShieldProficiencies() {
-        return shieldProficiencies;
-    }
-
-    public void setShieldProficiencies(ArrayList<ShieldTypes> shieldProficiencies) {
-        this.shieldProficiencies = shieldProficiencies;
-    }
-
-    public ArrayList<WeaponTypes> getWeaponProficiencies() {
-        return weaponProficiencies;
-    }
-
-    public void setWeaponProficiencies(ArrayList<WeaponTypes> weaponProficiencies) {
-        this.weaponProficiencies = weaponProficiencies;
-    }
-
-    public ArrayList<Skills> getClassSkills() {
-        return classSkills;
-    }
-
-    public void setClassSkills(ArrayList<Skills> classSkills) {
-        this.classSkills = classSkills;
-    }
-
-    public void setSpellsPerDay( Map<Integer, Integer> spellsPerDay) {
-        this.spellsPerDay = spellsPerDay;
-    }
-
-    public  Map<Integer, Integer> getSpellsPerDay() {
-        return spellsPerDay;
     }
 
     public Map<Integer, Integer> calculateSpellsPerDay(int level) {

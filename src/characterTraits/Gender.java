@@ -1,6 +1,11 @@
 package characterTraits;
 
 public enum Gender {
-    MALE,
-    FEMALE
+    MALE ("Male"),
+    FEMALE ("Female");
+
+    String gender;
+    Gender(String gender) {
+        this.gender = gender;
+    }
 }
