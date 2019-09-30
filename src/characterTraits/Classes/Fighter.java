@@ -10,37 +10,35 @@ import static characterTraits.Skills.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import lombok.Getter;
+import lombok.Setter;
 
-
+@Setter
+@Getter
 public class Fighter extends JobClass {
+    final private Classes jobClass = Classes.FIGHTER;
+    final private List armorProficiencies = new ArrayList<>(Arrays.asList(ArmorTypes.LIGHT,ArmorTypes.MEDIUM, ArmorTypes.HEAVY));
+    final private List shieldProficiencies = new ArrayList<>(Arrays.asList(ShieldTypes.ALL));
+    final private List weaponProficiencies = new ArrayList<>(Arrays.asList(WeaponTypes.SIMPLE, WeaponTypes.MARTIAL));
+    final private List classSkills = new ArrayList<>(Arrays.asList(CLIMB,CRAFT, HANDLE_ANIMAL, INTIMIDATE, JUMP, RIDE, SWIM));
+    final private Dice hitDice = Dice.d10;
+    final private Alignment preferredAlignment = Alignment.Any;
 
-    public Fighter(){}
-
-    public Fighter(final int IntModifier, final int level) {
-        setJobClass(Classes.FIGHTER);
-        setHitDice(Dice.d10);
+    public Fighter(final Integer IntModifier, final Integer level) {
+        super();
+        setNumberOfFeats(calculateNumberOfFeats(level));
         setSkillPoints(calculateSkillPoints(IntModifier, level));
-        setNumberOfFeats(1);
-        setBaseAttackBonus(level);
-        setSecondAttackBonus(calculateSecondAttackBonus(level));
-        setThirdAttackBonus(calculateThirdAttackBonus(level));
         setFortitudeSave(calculateFortitudeSave(level));
         setReflexSave(calculateReflexSave(level));
         setWillSave(calculateWillSave(level));
-        setPreferredAlignment(Alignment.Any);
-        setNumberOfFeats(calculateNumberOfFeats(level));
-        ArrayList armorProficiencies = new ArrayList<>(Arrays.asList(ArmorTypes.LIGHT,ArmorTypes.MEDIUM, ArmorTypes.HEAVY));
-        setArmorProficiencies(armorProficiencies);
-        ArrayList shieldProficiencies = new ArrayList<>(Arrays.asList(ShieldTypes.ALL));
-        setShieldProficiencies(shieldProficiencies);
-        ArrayList weaponProficiencies = new ArrayList<>(Arrays.asList(WeaponTypes.SIMPLE, WeaponTypes.MARTIAL));
-        setWeaponProficiencies(weaponProficiencies);
-        ArrayList classSkills = new ArrayList<>(Arrays.asList(CLIMB,CRAFT, HANDLE_ANIMAL, INTIMIDATE, JUMP, RIDE, SWIM));
-        setClassSkills(classSkills);
+        setBaseAttackBonus(calculateBaseAttackBonus(level));
+        setSecondAttackBonus(calculateSecondAttackBonus(level));
+        setThirdAttackBonus(calculateThirdAttackBonus(level));
+        setSpellsPerDay(calculateSpellsPerDay(level));
     }
 
-    @Override
     public Integer calculateNumberOfFeats(final int level) {
         int numFeats = 0;
         if(level == 1) {
@@ -53,7 +51,6 @@ public class Fighter extends JobClass {
         return numFeats;
     }
 
-    @Override
     public Integer calculateSkillPoints(final int IntModifier, final int level) {
         Integer points = (2 + IntModifier) * 4;
         if(level == 1 && points < 4){
@@ -64,7 +61,6 @@ public class Fighter extends JobClass {
         return points;
     }
 
-    @Override
     public Integer calculateFortitudeSave(int level) {
         Integer save = 2;
         while(level > 0) {
@@ -76,7 +72,6 @@ public class Fighter extends JobClass {
         return save;
     }
 
-    @Override
     public Integer calculateReflexSave(int level) {
         Integer save = 0;
         if(level % 3 == 0 && level > 0) {
@@ -86,7 +81,6 @@ public class Fighter extends JobClass {
         return save;
     }
 
-    @Override
     public Integer calculateWillSave(final int level) {
         Integer save = 0;
         if(level % 3 == 0 && level > 0) {
@@ -95,31 +89,29 @@ public class Fighter extends JobClass {
         return save;
     }
 
-    @Override
+    public Integer calculateBaseAttackBonus(final int level) {
+        return level;
+    }
+
     public Integer calculateSecondAttackBonus(final int level) {
-        Integer bonus = 0;
-        if(level < 6) {
-            bonus = 0;
+        if (level >= 6) {
+            return level - 5;
+        } else {
+            return 0;
         }
-        return bonus;
     }
 
-    @Override
     public Integer calculateThirdAttackBonus(final int level) {
-        Integer bonus = 0;
-        if(level < 11) {
-            bonus = 0;
-        }
-        return bonus;
+        return calculateSecondAttackBonus(level);
     }
 
-    @Override
     public Map<Integer, Integer> calculateSpellsPerDay(int level) {
-        Map<Integer, Integer> spells = new HashMap<>();
+        Map<Integer, Integer> spellsPerDay = new HashMap<>();
         for (int i = level; i >= 0; i--) {
-            spells.put(i, 0);
+            spellsPerDay.put(i, 0);
         }
-        return spells;
+
+        return spellsPerDay;
     }
 
 }

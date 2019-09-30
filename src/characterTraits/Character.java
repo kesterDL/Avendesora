@@ -13,11 +13,11 @@ import characterTraits.Race.Dwarf;
 import characterTraits.Race.Human;
 import characterTraits.Race.Race;
 import characterTraits.Race.RaceChoice;
+
+import java.util.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.*;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
@@ -277,7 +277,7 @@ public class Character {
         printOutCharacterAbilityStats();
     }
 
-    public void putAbilityStat(final BaseAbilities ability, final Integer abilityStat) {
+    private void putAbilityStat(final BaseAbilities ability, final Integer abilityStat) {
         abilityScores.put(ability, abilityStat);
     }
 
@@ -406,17 +406,9 @@ public class Character {
         return abilityModifiers.get(abilityScores.get(BaseAbilities.CHARISMA));
     }
 
-    public int getReflexSavingThrow() {
-        return ReflexSavingThrow;
-    }
-
     private void calculateReflexSavingThrow(final int magicMod) {
         getJobObject().calculateReflexSave(getDexterityModifier());
         setReflexSavingThrow(getJobObject().getReflexSave() + getDexterityModifier() + magicMod);
-    }
-
-    public int getFortitudeSavingThrow() {
-        return FortitudeSavingThrow;
     }
 
     private void calculateFortitudeSavingThrow(final int magicMod) {
@@ -424,22 +416,10 @@ public class Character {
         setFortitudeSavingThrow(getJobObject().getFortitudeSave() + getConstitutionModifier() + magicMod);
     }
 
-    public int getWillSavingThrow() {
-        return WillSavingThrow;
-    }
-
     private void calculateWillSavingThrow(final int magicMod) {
         getJobObject().calculateWillSave(getLevel());
         setWillSavingThrow(getJobObject().getWillSave() + getWisdomModifier() + magicMod);
 
-    }
-
-    public void setArmorClass(Integer armorClass) {
-        this.ArmorClass = armorClass;
-    }
-
-    public int getArmorClass() {
-        return ArmorClass;
     }
 
     public void defaultArmor() {
@@ -622,28 +602,12 @@ public class Character {
         return armorClass;
     }
 
-    public int getInitiative() {
-        return InitiativeModifier;
-    }
-
     public void setInitiativeModifier(final int additionalMod) {
         if (getDexterityModifier() > 0) {
             InitiativeModifier = getDexterityModifier() + additionalMod;
         } else {
             InitiativeModifier = 0;
         }
-    }
-
-    public int getSpeed() {
-        return Speed;
-    }
-
-    public void setSpeed(final int speed) {
-        this.Speed = speed;
-    }
-
-    public int getMaximumHitPoints() {
-        return MaximumHitPoints;
     }
 
     public void rollMaximumHitPoints() {
@@ -687,55 +651,12 @@ public class Character {
         }
     }
 
-    public int getCurrentHitPoints() {
-        return CurrentHitPoints;
-    }
-
     public void addToMaxHitPoints(int hitpoints) {
         setMaximumHitPoints(getMaximumHitPoints() + hitpoints);
-    }
-    public void setCurrentHitPoints(int hitPoints) {
-        this.CurrentHitPoints = hitPoints;
-    }
-
-    public String getCharacterName() {
-        return CharacterName;
-    }
-
-    public void setCharacterName(String characterName) {
-        this.CharacterName = characterName;
-    }
-
-    public String getPlayerName() {
-        return PlayerName;
-    }
-
-    public void setPlayerName(String playerName) {
-        this.PlayerName = playerName;
-    }
-
-    public void setGender(Gender gender) {
-        this.gender = gender;
-    }
-
-    public int getCurrentExperiencePoints() {
-        return ExperiencePoints;
-    }
-
-    private void setExperiencePoints(final int experiencePoints) {
-        this.ExperiencePoints = experiencePoints;
     }
 
     public void addToExperiencePoints(final int points) {
         this.ExperiencePoints += points;
-    }
-
-    public int getLevel() {
-        return Level;
-    }
-
-    private void setLevel(final int level) {
-        Level = level;
     }
 
     private Integer calculateModifier(Integer abilityScore) {
@@ -756,10 +677,6 @@ public class Character {
 
     public void addToUnallocatedSkillPoints(int points) {
         this.unallocatedSkillPoints += points;
-    }
-
-    public Race getRaceObject() {
-        return this.raceObject;
     }
 
     public void setRaceObject(final RaceChoice raceChoice) {
@@ -827,7 +744,7 @@ public class Character {
     }
 
     private void adjustForClass(final BaseAbilities ability) {
-        if(getJob() != null) {
+        if(getJobObject() != null) {
             getJobObject().setNumberOfFeats(getJobObject().calculateNumberOfFeats(getIntelligenceModifier()));
             addToUnallocatedFeats(getJobObject().getNumberOfFeats());
             setBaseAttackBonus(calculateBaseAttackBonus(getLevel(),
@@ -861,10 +778,6 @@ public class Character {
         this.unallocatedSkillPoints = points;
     }
 
-    public int getUnallocatedSkillPoints() {
-        return unallocatedSkillPoints;
-    }
-
     public void addToUnallocatedFeats(final int additionalFeats) {
         this.numberOfUnallocatedFeats += additionalFeats;
     }
@@ -884,20 +797,8 @@ public class Character {
         this.BaseAttackBonus =  getJobObject().getBaseAttackBonus();
     }
 
-    public int getBaseAttackBonus() {
-        return BaseAttackBonus;
-    }
-
-    public int getNumberOfUnallocatedFeats() {
-        return numberOfUnallocatedFeats;
-    }
-
     public void calculateGrapple() {
         this.Grapple = getBaseAttackBonus() + getStrengthModifier() + getRaceObject().getSizeModifier();
-    }
-
-    public int getGrapple() {
-        return Grapple;
     }
 
     public void firstTimeRankSkill(final Skills skill, final double points) {
@@ -921,24 +822,12 @@ public class Character {
 
     }
 
-    public Map<Skills, Double> getSkills() {
-        return this.skills;
-    }
-
     public Double getSkillRank(final Skills skill) {
         if(skills.containsKey(skill)){
             return skills.get(skill);
         } else {
             return 0.0;
         }
-    }
-
-    public void setEquippedWeapon(final WeaponList equippedWeapon) {
-        this.EquippedWeapon = equippedWeapon;
-    }
-
-    public WeaponList getEquippedWeapon() {
-        return EquippedWeapon;
     }
 
     public void defaultWeapon() {
@@ -1007,14 +896,6 @@ public class Character {
         return able;
     }
 
-    public void setGold(final int gold) {
-        this.Gold = gold;
-    }
-
-    public Integer getGold() {
-        return Gold;
-    }
-
     public void addToGold(Integer gold) {
         if(gold > 0) {
             this.Gold += gold;
@@ -1031,118 +912,6 @@ public class Character {
         }
     }
 
-    public Map<BaseAbilities, Integer> getAbilityScores() {
-        return abilityScores;
-    }
-
-    public void setAbilityScores(final Map<BaseAbilities, Integer> abilityScores) {
-        this.abilityScores = abilityScores;
-    }
-
-    public void addToVisionSet(final ArrayList<Vision> vision) {
-        this.characterVision = vision;
-    }
-
-    public void setReflexSavingThrow(final int reflexSavingThrow) {
-        ReflexSavingThrow = reflexSavingThrow;
-    }
-
-    public void setFortitudeSavingThrow(final int fortitudeSavingThrow) {
-        FortitudeSavingThrow = fortitudeSavingThrow;
-    }
-
-    public void setWillSavingThrow(final int willSavingThrow) {
-        WillSavingThrow = willSavingThrow;
-    }
-
-    public ArmorList getEquippedArmor() {
-        return EquippedArmor;
-    }
-
-    public void setEquippedArmor(final ArmorList equippedArmor) {
-        EquippedArmor = equippedArmor;
-    }
-
-    public ShieldTypes getShield() {
-        return Shield;
-    }
-
-    public void setShield(ShieldTypes shield) {
-        Shield = shield;
-    }
-
-    public Weapon getEquippedWeaponObject() {
-        return EquippedWeaponObject;
-    }
-
-    public void setEquippedWeaponObject(final Weapon equippedWeaponObject) {
-        EquippedWeaponObject = equippedWeaponObject;
-    }
-
-    public int getInitiativeModifier() {
-        return InitiativeModifier;
-    }
-
-    public void calculateGrapple(final int grapple) {
-        Grapple = grapple;
-    }
-
-    public ArrayList<Languages> getLanguage() {
-        return language;
-    }
-
-    public void setLanguage(final ArrayList<Languages> language) {
-        this.language = language;
-    }
-
-    public void setNumberOfUnallocatedFeats(final int numberOfUnallocatedFeats) {
-        this.numberOfUnallocatedFeats = numberOfUnallocatedFeats;
-    }
-
-    public void setMaximumHitPoints(final int maximumHitPoints) {
-        MaximumHitPoints = maximumHitPoints;
-    }
-
-    public Classes getJob() {
-        return jobObject.getJobClass();
-    }
-
-    public void setJob(final JobClass job) {
-        this.jobObject = job;
-    }
-
-    public void setSecondaryJob(final JobClass secondaryJob) {
-        this.secondaryJob = secondaryJob;
-    }
-
-    public Gender getGender() {
-        return gender;
-    }
-
-    public int getNakedWeight() {
-        return nakedWeight;
-    }
-
-    public void setNakedWeight(final int nakedWeight) {
-        this.nakedWeight = nakedWeight;
-    }
-
-    public int getExperiencePoints() {
-        return ExperiencePoints;
-    }
-
-    public void setSkills(final HashMap<Skills,Double> skills) {
-        this.skills = skills;
-    }
-
-    public ArrayList<Feats> getCharacterFeats() {
-        return characterFeats;
-    }
-
-    public void setCharacterFeats(final ArrayList<Feats> characterFeats) {
-        this.characterFeats = characterFeats;
-    }
-
     public void addToFeatSet(final Feats feat) {
         if(getNumberOfUnallocatedFeats() > 0) {
             characterFeats.add(feat);
@@ -1150,30 +919,6 @@ public class Character {
         } else {
             // TODO: Exception handler
         }
-    }
-
-    public Armor getEquippedArmorObject() {
-        return EquippedArmorObject;
-    }
-
-    public void setEquippedArmorObject(final Armor equippedArmorObject) {
-        EquippedArmorObject = equippedArmorObject;
-    }
-
-    public JobClass getJobObject() {
-        return jobObject;
-    }
-
-    public void setJobObject(final JobClass jobObject) {
-        this.jobObject = jobObject;
-    }
-
-    public void setSpellsPerDay(Map<Integer, Integer> spellsPerDay) {
-        this.spellsPerDay = spellsPerDay;
-    }
-
-    public Map<Integer, Integer> getSpellsPerDay() {
-        return spellsPerDay;
     }
 
     public Map<Integer, Integer> calculateSpellsPerDay() {

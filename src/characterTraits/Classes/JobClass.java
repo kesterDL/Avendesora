@@ -5,7 +5,6 @@ import Equipment.Armor.ShieldTypes;
 import Equipment.Weapons.WeaponTypes;
 import characterTraits.Alignment;
 import characterTraits.Dice;
-import characterTraits.Sizes;
 import characterTraits.Skills;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +13,8 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import lombok.Getter;
+import lombok.Setter;
 
 @NoArgsConstructor
 @Getter
@@ -35,8 +36,11 @@ public abstract class JobClass {
     private ArrayList<Skills> classSkills;
     private Classes jobClass;
     private Map<Integer, Integer> spellsPerDay;
+    private Map<Integer, Integer> bonusSpells;
 
-    public Integer calculateBaseAttackBonus(final int level) { return level; }
+    public Integer calculateBaseAttackBonus(final int level) {
+        return level;
+    }
 
     public Integer calculateSecondAttackBonus(final int level) {
         return null;
@@ -50,24 +54,8 @@ public abstract class JobClass {
         return level;
     }
 
-    public int getFortitudeSave() {
-        return FortitudeSave;
-    }
-
-    public void setFortitudeSave(int fortitudeSave) {
-        FortitudeSave = fortitudeSave;
-    }
-
-    public int getReflexSave() {
-        return ReflexSave;
-    }
-
     public Integer calculateReflexSave(int DexMod){
             return DexMod;
-    }
-
-    public void setReflexSave(int reflexSave) {
-        ReflexSave = reflexSave;
     }
 
     public Integer calculateWillSave(int level) {
@@ -131,5 +119,4 @@ public abstract class JobClass {
 
         return bonus;
     }
-
 }

@@ -39,4 +39,4 @@ public enum Dice {
         return dice.nextInt(4 - 1 + 1) + 1;
     }
 
-    }
+}
