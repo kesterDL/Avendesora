@@ -1,4 +1,4 @@
-package characterTraits.Feats;
+package CharacterComponents.Feats;
 
 public enum FeatCategories {
     GENERAL,

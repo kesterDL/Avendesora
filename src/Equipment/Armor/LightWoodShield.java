@@ -1,34 +1,25 @@
 package Equipment.Armor;
 
-public class LightWoodShield {
-    ShieldTypes shieldType = ShieldTypes.LIGHT_WOODEN;
-    Integer cost = 3;
-    Integer armorBonus = 1;
-    Integer armorCheckPenalty = -1;
-    Double arcaneSpellFailureChance = 0.05;
-    Integer weight = 5;
+import lombok.Getter;
+import lombok.Setter;
 
-    public ShieldTypes getShieldType() {
-        return shieldType;
+@Setter
+@Getter
+public class LightWoodShield implements Shield {
+    ShieldTypes shieldType;
+    Integer cost;
+    Integer armorBonus;
+    Integer armorCheckPenalty;
+    Double arcaneSpellFailureChance;
+    Integer weight;
+
+    public LightWoodShield() {
+        this.shieldType = ShieldTypes.LIGHT_WOODEN;
+        this.cost = 3;
+        this.armorBonus = 1;
+        this.armorCheckPenalty = -1;
+        this.arcaneSpellFailureChance = 0.05;
+        this.weight = 5;
     }
 
-    public Integer getCost() {
-        return cost;
-    }
-
-    public Integer getArmorBonus() {
-        return armorBonus;
-    }
-
-    public Integer getArmorCheckPenalty() {
-        return armorCheckPenalty;
-    }
-
-    public Double getArcaneSpellFailureChance() {
-        return arcaneSpellFailureChance;
-    }
-
-    public Integer getWeight() {
-        return weight;
-    }
 }

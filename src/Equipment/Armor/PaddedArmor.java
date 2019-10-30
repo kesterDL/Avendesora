@@ -1,12 +1,27 @@
 package Equipment.Armor;
 
-public class PaddedArmor extends Armor{
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class PaddedArmor implements Armor {
+
+    ArmorCategory armorType;
+    ArmorList armor;
+    Integer cost;
+    Integer armorBonus;
+    Integer maxDexBonus;
+    Integer armorCheckPenalty;
+    Double arcaneSpellFailureChance;
+    Double speedAdjustment;
+    Integer weight;
 
     public PaddedArmor() {
 
-        setArmorType(ArmorTypes.LIGHT);
+        setArmorType(ArmorCategory.LIGHT);
         setArmor(ArmorList.PADDED);
-        setGoldCost(5);
+        setCost(5);
         setArmorBonus(1);
         setMaxDexBonus(8);
         setArmorCheckPenalty(0);

@@ -1,11 +1,26 @@
 package Equipment.Armor;
 
-public class LeatherArmor extends Armor {
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class LeatherArmor implements Armor {
+
+    ArmorCategory armorType;
+    ArmorList armor;
+    Integer cost;
+    Integer armorBonus;
+    Integer maxDexBonus;
+    Integer armorCheckPenalty;
+    Double arcaneSpellFailureChance;
+    Double speedAdjustment;
+    Integer weight;
 
     public LeatherArmor() {
-        setArmorType(ArmorTypes.LIGHT);
+        setArmorType(ArmorCategory.LIGHT);
         setArmor(ArmorList.LEATHER);
-        setGoldCost(10);
+        setCost(10);
         setArmorBonus(2);
         setMaxDexBonus(6);
         setArmorCheckPenalty(0);

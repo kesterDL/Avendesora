@@ -1,11 +1,11 @@
-package characterTraits.Classes;
+package CharacterComponents.Classes;
 
-import Equipment.Armor.ArmorTypes;
+import Equipment.Armor.ArmorCategory;
 import Equipment.Armor.ShieldTypes;
 import Equipment.Weapons.WeaponTypes;
-import characterTraits.Alignment;
-import characterTraits.Dice;
-import static characterTraits.Skills.*;
+import CharacterComponents.Alignment;
+import CharacterComponents.Dice;
+import static CharacterComponents.Skills.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,7 +19,8 @@ import lombok.Setter;
 @Getter
 public class Fighter extends JobClass {
     final private Classes jobClass = Classes.FIGHTER;
-    final private List armorProficiencies = new ArrayList<>(Arrays.asList(ArmorTypes.LIGHT,ArmorTypes.MEDIUM, ArmorTypes.HEAVY));
+    final private List armorProficiencies = new ArrayList<>(Arrays.asList(ArmorCategory.LIGHT,
+        ArmorCategory.MEDIUM, ArmorCategory.HEAVY));
     final private List shieldProficiencies = new ArrayList<>(Arrays.asList(ShieldTypes.ALL));
     final private List weaponProficiencies = new ArrayList<>(Arrays.asList(WeaponTypes.SIMPLE, WeaponTypes.MARTIAL));
     final private List classSkills = new ArrayList<>(Arrays.asList(CLIMB,CRAFT, HANDLE_ANIMAL, INTIMIDATE, JUMP, RIDE, SWIM));

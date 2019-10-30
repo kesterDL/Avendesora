@@ -1,14 +1,16 @@
-package characterTraits.Classes;
+package CharacterComponents.Classes;
 
-import Equipment.Armor.ArmorTypes;
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
+
+import Equipment.Armor.Armor;
+import Equipment.Armor.ArmorCategory;
 import Equipment.Armor.ShieldTypes;
+import Equipment.Weapons.Weapon;
 import Equipment.Weapons.WeaponTypes;
-import characterTraits.Alignment;
-import characterTraits.Dice;
-import characterTraits.Skills;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import CharacterComponents.Alignment;
+import CharacterComponents.Dice;
+import CharacterComponents.Skills;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,7 +32,7 @@ public abstract class JobClass {
     private Alignment preferredAlignment;
     private Integer skillPoints;
     private Integer numberOfFeats;
-    private ArrayList<ArmorTypes> armorProficiencies;
+    private ArrayList<ArmorCategory> armorProficiencies;
     private ArrayList<ShieldTypes> shieldProficiencies;
     private ArrayList<WeaponTypes> weaponProficiencies;
     private ArrayList<Skills> classSkills;
@@ -118,5 +120,21 @@ public abstract class JobClass {
         }
 
         return bonus;
+    }
+
+    private Boolean ableToUseWeapon(final Weapon weapon) {
+        Boolean able = FALSE;
+        if (getJobClass().getWeaponProficiencies().contains(weapon.getWeaponClass())) {
+            able = TRUE;
+        }
+        return able;
+    }
+
+    private Boolean ableToUseArmor(final Armor armor) {
+        Boolean able = FALSE;
+        if (getJobClass().getArmorProficiencies().contains(armor.getArmorType())) {
+            able = TRUE;
+        }
+        return able;
     }
 }

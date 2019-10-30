@@ -1,18 +1,16 @@
-package characterTraits.Classes;
+package CharacterComponents.Classes;
 
-import Equipment.Armor.ArmorTypes;
+import Equipment.Armor.ArmorCategory;
 import Equipment.Armor.ShieldTypes;
 import Equipment.Weapons.WeaponTypes;
-import characterTraits.Alignment;
-import characterTraits.Deities;
-import characterTraits.Dice;
+import CharacterComponents.Alignment;
+import CharacterComponents.Deities;
+import CharacterComponents.Dice;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
-import static characterTraits.Skills.*;
+import static CharacterComponents.Skills.*;
 
 public class Cleric extends JobClass {
 
@@ -29,8 +27,8 @@ public class Cleric extends JobClass {
         setWillSave(calculateWillSave(level));
         setPreferredAlignment(Alignment.Any);
         setNumberOfFeats(calculateNumberOfFeats(level));
-        ArrayList armorProficiencies = new ArrayList<>(Arrays.asList(ArmorTypes.LIGHT, ArmorTypes.MEDIUM,
-                ArmorTypes.HEAVY));
+        ArrayList armorProficiencies = new ArrayList<>(Arrays.asList(ArmorCategory.LIGHT, ArmorCategory.MEDIUM,
+                ArmorCategory.HEAVY));
         setArmorProficiencies(armorProficiencies);
         ArrayList shieldProficiencies = new ArrayList<>(Arrays.asList(ShieldTypes.BUCKLER, ShieldTypes.LIGHT_WOODEN,
                 ShieldTypes.HEAVY_STEEL, ShieldTypes.HEAVY_WOODEN, ShieldTypes.LIGHT_STEEL));

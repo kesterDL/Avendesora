@@ -1,58 +1,41 @@
 package Equipment.Armor;
 
-public class Shield {
-    ShieldTypes shieldType;
-    Integer gold;
-    Integer armorBonus;
-    Integer armorCheckPenalty;
-    Double arcaneSpellFailureChance;
-    Integer weight;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-    public ShieldTypes getShieldType() {
-        return shieldType;
-    }
+public interface Shield {
 
-    public void setShieldType(ShieldTypes shieldType) {
-        this.shieldType = shieldType;
-    }
+     ShieldTypes getShieldType();
 
-    public Integer getCost() {
-        return gold;
-    }
+     void setShieldType(ShieldTypes shieldType);
 
-    public void setCost(Integer gold) {
-        this.gold = gold;
-    }
+     Integer getCost();
 
-    public Integer getArmorBonus() {
-        return armorBonus;
-    }
+     void setCost(Integer gold);
 
-    public void setArmorBonus(Integer armorBonus) {
-        this.armorBonus = armorBonus;
-    }
+     Integer getArmorBonus();
 
-    public Integer getArmorCheckPenalty() {
-        return armorCheckPenalty;
-    }
+     void setArmorBonus(Integer armorBonus);
 
-    public void setArmorCheckPenalty(Integer armorCheckPenalty) {
-        this.armorCheckPenalty = armorCheckPenalty;
-    }
+     Integer getArmorCheckPenalty();
 
-    public Double getArcaneSpellFailureChance() {
-        return arcaneSpellFailureChance;
-    }
+     void setArmorCheckPenalty(Integer armorCheckPenalty);
 
-    public void setArcaneSpellFailureChance(Double arcaneSpellFailureChance) {
-        this.arcaneSpellFailureChance = arcaneSpellFailureChance;
-    }
+     Double getArcaneSpellFailureChance();
 
-    public Integer getWeight() {
-        return weight;
-    }
+     void setArcaneSpellFailureChance(Double arcaneSpellFailureChance);
 
-    public void setWeight(Integer weight) {
-        this.weight = weight;
-    }
+     Integer getWeight();
+
+     void setWeight(Integer weight);
+
+     static Shield shieldFactory(ShieldTypes shield) {
+         switch(shield) {
+             case BUCKLER:
+                 return new ShieldBuckler();
+             case LIGHT_WOODEN:
+                 return new LightWoodShield();
+             default:
+                 throw new NotImplementedException();
+         }
+     }
 }

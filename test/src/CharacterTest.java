@@ -1,8 +1,10 @@
 package src;
 
-import characterTraits.Character;
-import characterTraits.Classes.Classes;
-import characterTraits.Race.RaceChoice;
+import CharacterComponents.BaseAbilities;
+import CharacterComponents.Character;
+import CharacterComponents.Classes.Classes;
+import CharacterComponents.Creation.GenerateCharacterStats;
+import CharacterComponents.Race.RaceChoice;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,11 +15,12 @@ import java.util.Map;
 
 public class CharacterTest {
     Character Loeb;
+    GenerateCharacterStats statsCreator;
 
     @Before
     public void generateCharacter() {
         Loeb = new Character();
-        Loeb.defaultCharacterStats();
+        statsCreator = new GenerateCharacterStats();
     }
 
     @Test
@@ -26,7 +29,7 @@ public class CharacterTest {
         LinkedList<Integer> rolls = new LinkedList<>();
 
         for(int i = 0; i < 1000 ; i++) {
-            rolls.add(Loeb.rollAnAbilityStat());
+            rolls.add(statsCreator.rollAnAbilityStat());
         }
         for (int i = 0; i < 1000 ; i++) {
             if (rolls.get(i) > 18 || rolls.get(i) < 3) {
@@ -38,20 +41,21 @@ public class CharacterTest {
 
     @Test
     public void testHumanRace() {
-        Loeb.setRaceObject(RaceChoice.HUMAN);
-        Assert.assertTrue(Loeb.getSpeed() == 30);
+        Loeb.setRace(RaceChoice.HUMAN);
+        Assert.assertTrue(Loeb.getRace().getBaseLandSpeed() == 30);
     }
 
     @Test
     public void testDwarfRace() {
         Character John = new Character();
-        John.defaultCharacterStats();
-        int charisma = John.getCharisma();
-        int con = John.getConstitution();
+        statsCreator.generateRandomCharacterStats();
+        John.setAbilityScores(statsCreator.getAbilityScores());
+        int charisma = John.getAbilityScores().get(BaseAbilities.CHARISMA);
+        int con = John.getAbilityScores().get(BaseAbilities.CONSTITUTION);
 
-        John.setRaceObject(RaceChoice.DWARF);
-        Assert.assertEquals(John.getConstitution(), con + 2, 0);
-        Assert.assertEquals(John.getCharisma(), charisma - 2, 0);
+        John.setRace(RaceChoice.DWARF);
+        Assert.assertEquals(John.getAbilityScores().get(BaseAbilities.CHARISMA), charisma - 2, 0);
+        Assert.assertEquals(John.getAbilityScores().get(BaseAbilities.CONSTITUTION), con + 2, 0);
     }
 
     @Test
@@ -62,12 +66,14 @@ public class CharacterTest {
 
     @Test
     public void testModifiers() {
-        Loeb.setIntelligence(12);
-        Assert.assertTrue(Loeb.getIntelligence() == 12);
-        Assert.assertEquals(1, Loeb.getIntelligenceModifier(), 0);
+        Loeb.getAbilityScores().put(BaseAbilities.INTELLIGENCE, 12);
+        Assert.assertTrue(Loeb.getAbilityScores().get(BaseAbilities.INTELLIGENCE) == 12);
+        Assert.assertEquals(1, Loeb.getAbilityModifiers()
+            .get(Loeb.getAbilityScores().get(BaseAbilities.INTELLIGENCE)), 0);
 
-        Loeb.setStrength(16);
-        Assert.assertEquals(3, Loeb.getStrengthModifier(), 0);
+        Loeb.getAbilityScores().put(BaseAbilities.STRENGTH, 16);
+        Assert.assertEquals(3, Loeb.getAbilityModifiers()
+            .get(Loeb.getAbilityScores().get(BaseAbilities.STRENGTH)), 0);
     }
 
     @Test
@@ -89,44 +95,44 @@ public class CharacterTest {
     @Test
     public void dailySpells() {
         Character John = new Character(RaceChoice.HUMAN, Classes.CLERIC);
-        int wisScore = John.getWisdom();
-        Map<Integer, Integer>bonus = John.getJobObject().getBonusSpells();
+        int wisScore = John.getAbilityScores().get(BaseAbilities.WISDOM);
+        Map<Integer, Integer>bonus = John.getJobClass().getBonusSpells();
         for (Integer key: bonus.keySet()) {
             System.out.println("bonus key: " + key);
         }
         if(wisScore < 12) {
-            Assert.assertEquals(10, John.getJobObject().getBonusSpells().keySet().size(),0);
+            Assert.assertEquals(10, John.getJobClass().getBonusSpells().keySet().size(),0);
         } else {
             switch (wisScore) {
                 case 12:
                 case 13:
-                    Assert.assertEquals(2, John.getJobObject().getBonusSpells().keySet().size(), 0);
-                    Assert.assertEquals(John.getJobObject().getBonusSpells().get(0), 0, 0);
-                    Assert.assertEquals(John.getJobObject().getBonusSpells().get(1), 1, 0);
+                    Assert.assertEquals(2, John.getJobClass().getBonusSpells().keySet().size(), 0);
+                    Assert.assertEquals(John.getJobClass().getBonusSpells().get(0), 0, 0);
+                    Assert.assertEquals(John.getJobClass().getBonusSpells().get(1), 1, 0);
                     break;
                 case 14:
                 case 15:
-                    Assert.assertEquals(3, John.getJobObject().getBonusSpells().keySet().size(), 0);
-                    Assert.assertEquals(John.getJobObject().getBonusSpells().get(0), 0, 0);
-                    Assert.assertEquals(John.getJobObject().getBonusSpells().get(1), 1, 0);
-                    Assert.assertEquals(John.getJobObject().getBonusSpells().get(2), 1, 0);
+                    Assert.assertEquals(3, John.getJobClass().getBonusSpells().keySet().size(), 0);
+                    Assert.assertEquals(John.getJobClass().getBonusSpells().get(0), 0, 0);
+                    Assert.assertEquals(John.getJobClass().getBonusSpells().get(1), 1, 0);
+                    Assert.assertEquals(John.getJobClass().getBonusSpells().get(2), 1, 0);
                     break;
                 case 16:
                 case 17:
-                    Assert.assertEquals(4, John.getJobObject().getBonusSpells().keySet().size(), 0);
-                    Assert.assertEquals(John.getJobObject().getBonusSpells().get(0), 0, 0);
-                    Assert.assertEquals(John.getJobObject().getBonusSpells().get(1), 1, 0);
-                    Assert.assertEquals(John.getJobObject().getBonusSpells().get(2), 1, 0);
-                    Assert.assertEquals(John.getJobObject().getBonusSpells().get(3), 1, 0);
+                    Assert.assertEquals(4, John.getJobClass().getBonusSpells().keySet().size(), 0);
+                    Assert.assertEquals(John.getJobClass().getBonusSpells().get(0), 0, 0);
+                    Assert.assertEquals(John.getJobClass().getBonusSpells().get(1), 1, 0);
+                    Assert.assertEquals(John.getJobClass().getBonusSpells().get(2), 1, 0);
+                    Assert.assertEquals(John.getJobClass().getBonusSpells().get(3), 1, 0);
                     break;
                 case 18:
                 case 19:
-                    Assert.assertEquals(5, John.getJobObject().getBonusSpells().keySet().size(), 0);
-                    Assert.assertEquals(John.getJobObject().getBonusSpells().get(0), 0, 0);
-                    Assert.assertEquals(John.getJobObject().getBonusSpells().get(1), 1, 0);
-                    Assert.assertEquals(John.getJobObject().getBonusSpells().get(2), 1, 0);
-                    Assert.assertEquals(John.getJobObject().getBonusSpells().get(3), 1, 0);
-                    Assert.assertEquals(John.getJobObject().getBonusSpells().get(4), 1, 0);
+                    Assert.assertEquals(5, John.getJobClass().getBonusSpells().keySet().size(), 0);
+                    Assert.assertEquals(John.getJobClass().getBonusSpells().get(0), 0, 0);
+                    Assert.assertEquals(John.getJobClass().getBonusSpells().get(1), 1, 0);
+                    Assert.assertEquals(John.getJobClass().getBonusSpells().get(2), 1, 0);
+                    Assert.assertEquals(John.getJobClass().getBonusSpells().get(3), 1, 0);
+                    Assert.assertEquals(John.getJobClass().getBonusSpells().get(4), 1, 0);
                     break;
                 default:
 

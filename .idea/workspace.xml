@@ -2,14 +2,53 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0e3146d7-5ad2-4e3b-b1c5-db9c6ff0110a" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/lombok.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/characterTraits/CharacterHelperMethods.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/CharacterComponents/Character.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/CharacterComponents/CharacterBuilder.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/CharacterComponents/Creation/GenerateCharacterStats.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/CharacterComponents/Race/Dwarf.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/CharacterComponents/Race/Human.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/CharacterComponents/Race/Race.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/CharacterComponents/Race/RaceChoice.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Equipment/Armor/ArmorCategory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Begin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Begin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/CharacterComponents/Classes/JobClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CharacterComponents/Classes/JobClass.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Equipment/Armor/Armor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Equipment/Armor/Armor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Equipment/Armor/ArmorList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Equipment/Armor/ArmorList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Equipment/Armor/ArmorTypes.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Equipment/Armor/LeatherArmor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Equipment/Armor/LeatherArmor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Equipment/Armor/LightWoodShield.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Equipment/Armor/LightWoodShield.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Equipment/Armor/PaddedArmor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Equipment/Armor/PaddedArmor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Equipment/Armor/Shield.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Equipment/Armor/Shield.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Equipment/Armor/ShieldBuckler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Equipment/Armor/ShieldBuckler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Equipment/Armor/ShieldTypes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Equipment/Armor/ShieldTypes.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Equipment/Weapons/LongSword.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Equipment/Weapons/LongSword.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Equipment/Weapons/Weapon.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Equipment/Weapons/Weapon.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Interface/ActionListener.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Interface/GUI.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/characterTraits/Alignment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CharacterComponents/Alignment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/characterTraits/BaseAbilities.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CharacterComponents/BaseAbilities.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/characterTraits/Character.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/characterTraits/Character.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/characterTraits/Classes/Fighter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/characterTraits/Classes/Fighter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/characterTraits/Classes/JobClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/characterTraits/Classes/JobClass.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/characterTraits/Dice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/characterTraits/Dice.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/characterTraits/CharacterHelperMethods.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CharacterComponents/CharacterHelperMethods.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/characterTraits/Classes/Classes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CharacterComponents/Classes/Classes.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/characterTraits/Classes/Cleric.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CharacterComponents/Classes/Cleric.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/characterTraits/Classes/Fighter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CharacterComponents/Classes/Fighter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/characterTraits/Classes/JobClass.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/characterTraits/Deities.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CharacterComponents/Deities.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/characterTraits/Dice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CharacterComponents/Dice.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/characterTraits/Feats/Feat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CharacterComponents/Feats/Feat.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/characterTraits/Feats/FeatCategories.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CharacterComponents/Feats/FeatCategories.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/characterTraits/Feats/Feats.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CharacterComponents/Feats/Feats.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/characterTraits/Gender.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CharacterComponents/Gender.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/characterTraits/Languages.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CharacterComponents/Languages.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/characterTraits/Race/Dwarf.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/characterTraits/Race/Human.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/characterTraits/Race/Race.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/characterTraits/Race/RaceChoice.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/characterTraits/Sizes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CharacterComponents/Sizes.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/characterTraits/Skills.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CharacterComponents/Skills.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/characterTraits/Vision.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CharacterComponents/Vision.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/src/CharacterTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/CharacterTest.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />

@@ -1,4 +1,4 @@
-package characterTraits;
+package CharacterComponents;
 
 public enum Vision {
     DARK_VISION,

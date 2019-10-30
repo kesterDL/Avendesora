@@ -1,4 +1,4 @@
-package characterTraits;
+package CharacterComponents;
 
 import java.util.Random;
 

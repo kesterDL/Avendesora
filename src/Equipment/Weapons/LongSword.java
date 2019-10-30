@@ -1,6 +1,6 @@
 package Equipment.Weapons;
 
-import characterTraits.Dice;
+import CharacterComponents.Dice;
 
 public class LongSword extends Weapon {
 

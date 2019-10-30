@@ -1,4 +1,4 @@
-package characterTraits.Feats;
+package CharacterComponents.Feats;
 
 public class Feat {
     FeatCategories catagory;

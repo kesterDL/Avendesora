@@ -1,4 +1,4 @@
-package characterTraits.Classes;
+package CharacterComponents.Classes;
 
 public enum Classes {
     BARBARIAN,

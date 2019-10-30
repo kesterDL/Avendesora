@@ -3,11 +3,11 @@ import Equipment.Armor.ArmorList;
 import Equipment.Weapons.WeaponList;
 import SpellBook.SpellCompendium;
 import SpellBook.SpellsAPI;
-import characterTraits.Classes.Classes;
-import characterTraits.Feats.Feats;
-import characterTraits.Race.RaceChoice;
-import characterTraits.Character;
-import characterTraits.Skills;
+import CharacterComponents.Classes.Classes;
+import CharacterComponents.Feats.Feats;
+import CharacterComponents.Race.RaceChoice;
+import CharacterComponents.Character;
+import CharacterComponents.Skills;
 import org.json.JSONException;
 
 import java.awt.event.ActionEvent;

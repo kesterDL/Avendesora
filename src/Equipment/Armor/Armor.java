@@ -1,85 +1,53 @@
 package Equipment.Armor;
 
-public class Armor {
-    private ArmorTypes armorType;
-    private ArmorList armor;
-    private Integer gold;
-    private Integer armorBonus;
-    private Integer maxDexBonus;
-    private Integer armorCheckPenalty;
-    private Double arcaneSpellFailureChance;
-    private Double speedAdjustment;
-    private Integer weight;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-    public ArmorTypes getArmorType() {
-        return armorType;
-    }
+public interface Armor {
 
-    public Integer getCost() {
-        return gold;
-    }
+     ArmorCategory getArmorType();
 
-    public Integer getArmorBonus() {
-        return armorBonus;
-    }
+     Integer getCost();
 
-    public Integer getMaxDexBonus() {
-        return maxDexBonus;
-    }
+     Integer getArmorBonus();
 
-    public Integer getArmorCheckPenalty() {
-        return armorCheckPenalty;
-    }
+     Integer getMaxDexBonus();
 
-    public Double getArcaneSpellFailureChance() {
-        return arcaneSpellFailureChance;
-    }
+     Integer getArmorCheckPenalty();
 
-    public Double getSpeedAdjustment() {
-        return speedAdjustment;
-    }
+     Double getArcaneSpellFailureChance();
 
-    public Integer getWeight() {
-        return weight;
-    }
+     Double getSpeedAdjustment();
 
-    public void setArmorType(ArmorTypes armorType) {
-        this.armorType = armorType;
-    }
+     Integer getWeight();
 
-    public void setGoldCost(Integer cost) {
-        this.gold = cost;
-    }
+     void setArmorType(ArmorCategory armorType);
 
-    public void setArmorBonus(Integer armorBonus) {
-        this.armorBonus = armorBonus;
-    }
+     void setCost(Integer cost);
 
-    public void setMaxDexBonus(Integer maxDexBonus) {
-        this.maxDexBonus = maxDexBonus;
-    }
+     void setArmorBonus(Integer armorBonus);
 
-    public void setArmorCheckPenalty(Integer armorCheckPenalty) {
-        this.armorCheckPenalty = armorCheckPenalty;
-    }
+     void setMaxDexBonus(Integer maxDexBonus);
 
-    public void setArcaneSpellFailureChance(Double arcaneSpellFailureChance) {
-        this.arcaneSpellFailureChance = arcaneSpellFailureChance;
-    }
+     void setArmorCheckPenalty(Integer armorCheckPenalty);
 
-    public void setSpeedAdjustment(Double speedAdjustment) {
-        this.speedAdjustment = speedAdjustment;
-    }
+     void setArcaneSpellFailureChance(Double arcaneSpellFailureChance);
 
-    public void setWeight(Integer weight) {
-        this.weight = weight;
-    }
+     void setSpeedAdjustment(Double speedAdjustment);
 
-    public ArmorList getArmor() {
-        return armor;
-    }
+     void setWeight(Integer weight);
 
-    public void setArmor(ArmorList armor) {
-        this.armor = armor;
-    }
+     ArmorList getArmor();
+
+     void setArmor(ArmorList armor);
+
+     static Armor armorFactory(ArmorList armor) {
+         switch(armor) {
+             case LEATHER:
+                 return new LeatherArmor();
+             case PADDED:
+                 return new PaddedArmor();
+             default:
+                 throw new NotImplementedException();
+         }
+     }
 }
