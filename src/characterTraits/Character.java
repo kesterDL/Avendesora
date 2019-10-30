@@ -1,18 +1,25 @@
 package characterTraits;
 
+import CharacterComponents.BaseAbilities;
+import CharacterComponents.Classes.Classes;
+import CharacterComponents.Classes.Cleric;
+import CharacterComponents.Classes.Fighter;
+import CharacterComponents.Classes.JobClass;
+import CharacterComponents.Deities;
+import CharacterComponents.Dice;
+import CharacterComponents.Feats.Feats;
+import CharacterComponents.Gender;
+import CharacterComponents.Languages;
+import CharacterComponents.Race.Dwarf;
+import CharacterComponents.Race.Human;
+import CharacterComponents.Race.Race;
+import CharacterComponents.Race.RaceChoice;
+import CharacterComponents.Skills;
+import CharacterComponents.Vision;
 import Equipment.Armor.*;
 import Equipment.Weapons.LongSword;
 import Equipment.Weapons.Weapon;
 import Equipment.Weapons.WeaponList;
-import characterTraits.Classes.Classes;
-import characterTraits.Classes.Cleric;
-import characterTraits.Classes.Fighter;
-import characterTraits.Classes.JobClass;
-import characterTraits.Feats.Feats;
-import characterTraits.Race.Dwarf;
-import characterTraits.Race.Human;
-import characterTraits.Race.Race;
-import characterTraits.Race.RaceChoice;
 
 import java.util.*;
 import lombok.Getter;
